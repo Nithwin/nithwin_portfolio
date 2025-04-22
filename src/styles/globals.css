@@ -10,7 +10,10 @@
     --color-primary:#5E0AFF;
     --color-neonblue:#00BBFF;
     --color-secondary:#111111;
-    --color-body:#DBFCFF;
+    --color-body-1:#DBFCFF;
+    --color-body-2:#D9D9D9;
+    --color-body-3:#D0D0D0;
+    --color-body-4:#93C5FD;
     --font-inter:"Inter", sans-serif;
     --font-poppins:"Poppins", sans-serif;
     --font-montserrat:"Montserrat", sans-serif;
@@ -22,3 +25,22 @@ html{
     @apply bg-[var(--darkBlack)];
 }
 
+
+.text-shadow-glow {
+    text-decoration: none;
+    margin: 0 5px;
+    position: relative;
+    display: inline-block;
+    transition: all 0.5s;
+  }
+  
+  .text-shadow-glow:hover {
+    color: #ffffff;
+    scale: 1.2;
+    text-shadow: 0 0 10px #5E0AFF, 0 0 20px #5E0AFF, 0 0 30px #5E0AFF, 0 0 40px #5E0AFF;
+  }
+
+  .shadow-amber {
+    box-shadow: 0 4px 30px rgba(147, 0, 245, 0.5);
+  }
+  

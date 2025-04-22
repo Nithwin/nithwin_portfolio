@@ -10,7 +10,7 @@ import Header from './Header'
 
 const Main = () => {
   return (
-    <section className='flex flex-col px-[1rem] pt-[4.5rem]'>
+    <section className='flex flex-col px-[1.3rem] pt-[4.5rem] relative gap-5 lg:px-[3rem]'>
       <Header />
       <Hero />
       <About />
