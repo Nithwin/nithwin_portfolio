@@ -77,22 +77,22 @@ const Hero = () => {
           <div className="pt-[1.5rem]">
             <ul className="flex gap-[1.5rem] lg:gap-[2.5rem]">
               <li>
-                <a href="">
+                <a href="https://github.com/Nithwin">
                   <FaGithub className="size-7 lg:size-10" />
                 </a>
               </li>
               <li>
-                <a href=" ">
+                <a href="https://www.linkedin.com/public-profile/settings?trk=d_flagship3_profile_self_view_public_profile">
                   <FaLinkedin className="size-7 lg:size-10" />
                 </a>
               </li>
               <li>
-                <a href="">
+                <a href="https://www.instagram.com/_nithwin?igsh=djl4Mmt3d2FjajQ5">
                   <FaInstagramSquare className="size-7 lg:size-10" />
                 </a>
               </li>
               <li>
-                <a href="">
+                <a href="https://leetcode.com/u/vmnithwin/">
                   <SiLeetcode className="size-7 lg:size-10" />
                 </a>
               </li>

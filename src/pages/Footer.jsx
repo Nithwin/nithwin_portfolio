@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaGithub, FaLinkedin, FaInstagram, FaCodepen } from "react-icons/fa";
-import { HiDocument } from "react-icons/hi";
 import { motion } from "framer-motion";
-
+import { FaGithub } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa";
+import { FaInstagramSquare } from "react-icons/fa";
+import { SiLeetcode } from "react-icons/si";
+import { TbReportAnalytics } from "react-icons/tb";
 const Footer = () => {
   const videoRef = useRef(null);
   useEffect(() => {
@@ -73,46 +75,33 @@ const Footer = () => {
 
             {/* Social Links */}
             <div className="flex items-center space-x-6 ">
-              <a
-                href="https://github.com/yourusername"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-2xl hover:text-primary transition-colors"
-              >
-                <FaGithub />
-              </a>
-              <a
-                href="https://linkedin.com/in/yourusername"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-2xl hover:text-primary transition-colors"
-              >
-                <FaLinkedin />
-              </a>
-              <a
-                href="https://instagram.com/yourusername"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-2xl hover:text-primary transition-colors"
-              >
-                <FaInstagram />
-              </a>
-              <a
-                href="https://codepen.io/yourusername"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-2xl hover:text-primary transition-colors"
-              >
-                <FaCodepen />
-              </a>
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-2xl hover:text-primary transition-colors"
-              >
-                <HiDocument />
-              </a>
+            <ul className="flex gap-[1.5rem] lg:gap-[2.5rem]">
+           <li>
+                <a href="https://github.com/Nithwin">
+                  <FaGithub className="size-7" />
+                </a>
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/public-profile/settings?trk=d_flagship3_profile_self_view_public_profile">
+                  <FaLinkedin className="size-7 " />
+                </a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/_nithwin?igsh=djl4Mmt3d2FjajQ5">
+                  <FaInstagramSquare className="size-7" />
+                </a>
+              </li>
+              <li>
+                <a href="https://leetcode.com/u/vmnithwin/">
+                  <SiLeetcode className="size-7 " />
+                </a>
+              </li>
+              <li>
+                <a href="">
+                  <TbReportAnalytics className="size-7 " />
+                </a>
+              </li>
+           </ul>
             </div>
           </div>
           {/* Legal Links */}
