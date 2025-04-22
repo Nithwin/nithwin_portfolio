@@ -1,12 +1,56 @@
-# React + Vite
+# Nithwin VM - Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🚀 About Me
+I'm a passionate Full Stack Developer with expertise in building modern web applications. My journey in tech has equipped me with a strong foundation in both frontend and backend development, enabling me to create seamless user experiences.
 
-Currently, two official plugins are available:
+## 💻 Portfolio Highlights
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Modern Tech Stack**: Built with React + Vite for lightning-fast performance
+- **Responsive Design**: Fully responsive across all devices
+- **Interactive UI**: Engaging user interface with smooth animations
+- **Clean Code**: Well-structured and maintainable codebase
 
-## Expanding the ESLint configuration
+## 🛠️ Technologies Used
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React.js
+- Vite
+- Tailwind CSS
+- EmailJS
+- Three.js
+- Framer Motion
+
+## 🔍 Features
+
+- Dynamic 3D elements
+- Interactive project showcases
+- Smooth contact form integration
+- Professional animations
+- Dark/Light mode toggle
+
+## 🚀 Quick Start
+
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/portfolio
+```
+
+2. Install dependencies
+```bash
+npm install
+```
+
+3. Start the development server
+```bash
+npm run dev
+```
+
+## 📫 Contact
+
+Feel free to reach out to me at:
+- Email: your.email@example.com
+- LinkedIn: [Your LinkedIn]
+- GitHub: [Your GitHub]
+
+## 📝 License
+
+This project is open source and available under the [MIT License](LICENSE).
