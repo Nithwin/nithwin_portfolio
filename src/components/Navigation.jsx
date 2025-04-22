@@ -3,15 +3,35 @@ import { RiMenu3Fill } from "react-icons/ri";
 import { GiCrossedSwords } from "react-icons/gi";
 import { MdDarkMode } from "react-icons/md";
 import { MdLightMode } from "react-icons/md";
-const Navbar = () => {
+
+const Navigation = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [dark, setDark] = useState(true);
   const videoRef = useRef(null);
-    useEffect(() =>{
-      if(videoRef.current){
-        videoRef.current.playbackRate = 0.5;
-      }
-    }, []);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.5;
+    }
+  }, []);
+
+  const scrollToSection = (elementId) => {
+    const element = document.getElementById(elementId);
+    const navbarHeight = 60; // Adjust this value based on your navbar height
+    
+    if (element) {
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+    // Close mobile menu if open
+    setNavOpen(false);
+  };
+
   return (
     <nav className="p-2 fixed w-full px-[1rem] top-0 left-0 right-0 bg-[#111111] lg:px-[3rem] lg:py-[0.7rem]">
       <div className="flex w-full justify-between border-b pb-[0.5rem] lg:pb-[1rem] ">
@@ -31,52 +51,40 @@ const Navbar = () => {
           </div>
           {/* Logo */}
           <div className="flex items-center justify-between">
-            {/* <img
-              src="./assets/logo.png"
-              alt="Logo"
-              className="size-10  backdrop-blur-3xl cursor-pointer"
-            /> */}
             <div className="h-[2.2rem] lg:h-[3rem] flex justify-center items-center">
-            <video
-            ref={videoRef}
-              src="./assets/nithwin.mp4"
-              loop
-              muted
-              autoPlay
-              playsInline
-              className="h-full w-full backdrop-blur-3xl cursor-pointer"
-            />
+              <video
+                ref={videoRef}
+                src="./assets/nithwin.mp4"
+                loop
+                muted
+                autoPlay
+                playsInline
+                className="h-full w-full backdrop-blur-3xl cursor-pointer"
+              />
             </div>
           </div>
         </div>
         {/* Navigation Items for the PC view */}
         <div className="items-center hidden lg:flex">
           <ul className="flex justify-center items-center gap-[4.3rem]">
-            <li>
-              <a href="" className="text-lg cursor-pointer text-shadow-glow  ">
-                Home
-              </a>
-            </li>
-            <li>
-              <a href="" className="text-lg cursor-pointer text-shadow-glow ">
-                About
-              </a>
-            </li>
-            <li>
-              <a href="" className="text-lg cursor-pointer text-shadow-glow ">
-                Projects
-              </a>
-            </li>
-            <li>
-              <a href="" className="text-lg cursor-pointer text-shadow-glow ">
-                Skills
-              </a>
-            </li>
-            <li>
-              <a href="" className="text-lg cursor-pointer text-shadow-glow ">
-                Contact
-              </a>
-            </li>
+            {[
+              { id: "home", label: "Home" },
+              { id: "about", label: "About" },
+              { id: "projects", label: "Projects" },
+              { id: "skills", label: "Skills" },
+              { id: "contact", label: "Contact" }
+            ].map((item) => (
+              <li key={item.id}>
+                <a
+                  onClick={() => scrollToSection(item.id)}
+                  className="text-lg cursor-pointer text-shadow-glow hover:text-primary transition-colors duration-300"
+                  role="button"
+                  tabIndex={0}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -113,27 +121,42 @@ const Navbar = () => {
         >
           <ul className="flex flex-col justify-center items-center gap-[4.3rem]">
             <li>
-              <a href="" className="text-2xl">
+              <a
+                onClick={() => scrollToSection("home")}
+                className="text-2xl cursor-pointer"
+              >
                 Home
               </a>
             </li>
             <li>
-              <a href="" className="text-2xl">
+              <a
+                onClick={() => scrollToSection("about")}
+                className="text-2xl cursor-pointer"
+              >
                 About
               </a>
             </li>
             <li>
-              <a href="" className="text-2xl">
+              <a
+                onClick={() => scrollToSection("projects")}
+                className="text-2xl cursor-pointer"
+              >
                 Projects
               </a>
             </li>
             <li>
-              <a href="" className="text-2xl">
+              <a
+                onClick={() => scrollToSection("skills")}
+                className="text-2xl cursor-pointer"
+              >
                 Skills
               </a>
             </li>
             <li>
-              <a href="" className="text-2xl">
+              <a
+                onClick={() => scrollToSection("contact")}
+                className="text-2xl cursor-pointer"
+              >
                 Contact
               </a>
             </li>
@@ -144,4 +167,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navigation;

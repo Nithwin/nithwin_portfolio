@@ -1,10 +1,10 @@
 import React from 'react'
-import Navbar from '../components/navbar'
+import Navigation from '../components/navigation'
 
 const Header = () => {
   return (
-    <header className='z-100'>
-        <Navbar />
+    <header className='fixed w-full top-0 z-50 bg-black' >
+        <Navigation />
     </header>
   )
 }
