@@ -51,4 +51,4 @@ npm run dev
 ## 📫 Contact
 
 Feel free to reach out to me at:
-- Email: vmnithwin@example.com
+- Email: vmnithwin@gmail.com
