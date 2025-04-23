@@ -31,6 +31,15 @@ const Main = () => {
       },
     },
   };
+  const headerVariants = {
+    hidden: {opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
 
   return (
     <motion.section
@@ -39,7 +48,7 @@ const Main = () => {
       animate="visible"
       className='flex flex-col px-[1.3rem] pt-[4.5rem] relative gap-5 lg:px-[3rem]'
     >
-      <motion.div variants={sectionVariants}>
+      <motion.div variants={headerVariants}>
         <Header />
       </motion.div>
       <motion.div variants={sectionVariants}>

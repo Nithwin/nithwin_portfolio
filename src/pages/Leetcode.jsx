@@ -336,7 +336,7 @@ const Leetcode = () => {
                     <FaStar className="size-6 lg:size-7.5 text-purple-400" />
                     <div className="text-sm font-medium text-body-2 lg:text-xl">
                       {/* Top 10% info not available via API */}
-                      Top 10% in Weekly Contest (static)
+                      Top 10% in Weekly Contest
                     </div>
                   </div>
                 </div>

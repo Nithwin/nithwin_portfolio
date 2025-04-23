@@ -4,7 +4,7 @@ import { HiOutlineLightBulb } from "react-icons/hi";
 import { LiaLaptopCodeSolid } from "react-icons/lia";
 import { GiPirateFlag } from "react-icons/gi";
 import { RiArrowUpDoubleFill } from "react-icons/ri";
-import Typewriter from "typewriter-effect"; // ✅ Correct import
+import Typewriter from "typewriter-effect"; 
 import FancyWave from "../components/FancyWave";
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
@@ -14,7 +14,7 @@ import { TbReportAnalytics } from "react-icons/tb";
 import { motion, transform } from "framer-motion";
 const Hero = () => {
   return (
-    <Section id={"home"}>
+    <Section id={"home"} className="">
       <div className="flex flex-col items-center relative py-[2rem] justify-between gap-[2rem] lg:flex-row-reverse lg:py-[1rem]">
         <div className="relative  lg:px-[2rem] lg:pe-[4rem]">
           <div className="size-[15rem] lg:size-[25rem] overflow-hidden flex justify-center items-center rounded-full ">
@@ -65,8 +65,8 @@ const Hero = () => {
             {/* 
             <div className="w-[19rem] h-[15rem] lg:w-[25rem] lg:h-[16rem] lg:left-[2rem] lg:-top-5 rounded-full bg-primary/20 lg:bg-primary/20  lg:blur-2xl blur-2xl absolute -top-20 -left-5 -z-20 mix-blend-plus-lighter"></div> */}
 
-            <div className="absolute -top-[2rem] left-0 lg:-top-4 lg:left-10 w-80 h-80 bg-primary/25 rounded-full blur-[120px] mix-blend-plus-lighter"></div>
-            <div className="absolute -top-[2rem] left-0 lg:-top-4 lg:left-10 w-20 h-20 bg-primary/25 rounded-full blur-[120px] mix-blend-plus-lighter"></div>
+            <div className="absolute -z-30 -top-[2rem] left-0 lg:-top-10 lg:left-10 w-80 h-80  bg-primary/25 rounded-full blur-[120px] mix-blend-plus-lighter"></div>
+            <div className="absolute -z-30 -top-[2rem] left-0 lg:-top-4 lg:left-10 w-20 h-20  bg-primary/25 rounded-full blur-[120px] mix-blend-plus-lighter"></div>
           </div>
           <div className="pb-4">
             <FancyWave />
@@ -77,28 +77,30 @@ const Hero = () => {
           <div className="pt-[1.5rem]">
             <ul className="flex gap-[1.5rem] lg:gap-[2.5rem]">
               <li>
-                <a href="https://github.com/Nithwin">
-                  <FaGithub className="size-7 lg:size-10" />
+                <a href="https://github.com/Nithwin" target="_blank" rel="noopener noreferrer">
+                  <FaGithub className="size-7 lg:size-10 text-white bg-black hover:text-neonblue hover:scale-125 transition-all delay-150 ease-linear shadow-[0_0_25px_4px_] shadow-black" />
                 </a>
               </li>
               <li>
-                <a href="https://www.linkedin.com/public-profile/settings?trk=d_flagship3_profile_self_view_public_profile">
-                  <FaLinkedin className="size-7 lg:size-10" />
+                {/* Replace with your actual public LinkedIn profile URL */}
+                <a href="https://www.linkedin.com/in/your-profile-url" target="_blank" rel="noopener noreferrer">
+                  <FaLinkedin className="size-7 lg:size-10 text-white bg-black hover:text-neonblue hover:scale-125 transition-all delay-150 ease-linear shadow-[0_0_25px_4px_] shadow-black" />
                 </a>
               </li>
               <li>
-                <a href="https://www.instagram.com/_nithwin?igsh=djl4Mmt3d2FjajQ5">
-                  <FaInstagramSquare className="size-7 lg:size-10" />
+                <a href="https://www.instagram.com/_nithwin" target="_blank" rel="noopener noreferrer">
+                  <FaInstagramSquare className="size-7 lg:size-10 text-white bg-black hover:text-neonblue hover:scale-125 transition-all delay-150 ease-linear shadow-[0_0_25px_4px_] shadow-black" />
                 </a>
               </li>
               <li>
-                <a href="https://leetcode.com/u/vmnithwin/">
-                  <SiLeetcode className="size-7 lg:size-10" />
+                <a href="https://leetcode.com/u/vmnithwin/" target="_blank" rel="noopener noreferrer">
+                  <SiLeetcode className="size-7 lg:size-10 text-white bg-black hover:text-neonblue hover:scale-125 transition-all delay-150 ease-linear  shadow-[0_0_25px_4px_] shadow-black" />
                 </a>
               </li>
               <li>
-                <a href="">
-                  <TbReportAnalytics className="size-7 lg:size-10" />
+                {/* Add proper URL for analytics or remove if not needed */}
+                <a href="your-analytics-url" target="_blank" rel="noopener noreferrer">
+                  <TbReportAnalytics className="size-7 lg:size-10 border-none text-white bg-black hover:text-neonblue hover:scale-125 transition-all delay-150 ease-linear shadow-[0_0_25px_4px_] shadow-black" />
                 </a>
               </li>
             </ul>

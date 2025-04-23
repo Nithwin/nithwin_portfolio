@@ -20,8 +20,8 @@ const About = () => {
             once: false,
           }}
           transition={{
-            duration: 0.8, // Animation duration
-            delay: 0.2, // Delay before animation starts
+            duration: 0.5, // Animation duration
+            delay: 0.1, // Delay before animation starts
             ease: "easeOut", // Smoother easing function
           }}
           className="flex flex-col lg:w-1/2 relative"
@@ -53,7 +53,7 @@ const About = () => {
         }}
         transition={{
           duration: 0.8, // Animation duration
-          delay: 0.2, // Delay before animation starts
+          delay: 0.1, // Delay before animation starts
           ease: "easeOut", // Smoother easing function
         }}
         className="lg:w-1/2">
