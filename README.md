@@ -51,10 +51,4 @@ npm run dev
 ## 📫 Contact
 
 Feel free to reach out to me at:
-- Email: your.email@example.com
-- LinkedIn: [Your LinkedIn]
-- GitHub: [Your GitHub]
-
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
+- Email: vmnithwin@example.com
