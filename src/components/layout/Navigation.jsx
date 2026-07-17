@@ -21,36 +21,63 @@ const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
   const { isDark, toggleTheme } = useTheme();
   const videoRef = useRef(null);
+  const isScrollingToRef = useRef(false);
 
   useEffect(() => {
     if (videoRef.current) videoRef.current.playbackRate = 0.4;
   }, []);
 
+  // High-Precision Active Section & Scroll Detector
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 30);
 
-  useEffect(() => {
-    const sectionEls = NAV_ITEMS.map(({ id }) => document.getElementById(id)).filter(Boolean);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActiveSection(e.target.id);
-        });
-      },
-      { threshold: 0.35, rootMargin: "-80px 0px 0px 0px" }
-    );
-    sectionEls.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+      // If user clicked a navigation link, lock activeSection until scroll finishes
+      if (isScrollingToRef.current) return;
+
+      // Check if user has scrolled to the bottom of the page (for Contact or short bottom sections)
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50) {
+        setActiveSection("contact");
+        return;
+      }
+
+      // Check which section is directly under the header line (scrollY + ~240px)
+      const scrollPos = window.scrollY + 240;
+      let currentId = "home";
+
+      for (const item of NAV_ITEMS) {
+        const el = document.getElementById(item.id);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPos >= top && scrollPos < top + height) {
+            currentId = item.id;
+          }
+        }
+      }
+
+      setActiveSection(currentId);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollTo = (id) => {
     const el = document.getElementById(id);
     if (!el) return;
+
+    // Set active section immediately and lock scroll detection during smooth scroll animation
+    setActiveSection(id);
+    isScrollingToRef.current = true;
+
     window.scrollTo({ top: el.offsetTop - 90, behavior: "smooth" });
     setMobileOpen(false);
+
+    setTimeout(() => {
+      isScrollingToRef.current = false;
+    }, 1000);
   };
 
   return (
@@ -149,9 +176,8 @@ const Navigation = () => {
         isOpen={mobileOpen}
         items={NAV_ITEMS}
         activeSection={activeSection}
-        scrollTo={scrollTo}
+        onSelect={scrollTo}
         isDark={isDark}
-        scrolled={scrolled}
       />
     </>
   );

@@ -5,7 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { SiLeetcode } from "react-icons/si";
 import { HiArrowRight } from "react-icons/hi";
-import { RiDownloadLine, RiSparklingFill, RiCodeSSlashLine, RiCpuLine, RiArrowDownLine, RiMapPinLine } from "react-icons/ri";
+import { RiDownloadLine, RiArrowDownLine } from "react-icons/ri";
 
 const ROLES = [
   "Executing Generative AI & LLM Solutions...",
@@ -23,21 +23,18 @@ const Hero = () => {
   const [charIndex, setCharIndex] = useState(0);
 
   const { scrollY } = useScroll();
-  // Gentle parallax translation without any opacity fading so nothing hides on scroll!
   const yParallaxText = useTransform(scrollY, [0, 1200], [0, 60]);
   const yParallaxImage = useTransform(scrollY, [0, 1200], [0, 30]);
 
-  // World-Class GSAP Staggered Entrance Timeline
+  // World-Class GSAP Staggered Entrance Timeline (Clean & Uncluttered)
   useGSAP(() => {
     const tl = gsap.timeline({ delay: 0.1 });
     tl.from(".hero-title-line", { opacity: 0, y: 40, stagger: 0.1, duration: 0.8, ease: "power4.out" })
       .from(".hero-terminal-box", { opacity: 0, y: 20, scale: 0.96, duration: 0.6, ease: "power3.out" }, "-=0.45")
       .from(".hero-bio", { opacity: 0, y: 20, duration: 0.6, ease: "power3.out" }, "-=0.4")
-      .from(".hero-location-bar", { opacity: 0, y: 15, duration: 0.5, ease: "power3.out" }, "-=0.35")
+      .from(".hero-social-row", { opacity: 0, y: 15, duration: 0.5, ease: "power3.out" }, "-=0.35")
       .from(".hero-cta-group", { opacity: 0, y: 20, duration: 0.6, ease: "power3.out" }, "-=0.35")
-      .from(".hero-social-item", { opacity: 0, scale: 0.6, stagger: 0.07, duration: 0.5, ease: "back.out(1.8)" }, "-=0.3")
-      .from(".hero-visual-avatar", { opacity: 0, scale: 0.92, y: 35, duration: 1.1, ease: "power4.out" }, "-=0.85")
-      .from(".hero-floating-hud", { opacity: 0, y: 25, scale: 0.9, stagger: 0.15, duration: 0.7, ease: "power3.out" }, "-=0.55");
+      .from(".hero-visual-container", { opacity: 0, scale: 0.92, y: 35, duration: 1.1, ease: "power4.out" }, "-=0.85");
   }, { scope: heroRef });
 
   // Terminal Typewriter Ticker
@@ -58,12 +55,12 @@ const Hero = () => {
     return () => clearTimeout(timeout);
   }, [charIndex, isDeleting, roleIndex]);
 
-  // Subtle 3D Depth Parallax on Right Avatar
+  // Subtle 3D Depth Parallax on Right Visual
   useEffect(() => {
     const el = imageRef.current;
     if (!el) return;
     const move = (e) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 18;
+      const x = (e.clientX / window.innerWidth - 0.5) * 16;
       const y = (e.clientY / window.innerHeight - 0.5) * 12;
       gsap.to(el, { x, y, duration: 1.2, ease: "power2.out" });
     };
@@ -89,13 +86,13 @@ const Hero = () => {
       id="home"
       style={{
         position: "relative",
-        // Perfectly tuned height so it's compact and doesn't feel overly tall or stretched
-        minHeight: "max(660px, 84vh)",
+        minHeight: "max(660px, 86vh)",
         display: "flex",
         alignItems: "center",
         overflow: "hidden",
-        paddingTop: "94px",
-        paddingBottom: "32px",
+        // Added generous top gap (`paddingTop: "168px"`) so header never crowds the hero content!
+        paddingTop: "168px",
+        paddingBottom: "40px",
       }}
     >
       {/* Background Architectural Grid & Deep Aurora Spheres */}
@@ -103,75 +100,72 @@ const Hero = () => {
       <div
         style={{
           position: "absolute",
-          top: "12%",
+          top: "14%",
           left: "6%",
           width: "500px",
           height: "500px",
           borderRadius: "50%",
           pointerEvents: "none",
-          background: "radial-gradient(circle, rgba(123, 47, 255, 0.22) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(123, 47, 255, 0.2) 0%, transparent 70%)",
           filter: "blur(90px)",
         }}
       />
       <div
         style={{
           position: "absolute",
-          bottom: "6%",
+          bottom: "8%",
           right: "6%",
           width: "540px",
           height: "540px",
           borderRadius: "50%",
           pointerEvents: "none",
-          background: "radial-gradient(circle, rgba(0, 212, 255, 0.18) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(0, 212, 255, 0.16) 0%, transparent 70%)",
           filter: "blur(90px)",
         }}
       />
 
       <div className="container-main" style={{ position: "relative", zIndex: 10, width: "100%" }}>
-        {/* Responsive CSS for Executive Layout & Proportions */}
+        {/* Responsive CSS for Clean, Uncluttered Editorial Layout */}
         <style>{`
           @media (min-width: 1024px) {
             .hero-grid {
               flex-direction: row !important;
               justify-content: space-between !important;
               align-items: center !important;
-              gap: 36px !important;
+              gap: 48px !important;
             }
             .hero-left {
               max-width: 610px !important;
               text-align: left !important;
             }
             .hero-right {
-              width: clamp(360px, 44vw, 550px) !important;
-              height: clamp(390px, 48vw, 580px) !important;
+              width: clamp(340px, 42vw, 520px) !important;
+              height: clamp(390px, 48vw, 560px) !important;
             }
-            .hero-cta-group, .hero-social-group, .hero-location-bar {
+            .hero-cta-group, .hero-social-row {
               justify-content: flex-start !important;
             }
-            .hud-top-left { top: 16px !important; left: -14px !important; }
-            .hud-mid-right { top: 38% !important; right: -12px !important; }
-            .hud-bottom-left { bottom: 24px !important; left: 14px !important; }
           }
           @media (max-width: 1023px) {
+            section#home {
+              padding-top: 148px !important;
+            }
             .hero-grid {
               flex-direction: column-reverse !important;
               align-items: center !important;
-              gap: 36px !important;
+              gap: 40px !important;
             }
             .hero-left {
               width: 100% !important;
               text-align: center !important;
             }
             .hero-right {
-              width: clamp(280px, 84vw, 450px) !important;
-              height: clamp(330px, 88vw, 510px) !important;
+              width: clamp(280px, 86vw, 440px) !important;
+              height: clamp(330px, 90vw, 490px) !important;
             }
-            .hero-cta-group, .hero-social-group, .hero-location-bar {
+            .hero-cta-group, .hero-social-row {
               justify-content: center !important;
             }
-            .hud-top-left { top: 8px !important; left: 6px !important; }
-            .hud-mid-right { top: 38% !important; right: 6px !important; }
-            .hud-bottom-left { bottom: 12px !important; left: 16px !important; }
           }
         `}</style>
 
@@ -181,7 +175,7 @@ const Hero = () => {
             style={{ y: yParallaxText }}
             className="hero-left"
           >
-            {/* Sleek, Executive Headline (No top pill above heading) */}
+            {/* Sleek, Executive Headline */}
             <h1
               className="hero-title-line"
               style={{
@@ -214,7 +208,7 @@ const Hero = () => {
             <div
               className="hero-terminal-box"
               style={{
-                background: "rgba(14, 14, 22, 0.8)",
+                background: "rgba(14, 14, 22, 0.82)",
                 border: "1px solid var(--border)",
                 borderRadius: "14px",
                 padding: "13px 18px",
@@ -225,26 +219,24 @@ const Hero = () => {
                 gap: "8px",
               }}
             >
-              {/* Terminal Window Header with Mac Dots */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.06)", paddingBottom: "6px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                   <span style={{ width: "9px", height: "9px", borderRadius: "50%", background: "#FF5F56", display: "inline-block" }} />
                   <span style={{ width: "9px", height: "9px", borderRadius: "50%", background: "#FFBD2E", display: "inline-block" }} />
                   <span style={{ width: "9px", height: "9px", borderRadius: "50%", background: "#27C93F", display: "inline-block" }} />
                 </div>
-                <span style={{ fontSize: "0.72rem", fontFamily: "var(--font-mono)", color: "var(--text-muted)", letterSpacing: "0.08em" }}>
+                <span style={{ fontSize: "0.72rem", fontFamily: "var(--font-mono)", color: "#A0A0B8", letterSpacing: "0.08em" }}>
                   bash - nithwin.ai
                 </span>
               </div>
 
-              {/* Terminal Typewriter Line */}
               <div style={{ display: "flex", alignItems: "center", gap: "8px", paddingTop: "4px" }}>
                 <span style={{ color: "var(--neon)", fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: "0.95rem" }}>
                   ~ $
                 </span>
                 <span
                   style={{
-                    color: "var(--text-primary)",
+                    color: "#F8F8FF",
                     fontFamily: "var(--font-mono)",
                     fontWeight: 500,
                     fontSize: "clamp(0.88rem, 1.7vw, 1.02rem)",
@@ -277,31 +269,65 @@ const Hero = () => {
                 lineHeight: 1.78,
                 color: "var(--text-muted)",
                 maxWidth: "560px",
-                marginBottom: "22px",
+                marginBottom: "24px",
               }}
             >
               Turning visionary concepts into high-concurrency web ecosystems and intelligent Generative AI platforms. I bridge aesthetic design mastery with robust, cloud-native architectural engineering to create award-winning digital experiences.
             </p>
 
-            {/* Location & Global Readiness Bar */}
+            {/* Connect Row placed right above CTAs as requested */}
             <div
-              className="hero-location-bar"
+              className="hero-social-row"
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "8px",
-                marginBottom: "32px",
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.82rem",
-                color: "var(--text-secondary)",
+                gap: "12px",
+                marginBottom: "28px",
               }}
             >
-              <RiMapPinLine size={16} style={{ color: "var(--purple-light)" }} />
-              <span>India // Open for Global Remote & High-Impact Engineering Roles</span>
+              <span
+                style={{
+                  fontSize: "0.78rem",
+                  fontFamily: "var(--font-mono), monospace",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.12em",
+                  fontWeight: 600,
+                  color: "var(--text-muted)",
+                  marginRight: "4px",
+                }}
+              >
+                Connect //
+              </span>
+              {socials.map(({ href, icon: Icon, label }) => (
+                <motion.a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="hero-social-item"
+                  whileHover={{ scale: 1.16, y: -3 }}
+                  whileTap={{ scale: 0.92 }}
+                  style={{
+                    width: "44px",
+                    height: "44px",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background: "var(--bg-card)",
+                    border: "1px solid var(--border)",
+                    color: "var(--text-secondary)",
+                    transition: "color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease",
+                  }}
+                >
+                  <Icon size={18} />
+                </motion.a>
+              ))}
             </div>
 
             {/* CTAs */}
-            <div className="hero-cta-group" style={{ display: "flex", flexWrap: "wrap", gap: "16px", marginBottom: "34px" }}>
+            <div className="hero-cta-group" style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
               <motion.button
                 whileHover={{ scale: 1.04, y: -2, boxShadow: "0 12px 35px rgba(123, 47, 255, 0.55)" }}
                 whileTap={{ scale: 0.96 }}
@@ -343,80 +369,21 @@ const Hero = () => {
                 <span>Download CV</span>
               </motion.a>
             </div>
-
-            {/* Social Connect Bar */}
-            <div className="hero-social-group" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <span
-                style={{
-                  fontSize: "0.78rem",
-                  fontFamily: "var(--font-mono), monospace",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.12em",
-                  fontWeight: 600,
-                  color: "var(--text-muted)",
-                  marginRight: "6px",
-                }}
-              >
-                Connect //
-              </span>
-              {socials.map(({ href, icon: Icon, label }) => (
-                <motion.a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="hero-social-item"
-                  whileHover={{ scale: 1.16, y: -3 }}
-                  whileTap={{ scale: 0.92 }}
-                  style={{
-                    width: "44px",
-                    height: "44px",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    background: "var(--bg-card)",
-                    border: "1px solid var(--border)",
-                    color: "var(--text-secondary)",
-                    transition: "color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease",
-                  }}
-                >
-                  <Icon size={18} />
-                </motion.a>
-              ))}
-            </div>
           </motion.div>
 
-          {/* ===================== RIGHT COLUMN: ABOUT IMAGE MOVED TO HERO & HUD CARDS ===================== */}
+          {/* ===================== RIGHT COLUMN: CLEAN ARCHITECTURAL FRAME FOR ABOUT.PNG ===================== */}
           <motion.div
-            className="hero-right hero-visual-avatar"
+            className="hero-right hero-visual-container"
             style={{
               y: yParallaxImage,
               position: "relative",
               display: "flex",
-              alignItems: "flex-end",
+              alignItems: "center",
               justifyContent: "center",
               zIndex: 10,
             }}
           >
-            {/* Deep Luminous Halo Behind Avatar */}
-            <div
-              style={{
-                position: "absolute",
-                top: "10%",
-                width: "88%",
-                height: "82%",
-                borderRadius: "50%",
-                background: "linear-gradient(135deg, rgba(123, 47, 255, 0.45) 0%, rgba(0, 212, 255, 0.28) 100%)",
-                filter: "blur(75px)",
-                opacity: 0.9,
-                pointerEvents: "none",
-                zIndex: 1,
-              }}
-            />
-
-            {/* Using about.png as requested ("add that image in hero i feel that looks best for hero") */}
+            {/* Luminous Architectural Glass Card Wrapper that looks pristine in Light & Dark mode */}
             <div
               ref={imageRef}
               style={{
@@ -424,156 +391,55 @@ const Hero = () => {
                 zIndex: 10,
                 width: "100%",
                 height: "100%",
+                borderRadius: "32px",
+                padding: "18px",
+                background: "var(--bg-card)",
+                border: "1px solid var(--border)",
+                boxShadow: "var(--shadow-card)",
                 display: "flex",
-                alignItems: "flex-end",
+                alignItems: "center",
                 justifyContent: "center",
+                overflow: "hidden",
+                transition: "all 0.4s ease",
               }}
             >
-              <img
-                src="./assets/about.png"
-                alt="Nithwin V M"
+              {/* Soft Ambient Inner Glow */}
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "radial-gradient(circle at center, rgba(123, 47, 255, 0.18) 0%, transparent 80%)",
+                  pointerEvents: "none",
+                }}
+              />
+
+              {/* Character Image (`about.png`) */}
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                 style={{
                   width: "100%",
                   height: "100%",
-                  objectFit: "contain",
-                  objectPosition: "bottom center",
-                  filter: "drop-shadow(0 25px 55px rgba(0, 0, 0, 0.65))",
-                  transition: "transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                  position: "relative",
+                  zIndex: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
-              />
+              >
+                <img
+                  src="./assets/about.png"
+                  alt="Nithwin V M"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    transform: "scale(1.02)",
+                    transition: "transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                  }}
+                />
+              </motion.div>
             </div>
-
-            {/* HUD Card 1: Gen-AI Architecture (Top Left) */}
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-              className="hero-floating-hud hud-top-left glass-card"
-              style={{
-                position: "absolute",
-                padding: "11px 16px",
-                borderRadius: "18px",
-                zIndex: 20,
-                pointerEvents: "none",
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                border: "1px solid var(--border)",
-                background: "var(--bg-card)",
-                backdropFilter: "blur(24px)",
-                boxShadow: "0 16px 40px rgba(0, 0, 0, 0.45)",
-              }}
-            >
-              <div
-                style={{
-                  width: "38px",
-                  height: "38px",
-                  borderRadius: "12px",
-                  background: "rgba(123, 47, 255, 0.2)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "var(--purple-light)",
-                }}
-              >
-                <RiCpuLine size={19} />
-              </div>
-              <div>
-                <p style={{ fontSize: "0.68rem", fontFamily: "var(--font-mono)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)" }}>
-                  Architecture
-                </p>
-                <p className="gradient-text" style={{ fontSize: "1.04rem", fontWeight: 800, fontFamily: "var(--font-jakarta)" }}>
-                  GenAI & LLMs
-                </p>
-              </div>
-            </motion.div>
-
-            {/* HUD Card 2: Full Stack Cloud Performance (Mid Right) */}
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-              className="hero-floating-hud hud-mid-right glass-card"
-              style={{
-                position: "absolute",
-                padding: "11px 16px",
-                borderRadius: "18px",
-                zIndex: 20,
-                pointerEvents: "none",
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                border: "1px solid var(--border)",
-                background: "var(--bg-card)",
-                backdropFilter: "blur(24px)",
-                boxShadow: "0 16px 40px rgba(0, 0, 0, 0.45)",
-              }}
-            >
-              <div
-                style={{
-                  width: "38px",
-                  height: "38px",
-                  borderRadius: "12px",
-                  background: "rgba(0, 212, 255, 0.2)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "var(--cyan)",
-                }}
-              >
-                <RiCodeSSlashLine size={19} />
-              </div>
-              <div>
-                <p style={{ fontSize: "0.68rem", fontFamily: "var(--font-mono)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)" }}>
-                  Cloud Systems
-                </p>
-                <p className="gradient-text" style={{ fontSize: "1.04rem", fontWeight: 800, fontFamily: "var(--font-jakarta)" }}>
-                  99.9% Uptime
-                </p>
-              </div>
-            </motion.div>
-
-            {/* HUD Card 3: Production Systems (Bottom Left) */}
-            <motion.div
-              animate={{ y: [0, -8, 0], x: [0, 4, 0] }}
-              transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 1.0 }}
-              className="hero-floating-hud hud-bottom-left glass-card"
-              style={{
-                position: "absolute",
-                padding: "11px 16px",
-                borderRadius: "18px",
-                zIndex: 20,
-                pointerEvents: "none",
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                border: "1px solid var(--border)",
-                background: "var(--bg-card)",
-                backdropFilter: "blur(24px)",
-                boxShadow: "0 16px 40px rgba(0, 0, 0, 0.45)",
-              }}
-            >
-              <div
-                style={{
-                  width: "38px",
-                  height: "38px",
-                  borderRadius: "12px",
-                  background: "rgba(0, 255, 209, 0.18)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "var(--neon)",
-                }}
-              >
-                <RiSparklingFill size={19} />
-              </div>
-              <div>
-                <p style={{ fontSize: "0.68rem", fontFamily: "var(--font-mono)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)" }}>
-                  Production Track
-                </p>
-                <p style={{ fontSize: "1.04rem", fontWeight: 800, fontFamily: "var(--font-jakarta)", color: "var(--text-primary)" }}>
-                  10+ Shipped
-                </p>
-              </div>
-            </motion.div>
           </motion.div>
         </div>
 
@@ -581,7 +447,7 @@ const Hero = () => {
         <motion.div
           onClick={scrollToAbout}
           style={{
-            marginTop: "32px",
+            marginTop: "44px",
             display: "flex",
             alignItems: "center",
             gap: "14px",
