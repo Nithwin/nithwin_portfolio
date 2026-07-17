@@ -1,46 +1,383 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
-:root {
-    --darkBlack:#111111;
-    --creamWhite:#D0D0D0;
-}
-
+/* ============================= THEME TOKENS ============================= */
 @theme {
-    --color-primary:#5E0AFF;
-    --color-neonblue:#00BBFF;
-    --color-secondary:#111111;
-    --color-body-1:#DBFCFF;
-    --color-body-2:#D9D9D9;
-    --color-body-3:#D0D0D0;
-    --color-body-4:#93C5FD;
-    --font-inter:"Inter", sans-serif;
-    --font-poppins:"Poppins", sans-serif;
-    --font-montserrat:"Montserrat", sans-serif;
+  --color-primary: #7B2FFF;
+  --color-primary-light: #9B5FFF;
+  --color-accent: #00D4FF;
+  --color-neon: #00FFD1;
+  --color-surface: #0E0E16;
+  --color-surface-2: #16161F;
+  --color-surface-3: #1E1E2A;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-text-primary: #F8F8FF;
+  --color-text-secondary: #A0A0B8;
+  --color-text-muted: #606078;
+  --font-syne: "Syne", sans-serif;
+  --font-inter: "Inter", sans-serif;
+  --font-space: "Space Grotesk", sans-serif;
 }
 
-html{
-    @apply font-poppins;
-    @apply text-[var(--creamWhite)];
-    @apply bg-[var(--darkBlack)];
+/* ============================= ROOT VARIABLES ============================= */
+:root {
+  --bg-primary: #0A0A12;
+  --bg-secondary: #0E0E16;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --bg-card-hover: rgba(255, 255, 255, 0.07);
+  --text-primary: #F8F8FF;
+  --text-secondary: #A0A0B8;
+  --text-muted: #5A5A72;
+  --border: rgba(255, 255, 255, 0.08);
+  --purple: #7B2FFF;
+  --purple-light: #9B5FFF;
+  --cyan: #00D4FF;
+  --neon: #00FFD1;
+  --gradient-hero: linear-gradient(135deg, #7B2FFF 0%, #00D4FF 100%);
+  --shadow-glow: 0 0 40px rgba(123, 47, 255, 0.25);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  color-scheme: dark;
 }
 
+/* ============================= LIGHT THEME ============================= */
+.light-theme {
+  --bg-primary: #F5F5FF;
+  --bg-secondary: #EBEBF5;
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --bg-card-hover: rgba(255, 255, 255, 0.9);
+  --text-primary: #0E0E1C;
+  --text-secondary: #3A3A5C;
+  --text-muted: #7070A0;
+  --border: rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 40px rgba(123, 47, 255, 0.15);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.08);
+  color-scheme: light;
+}
 
-.text-shadow-glow {
-    text-decoration: none;
-    margin: 0 5px;
-    position: relative;
-    display: inline-block;
-    transition: all 0.5s;
-  }
-  
-  .text-shadow-glow:hover {
-    color: #ffffff;
-    scale: 1.2;
-    text-shadow: 0 0 10px #5E0AFF, 0 0 20px #5E0AFF, 0 0 30px #5E0AFF, 0 0 40px #5E0AFF;
-  }
+/* ============================= BASE RESET ============================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  .shadow-amber {
-    box-shadow: 0 4px 30px rgba(147, 0, 245, 0.5);
-  }
-  
+html {
+  scroll-behavior: smooth;
+  font-family: "Space Grotesk", sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+::selection {
+  background: rgba(123, 47, 255, 0.4);
+  color: #fff;
+}
+
+/* ============================= SCROLLBAR ============================= */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--purple-light); }
+
+/* ============================= LAYOUT CONTAINER ============================= */
+.container-main {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+@media (min-width: 1024px) {
+  .container-main { padding: 0 48px; }
+}
+
+/* ============================= SECTION WRAPPER ============================= */
+.section-padding {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+/* ============================= GLASS CARD ============================= */
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 20px;
+  transition: var(--transition);
+}
+.glass-card:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(123, 47, 255, 0.25);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-4px);
+}
+
+/* ============================= GRADIENT TEXT ============================= */
+.gradient-text {
+  background: linear-gradient(135deg, #7B2FFF 0%, #00D4FF 60%, #00FFD1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================= BUTTONS ============================= */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #7B2FFF, #5050DD);
+  border: none;
+  border-radius: 50px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #9B5FFF, #7B2FFF);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 40px rgba(123, 47, 255, 0.5);
+}
+.btn-primary:hover::before { opacity: 1; }
+.btn-primary span, .btn-primary svg { position: relative; z-index: 1; }
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 32px;
+  background: transparent;
+  border: 1.5px solid rgba(123, 47, 255, 0.5);
+  border-radius: 50px;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: var(--transition);
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+.btn-outline:hover {
+  border-color: var(--purple);
+  background: rgba(123, 47, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(123, 47, 255, 0.2);
+}
+
+/* ============================= SECTION LABEL ============================= */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  background: rgba(123, 47, 255, 0.1);
+  border: 1px solid rgba(123, 47, 255, 0.25);
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--purple-light);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ============================= NAV LINK ============================= */
+.nav-link {
+  position: relative;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-hero);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+.nav-link:hover, .nav-link.active { color: var(--text-primary); }
+.nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
+
+/* ============================= FORM INPUT ============================= */
+.form-input {
+  width: 100%;
+  padding: 14px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: var(--text-primary);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: var(--transition);
+  resize: none;
+}
+.form-input::placeholder { color: var(--text-muted); }
+.form-input:focus {
+  border-color: rgba(123, 47, 255, 0.5);
+  background: rgba(123, 47, 255, 0.05);
+  box-shadow: 0 0 0 3px rgba(123, 47, 255, 0.08);
+}
+
+/* ============================= PROGRESS BAR ============================= */
+.progress-bar {
+  height: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.light-theme .progress-bar {
+  background: rgba(0, 0, 0, 0.06);
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 10px;
+  transform-origin: left;
+}
+
+/* ============================= PROJECT CARD ============================= */
+.project-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.project-card:hover {
+  border-color: rgba(123, 47, 255, 0.35);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(123, 47, 255, 0.15);
+}
+.project-card .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 10, 18, 0.9) 0%, rgba(10, 10, 18, 0.3) 50%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.project-card:hover .overlay { opacity: 1; }
+
+/* ============================= GRID BACKGROUND ============================= */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(123, 47, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(123, 47, 255, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+}
+.light-theme .grid-bg {
+  background-image:
+    linear-gradient(rgba(123, 47, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(123, 47, 255, 0.06) 1px, transparent 1px);
+}
+
+/* ============================= ORBIT RING ============================= */
+.orbit-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(123, 47, 255, 0.12);
+  animation: spin-slow linear infinite;
+}
+
+/* ============================= TYPED CURSOR ============================= */
+.typed-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1.1em;
+  background: var(--purple);
+  margin-left: 3px;
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+  border-radius: 2px;
+}
+
+/* ============================= ANIMATIONS ============================= */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-float { animation: float 5s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
+.animate-spin-slow { animation: spin-slow 12s linear infinite; }
+
+/* ============================= LIGHT THEME OVERRIDES ============================= */
+.light-theme .glass-card {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+.light-theme .glass-card:hover {
+  background: rgba(255, 255, 255, 0.85);
+}
+.light-theme .form-input {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+.light-theme .project-card {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+.light-theme .project-card:hover {
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1), 0 0 40px rgba(123, 47, 255, 0.1);
+}
+.light-theme .project-card .overlay {
+  background: linear-gradient(to top, rgba(245, 245, 255, 0.95) 0%, rgba(245, 245, 255, 0.4) 50%, transparent 100%);
+}
+.light-theme .section-label {
+  background: rgba(123, 47, 255, 0.08);
+  border-color: rgba(123, 47, 255, 0.2);
+}
+.light-theme .btn-outline {
+  border-color: rgba(123, 47, 255, 0.4);
+}
