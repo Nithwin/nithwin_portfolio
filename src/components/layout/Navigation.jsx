@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { RiMenu4Line, RiCloseLine, RiSunLine, RiMoonClearLine } from "react-icons/ri";
+import { motion } from "framer-motion";
 import { useTheme } from "../../context/ThemeContext";
+import LogoPill from "./LogoPill";
+import DesktopNav from "./DesktopNav";
+import ThemeToggle from "./ThemeToggle";
+import { MobileToggle, MobileDropdown } from "./MobileMenu";
 
 const NAV_ITEMS = [
   { id: "home", label: "Home" },
@@ -29,7 +32,6 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Track active section automatically
   useEffect(() => {
     const sectionEls = NAV_ITEMS.map(({ id }) => document.getElementById(id)).filter(Boolean);
     const observer = new IntersectionObserver(
@@ -97,48 +99,10 @@ const Navigation = () => {
             transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         >
-          {/* LOGO PILL (with curved border around video) */}
-          <motion.div
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-            onClick={() => scrollTo("home")}
-            style={{
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              height: "44px",
-              padding: "2px 14px",
-              borderRadius: "50px",
-              background: isDark ? "#0A0A12" : "#0A0A12", // Keep dark pill backdrop so black video blends seamlessly!
-              border: isDark
-                ? "1.5px solid rgba(123, 47, 255, 0.5)"
-                : "2px solid #7B2FFF",
-              boxShadow: isDark
-                ? "0 0 20px rgba(123, 47, 255, 0.3)"
-                : "0 4px 16px rgba(123, 47, 255, 0.25)",
-              overflow: "hidden",
-              flexShrink: 0,
-              transition: "border-color 0.3s ease, box-shadow 0.3s ease",
-            }}
-          >
-            <video
-              ref={videoRef}
-              src="./assets/nithwin.mp4"
-              loop
-              muted
-              autoPlay
-              playsInline
-              style={{
-                height: "36px",
-                width: "auto",
-                display: "block",
-                objectFit: "contain",
-                borderRadius: "20px",
-              }}
-            />
-          </motion.div>
+          {/* Logo Badge Capsule */}
+          <LogoPill isDark={isDark} onClick={() => scrollTo("home")} videoRef={videoRef} />
 
-          {/* DESKTOP LINKS (only visible on large screens) */}
+          {/* Inject responsive display classes */}
           <style>{`
             @media (min-width: 1024px) {
               .desktop-nav-group { display: flex !important; }
@@ -150,105 +114,14 @@ const Navigation = () => {
             }
           `}</style>
 
-          <div
-            className="desktop-nav-group"
-            style={{
-              display: "none",
-              alignItems: "center",
-              gap: "4px",
-              background: isDark ? "rgba(255, 255, 255, 0.03)" : "rgba(0, 0, 0, 0.03)",
-              padding: "6px",
-              borderRadius: "50px",
-              border: "1px solid var(--border)",
-            }}
-          >
-            {NAV_ITEMS.map(({ id, label }) => {
-              const isActive = activeSection === id;
-              return (
-                <button
-                  key={id}
-                  onClick={() => scrollTo(id)}
-                  style={{
-                    position: "relative",
-                    padding: "8px 18px",
-                    borderRadius: "50px",
-                    fontSize: "0.88rem",
-                    fontWeight: isActive ? 600 : 500,
-                    color: isActive ? "#FFFFFF" : "var(--text-secondary)",
-                    background: "transparent",
-                    border: "none",
-                    cursor: "pointer",
-                    fontFamily: "inherit",
-                    transition: "color 0.3s ease",
-                    zIndex: 1,
-                  }}
-                >
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeNavIndicator"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        borderRadius: "50px",
-                        background: "linear-gradient(135deg, #7B2FFF, #00D4FF)",
-                        boxShadow: "0 4px 15px rgba(123, 47, 255, 0.4)",
-                        zIndex: -1,
-                      }}
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                  {label}
-                </button>
-              );
-            })}
-          </div>
+          {/* Desktop Navigation Link pill */}
+          <DesktopNav items={NAV_ITEMS} activeSection={activeSection} scrollTo={scrollTo} isDark={isDark} />
 
-          {/* RIGHT ACTIONS */}
+          {/* Right actions */}
           <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0 }}>
-            {/* THEME TOGGLE */}
-            <motion.button
-              onClick={toggleTheme}
-              whileHover={{ scale: 1.1, rotate: 15 }}
-              whileTap={{ scale: 0.9 }}
-              aria-label="Toggle theme"
-              style={{
-                width: "42px",
-                height: "42px",
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: isDark ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.05)",
-                border: "1px solid var(--border)",
-                cursor: "pointer",
-              }}
-            >
-              <AnimatePresence mode="wait">
-                {isDark ? (
-                  <motion.div
-                    key="sun"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <RiSunLine size={19} color="#FFD700" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="moon"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <RiMoonClearLine size={19} color="#7B2FFF" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
+            <ThemeToggle isDark={isDark} onToggle={toggleTheme} />
 
-            {/* CTA BUTTON (only visible on desktop) */}
+            {/* Let's Talk CTA button */}
             <div className="desktop-nav-group" style={{ display: "none" }}>
               <motion.button
                 whileHover={{ scale: 1.05, boxShadow: "0 8px 25px rgba(123, 47, 255, 0.5)" }}
@@ -265,129 +138,21 @@ const Navigation = () => {
               </motion.button>
             </div>
 
-            {/* MOBILE MENU TOGGLE (strictly mobile only via exact CSS media query) */}
-            <motion.button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              whileTap={{ scale: 0.9 }}
-              className="mobile-toggle-btn"
-              style={{
-                width: "42px",
-                height: "42px",
-                borderRadius: "50%",
-                display: "none",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "var(--bg-card)",
-                border: "1px solid var(--border)",
-                cursor: "pointer",
-              }}
-              aria-label="Toggle menu"
-            >
-              {mobileOpen ? (
-                <RiCloseLine size={22} color="var(--text-primary)" />
-              ) : (
-                <RiMenu4Line size={22} color="var(--text-primary)" />
-              )}
-            </motion.button>
+            {/* Mobile menu trigger */}
+            <MobileToggle isOpen={mobileOpen} onClick={() => setMobileOpen(!mobileOpen)} />
           </div>
         </div>
       </motion.header>
 
-      {/* MOBILE MENU DROPDOWN */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -16, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -16, scale: 0.95 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="mobile-toggle-btn"
-            style={{
-              position: "fixed",
-              top: scrolled ? "84px" : "100px",
-              left: "16px",
-              right: "16px",
-              zIndex: 999,
-              background: isDark
-                ? "rgba(14, 14, 22, 0.96)"
-                : "rgba(255, 255, 255, 0.96)",
-              border: "1px solid var(--border)",
-              backdropFilter: "blur(24px)",
-              WebkitBackdropFilter: "blur(24px)",
-              borderRadius: "28px",
-              padding: "24px",
-              boxShadow: "0 20px 60px rgba(0, 0, 0, 0.4)",
-              display: "none",
-              flexDirection: "column",
-              gap: "8px",
-            }}
-          >
-            {NAV_ITEMS.map(({ id, label }, i) => {
-              const isActive = activeSection === id;
-              return (
-                <motion.button
-                  key={id}
-                  initial={{ opacity: 0, x: -16 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.03 }}
-                  onClick={() => scrollTo(id)}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    width: "100%",
-                    textAlign: "left",
-                    padding: "14px 18px",
-                    borderRadius: "16px",
-                    fontSize: "1.05rem",
-                    fontWeight: isActive ? 600 : 500,
-                    color: isActive ? "#FFFFFF" : "var(--text-secondary)",
-                    background: isActive
-                      ? "linear-gradient(135deg, rgba(123, 47, 255, 0.8), rgba(0, 212, 255, 0.6))"
-                      : "transparent",
-                    border: "none",
-                    cursor: "pointer",
-                    fontFamily: "inherit",
-                  }}
-                >
-                  <span>{label}</span>
-                  {isActive && (
-                    <span
-                      style={{
-                        width: "8px",
-                        height: "8px",
-                        borderRadius: "50%",
-                        background: "#00FFD1",
-                        boxShadow: "0 0 10px #00FFD1",
-                      }}
-                    />
-                  )}
-                </motion.button>
-              );
-            })}
-            <div
-              style={{
-                borderTop: "1px solid var(--border)",
-                marginTop: "12px",
-                paddingTop: "16px",
-              }}
-            >
-              <button
-                onClick={() => scrollTo("contact")}
-                className="btn-primary"
-                style={{
-                  width: "100%",
-                  justifyContent: "center",
-                  padding: "14px",
-                  borderRadius: "50px",
-                }}
-              >
-                <span>Let's Talk</span>
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Mobile drop-down list */}
+      <MobileDropdown
+        isOpen={mobileOpen}
+        items={NAV_ITEMS}
+        activeSection={activeSection}
+        scrollTo={scrollTo}
+        isDark={isDark}
+        scrolled={scrolled}
+      />
     </>
   );
 };
