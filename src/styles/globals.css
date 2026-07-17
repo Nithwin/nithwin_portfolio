@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Unbounded:wght@700;800;900&family=Bricolage+Grotesque:opsz,wght@12..96,700..900&family=Montserrat:wght@800;900&display=swap');
 @import "tailwindcss";
 
 /* ============================= THEME TOKENS ============================= */
@@ -17,6 +17,12 @@
   --font-syne: "Syne", sans-serif;
   --font-inter: "Inter", sans-serif;
   --font-space: "Space Grotesk", sans-serif;
+  --font-jakarta: "Plus Jakarta Sans", sans-serif;
+  --font-outfit: "Outfit", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-unbounded: "Unbounded", sans-serif;
+  --font-bricolage: "Bricolage Grotesque", sans-serif;
+  --font-montserrat: "Montserrat", sans-serif;
 }
 
 /* ============================= ROOT VARIABLES ============================= */
@@ -44,12 +50,12 @@
 .light-theme {
   --bg-primary: #F5F5FF;
   --bg-secondary: #EBEBF5;
-  --bg-card: rgba(255, 255, 255, 0.7);
-  --bg-card-hover: rgba(255, 255, 255, 0.9);
-  --text-primary: #0E0E1C;
-  --text-secondary: #3A3A5C;
-  --text-muted: #7070A0;
-  --border: rgba(0, 0, 0, 0.1);
+  --bg-card: rgba(255, 255, 255, 0.75);
+  --bg-card-hover: rgba(255, 255, 255, 0.95);
+  --text-primary: #0A0A18;
+  --text-secondary: #2E2E48;
+  --text-muted: #48486A;
+  --border: rgba(0, 0, 0, 0.12);
   --shadow-glow: 0 0 40px rgba(123, 47, 255, 0.15);
   --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.08);
   color-scheme: light;
