@@ -150,6 +150,10 @@ const Hero = () => {
             section#home {
               padding-top: 148px !important;
             }
+            .hero-scroll-invite {
+              margin-top: 68px !important;
+              margin-bottom: 32px !important;
+            }
             .hero-grid {
               flex-direction: column-reverse !important;
               align-items: center !important;
@@ -446,6 +450,7 @@ const Hero = () => {
         {/* Story Scroll Invitation Bar */}
         <motion.div
           onClick={scrollToAbout}
+          className="hero-scroll-invite"
           style={{
             marginTop: "44px",
             display: "flex",

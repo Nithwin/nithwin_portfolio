@@ -1,152 +1,282 @@
 import React from "react";
 import { motion } from "framer-motion";
 import SectionReveal, { fadeUp } from "../components/SectionReveal";
-import { RiCodeSSlashLine, RiSmartphoneLine, RiPaletteLine, RiCpuLine, RiSparklingFill } from "react-icons/ri";
+import {
+  RiSparklingFill,
+  RiMapPinLine,
+  RiBrainLine,
+  RiCodeSSlashLine,
+  RiLightbulbLine,
+  RiDownloadLine,
+} from "react-icons/ri";
 
-const stats = [
-  { number: "10+", label: "Production Platforms Built" },
-  { number: "2+", label: "Years Software Engineering" },
-  { number: "8+", label: "Core Frameworks & Stacks" },
-  { number: "100%", label: "Architectural Precision" },
-];
-
-const services = [
-  { icon: RiCpuLine, title: "Generative AI & LLM Systems", desc: "Architecting AI-first platforms, RAG pipelines, and intelligent agent integrations that automate complex workflows.", color: "#7B2FFF" },
-  { icon: RiCodeSSlashLine, title: "Full Stack Web Engineering", desc: "High-concurrency React, Next.js, and Node.js ecosystems built for speed, SEO, and rock-solid scalability.", color: "#00D4FF" },
-  { icon: RiSmartphoneLine, title: "Fluid Mobile Solutions", desc: "Cross-platform mobile apps using Flutter and React Native that deliver buttery-smooth 60fps native performance.", color: "#00FFD1" },
-  { icon: RiPaletteLine, title: "UI/UX & Design Systems", desc: "Crafting bespoke, accessible design tokens and interactive prototypes that bridge aesthetics with intuitive usability.", color: "#FF6B6B" },
-];
-
-const techTags = [
-  "Next.js 15", "React.js", "TypeScript", "Python / GenAI", "Node.js", 
-  "Flutter", "Tailwind CSS", "PostgreSQL", "MongoDB", "Firebase", "Docker", "Figma"
+const highlights = [
+  {
+    icon: RiBrainLine,
+    color: "#7B2FFF",
+    title: "Generative AI & LLM Engineering",
+    desc: "I build RAG pipelines, autonomous agent loops, and LLM-powered tools using Python, LangChain, and vector databases — turning raw model capabilities into real enterprise automation.",
+  },
+  {
+    icon: RiCodeSSlashLine,
+    color: "#00D4FF",
+    title: "Full Stack Cloud Development",
+    desc: "From Next.js 15 frontends to Node.js backends and PostgreSQL/MongoDB databases, I engineer complete web ecosystems optimized for performance, scalability, and SEO.",
+  },
+  {
+    icon: RiLightbulbLine,
+    color: "#00FFD1",
+    title: "Algorithms & Problem Solving",
+    desc: "Daily LeetCode practice keeps my algorithmic thinking sharp. I approach every system design challenge with a data-first mindset — writing code that scales cleanly under concurrency.",
+  },
 ];
 
 const About = () => {
   return (
     <SectionReveal id="about">
       <div className="grid-bg" />
-      <div className="container-main">
-        {/* Section Header */}
-        <motion.div variants={fadeUp} style={{ textAlign: "center", marginBottom: "50px" }}>
-          <span className="section-label">
-            <RiSparklingFill size={14} style={{ display: "inline", marginRight: "6px", color: "var(--neon)" }} />
-            Who I Am
-          </span>
-          <h2 style={{ fontSize: "clamp(2.2rem, 5vw, 3.8rem)", fontFamily: "var(--font-outfit), var(--font-syne)", fontWeight: 800, marginTop: "14px", color: "var(--text-primary)", letterSpacing: "-0.03em" }}>
-            About <span className="gradient-text">Me</span>
-          </h2>
-        </motion.div>
 
-        {/* Full-Width Image-Free Editorial Bio Card */}
-        <motion.div
-          variants={fadeUp}
-          className="glass-card"
-          style={{
-            padding: "clamp(28px, 5vw, 56px)",
-            borderRadius: "32px",
-            marginBottom: "64px",
-            position: "relative",
-            overflow: "hidden",
-            border: "1px solid var(--border)",
-            background: "var(--bg-card)",
-            boxShadow: "0 24px 60px rgba(0, 0, 0, 0.35)",
-          }}
-        >
-          {/* Subtle Ambient Gradient Top Banner inside Card */}
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: "4px",
-              background: "linear-gradient(90deg, #7B2FFF, #00D4FF, #00FFD1)",
-            }}
-          />
+      {/* Background aurora glow */}
+      <div
+        style={{
+          position: "absolute",
+          top: "10%",
+          right: "0",
+          width: "500px",
+          height: "500px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(123,47,255,0.13) 0%, transparent 70%)",
+          filter: "blur(80px)",
+          pointerEvents: "none",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          bottom: "10%",
+          left: "0",
+          width: "400px",
+          height: "400px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 70%)",
+          filter: "blur(80px)",
+          pointerEvents: "none",
+        }}
+      />
 
-          <div style={{ maxWidth: "860px", margin: "0 auto", textAlign: "center" }}>
-            <h3 style={{ fontSize: "clamp(1.4rem, 3.2vw, 2.2rem)", fontFamily: "var(--font-outfit)", fontWeight: 700, color: "var(--text-primary)", marginBottom: "20px", letterSpacing: "-0.02em" }}>
-              Architecting intelligent digital platforms that stand out in the modern cloud era.
-            </h3>
-            
-            <p style={{ fontSize: "1.08rem", lineHeight: 1.85, color: "var(--text-secondary)", marginBottom: "18px" }}>
-              I'm <span style={{ color: "var(--cyan)", fontWeight: 700 }}>Nithwin V M</span>, a Full Stack & Generative AI Software Engineer driven by the challenge of transforming visionary concepts into high-performance, robust software.
-            </p>
+      <div
+        className="container-main"
+        style={{ position: "relative", zIndex: 10, paddingTop: "60px", paddingBottom: "80px" }}
+      >
+        {/* ── Responsive layout ── */}
+        <style>{`
+          .about-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: start;
+          }
+          .about-left-col {
+            position: sticky;
+            top: 130px;
+          }
+          @media (max-width: 900px) {
+            .about-layout {
+              grid-template-columns: 1fr;
+              gap: 48px;
+            }
+            .about-left-col {
+              position: static;
+            }
+          }
+        `}</style>
 
-            <p style={{ fontSize: "1.02rem", lineHeight: 1.85, color: "var(--text-muted)", marginBottom: "32px" }}>
-              My engineering philosophy revolves around three pillars: <strong style={{ color: "var(--text-primary)" }}>blazing-fast execution speed</strong>, <strong style={{ color: "var(--text-primary)" }}>modular architecture</strong>, and <strong style={{ color: "var(--text-primary)" }}>frictionless user experience</strong>. Whether designing real-time data pipelines or interactive UI systems, I write clean, maintainable code that scales effortlessly from day one.
-            </p>
+        <div className="about-layout">
+          {/* ─────────────────── LEFT: BIO ─────────────────── */}
+          <div className="about-left-col">
+            <motion.div variants={fadeUp}>
+              {/* Label */}
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "18px" }}>
+                <RiSparklingFill size={14} style={{ color: "var(--neon)" }} />
+                <span className="section-label" style={{ margin: 0 }}>About Me</span>
+              </div>
 
-            {/* Glowing Tech Stack Pill Cloud */}
-            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "10px" }}>
-              {techTags.map((tag) => (
-                <span
-                  key={tag}
+              {/* Headline */}
+              <h2
+                style={{
+                  fontSize: "clamp(2rem, 4.2vw, 3.2rem)",
+                  fontFamily: "var(--font-outfit), sans-serif",
+                  fontWeight: 800,
+                  lineHeight: 1.18,
+                  letterSpacing: "-0.03em",
+                  color: "var(--text-primary)",
+                  marginBottom: "24px",
+                }}
+              >
+                Building the future,{" "}
+                <span className="gradient-text">one system at a time.</span>
+              </h2>
+
+              {/* Bio paragraphs */}
+              <p
+                style={{
+                  fontSize: "1.05rem",
+                  lineHeight: 1.82,
+                  color: "var(--text-secondary)",
+                  fontFamily: "var(--font-jakarta), sans-serif",
+                  marginBottom: "16px",
+                }}
+              >
+                I'm{" "}
+                <strong style={{ color: "var(--cyan)" }}>Nithwin V M</strong>, a
+                Full Stack & Generative AI Software Engineer based in India.
+                I'm passionate about crafting intelligent, high-performance
+                web platforms that feel as good as they perform.
+              </p>
+              <p
+                style={{
+                  fontSize: "0.98rem",
+                  lineHeight: 1.82,
+                  color: "var(--text-muted)",
+                  fontFamily: "var(--font-jakarta), sans-serif",
+                  marginBottom: "36px",
+                }}
+              >
+                Whether I'm designing a Generative AI pipeline, shipping a
+                full-stack product, or solving a hard LeetCode problem at
+                midnight — I bring the same obsessive focus to clean,
+                modular code that scales under real-world pressure.
+              </p>
+
+              {/* Location pill + Download CTA */}
+              <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "16px" }}>
+                <div
                   style={{
-                    padding: "8px 18px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    padding: "9px 18px",
                     borderRadius: "50px",
-                    fontSize: "0.85rem",
+                    background: "rgba(0,212,255,0.08)",
+                    border: "1px solid rgba(0,212,255,0.2)",
+                    fontSize: "0.88rem",
                     fontFamily: "var(--font-mono), monospace",
                     fontWeight: 600,
-                    background: "rgba(123, 47, 255, 0.12)",
-                    border: "1px solid rgba(123, 47, 255, 0.28)",
-                    color: "var(--purple-light)",
+                    color: "var(--cyan)",
+                  }}
+                >
+                  <RiMapPinLine size={15} />
+                  India // Open to Global Remote
+                </div>
+
+                <motion.a
+                  href="/assets/resume.pdf"
+                  download
+                  whileHover={{ scale: 1.04, y: -2 }}
+                  whileTap={{ scale: 0.96 }}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    padding: "10px 22px",
+                    borderRadius: "50px",
+                    fontSize: "0.92rem",
+                    fontFamily: "var(--font-jakarta), sans-serif",
+                    fontWeight: 600,
+                    textDecoration: "none",
+                    color: "var(--text-primary)",
+                    background: "var(--bg-card)",
+                    border: "1px solid var(--border)",
+                    boxShadow: "var(--shadow-card)",
                     transition: "all 0.3s ease",
                   }}
                 >
-                  {tag}
-                </span>
-              ))}
-            </div>
+                  <RiDownloadLine size={16} />
+                  Resume
+                </motion.a>
+              </div>
+            </motion.div>
           </div>
-        </motion.div>
 
-        {/* Impact Stats Grid */}
-        <motion.div variants={fadeUp} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px", marginBottom: "80px" }}>
-          {stats.map(({ number, label }) => (
-            <div key={label} className="glass-card" style={{ textAlign: "center", padding: "36px 20px", borderRadius: "24px" }}>
-              <p className="gradient-text" style={{ fontSize: "clamp(2.2rem, 4.5vw, 3.4rem)", fontFamily: "var(--font-outfit)", fontWeight: 800, marginBottom: "8px", letterSpacing: "-0.03em" }}>
-                {number}
-              </p>
-              <p style={{ fontSize: "0.88rem", fontFamily: "var(--font-mono)", fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-                {label}
-              </p>
-            </div>
-          ))}
-        </motion.div>
+          {/* ─────────────────── RIGHT: HIGHLIGHT CARDS ─────────────────── */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            {highlights.map(({ icon: Icon, color, title, desc }, i) => (
+              <motion.div
+                key={title}
+                variants={fadeUp}
+                custom={i}
+                whileHover={{ y: -5, borderColor: color }}
+                style={{
+                  padding: "32px",
+                  borderRadius: "24px",
+                  background: "var(--bg-card)",
+                  border: "1px solid var(--border)",
+                  boxShadow: "var(--shadow-card)",
+                  position: "relative",
+                  overflow: "hidden",
+                  transition: "border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease",
+                  cursor: "default",
+                }}
+              >
+                {/* Accent top line */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: "3px",
+                    background: `linear-gradient(90deg, ${color}, transparent)`,
+                  }}
+                />
 
-        {/* Services & Capabilities */}
-        <motion.div variants={fadeUp} style={{ textAlign: "center", marginBottom: "44px" }}>
-          <span className="section-label">Capabilities</span>
-          <h3 style={{ fontSize: "clamp(1.8rem, 4.2vw, 2.8rem)", fontFamily: "var(--font-outfit)", fontWeight: 800, marginTop: "14px", color: "var(--text-primary)", letterSpacing: "-0.03em" }}>
-            Core <span className="gradient-text">Expertise</span>
-          </h3>
-        </motion.div>
-
-        <motion.div variants={fadeUp} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
-          {services.map(({ icon: Icon, title, desc, color }) => (
-            <div key={title} className="glass-card" style={{ padding: "36px 32px", borderRadius: "28px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-              <div>
-                <div style={{
-                  width: "56px", height: "56px", borderRadius: "16px",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  background: `${color}18`, border: `1px solid ${color}40`,
-                  marginBottom: "24px",
-                  boxShadow: `0 8px 24px ${color}20`,
-                }}>
-                  <Icon size={26} style={{ color }} />
+                {/* Icon + Title row */}
+                <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "16px" }}>
+                  <div
+                    style={{
+                      width: "48px",
+                      height: "48px",
+                      borderRadius: "14px",
+                      background: `${color}18`,
+                      border: `1px solid ${color}35`,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <Icon size={24} style={{ color }} />
+                  </div>
+                  <h3
+                    style={{
+                      fontSize: "1.18rem",
+                      fontFamily: "var(--font-outfit), sans-serif",
+                      fontWeight: 700,
+                      color: "var(--text-primary)",
+                      letterSpacing: "-0.015em",
+                      margin: 0,
+                    }}
+                  >
+                    {title}
+                  </h3>
                 </div>
-                <h4 style={{ fontSize: "1.25rem", fontFamily: "var(--font-outfit)", fontWeight: 700, color: "var(--text-primary)", marginBottom: "12px", letterSpacing: "-0.01em" }}>
-                  {title}
-                </h4>
-                <p style={{ fontSize: "0.95rem", lineHeight: 1.75, color: "var(--text-muted)" }}>
+
+                {/* Description */}
+                <p
+                  style={{
+                    fontSize: "0.97rem",
+                    lineHeight: 1.78,
+                    color: "var(--text-muted)",
+                    fontFamily: "var(--font-jakarta), sans-serif",
+                    margin: 0,
+                  }}
+                >
                   {desc}
                 </p>
-              </div>
-            </div>
-          ))}
-        </motion.div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
     </SectionReveal>
   );
