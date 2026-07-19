@@ -31,7 +31,7 @@ const DifficultyCard = ({ label, count, total, color, icon: Icon }) => {
           style={{ background: color, height: "100%" }}
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: pct / 100 }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.5 }}
           transition={{ duration: 1, ease: "easeOut" }}
         />
       </div>

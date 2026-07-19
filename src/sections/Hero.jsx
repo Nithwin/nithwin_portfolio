@@ -57,17 +57,39 @@ const Hero = () => {
     return () => clearTimeout(timeout);
   }, [charIndex, isDeleting, roleIndex]);
 
-  // Subtle 3D Depth Parallax on Right Visual
+  // Premium 3D Magnetic Tilt Effect
   useEffect(() => {
     const el = imageRef.current;
     if (!el) return;
+    
+    // Set 3D perspective on parent for depth
+    gsap.set(el.parentElement, { perspective: 1200 });
+
     const move = (e) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 16;
-      const y = (e.clientY / window.innerHeight - 0.5) * 12;
-      gsap.to(el, { x, y, duration: 1.2, ease: "power2.out" });
+      // Calculate rotation based on cursor position relative to center of screen
+      const rotX = ((e.clientY / window.innerHeight) - 0.5) * -16; // -8 to 8 deg
+      const rotY = ((e.clientX / window.innerWidth) - 0.5) * 16;
+      
+      gsap.to(el, { 
+        rotateX: rotX, 
+        rotateY: rotY, 
+        z: 30, // push out slightly
+        duration: 1.2, 
+        ease: "power2.out",
+        transformPerspective: 1200
+      });
     };
+
+    const leave = () => {
+      gsap.to(el, { rotateX: 0, rotateY: 0, z: 0, duration: 1.5, ease: "power3.out" });
+    };
+
     window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
+    document.addEventListener("mouseleave", leave);
+    return () => {
+      window.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseleave", leave);
+    };
   }, []);
 
   const socials = [
@@ -440,7 +462,8 @@ const Hero = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 overflow: "hidden",
-                transition: "all 0.4s ease",
+                transition: "border-color 0.4s ease, box-shadow 0.4s ease", // removed 'all' so GSAP can handle transform smoothly
+                transformStyle: "preserve-3d", // enable 3D children
               }}
             >
               {/* Soft Ambient Inner Glow */}
@@ -467,6 +490,8 @@ const Hero = () => {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  transformStyle: "preserve-3d",
+                  transform: "translateZ(40px)", // Popping effect!
                 }}
               >
                 <img

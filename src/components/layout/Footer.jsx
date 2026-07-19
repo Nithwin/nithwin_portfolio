@@ -181,41 +181,50 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Footer-specific responsive styles */}
       <style>{`
         .footer-top-row {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 48px;
-          justify-content: space-between;
+          display: grid;
+          grid-template-columns: 1.2fr 1fr 0.8fr;
+          gap: 64px;
           margin-bottom: 56px;
         }
         .footer-nav-links {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 12px 28px;
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px 24px;
         }
         .footer-bottom-row {
           display: flex;
           flex-wrap: wrap;
           justify-content: space-between;
           align-items: center;
-          gap: 12px;
-          font-size: 0.78rem;
+          gap: 16px;
+          font-size: 0.8rem;
           color: var(--text-muted);
+        }
+        @media (max-width: 960px) {
+          .footer-top-row {
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+          }
+          .footer-top-row > div:last-child {
+            grid-column: 1 / -1;
+            align-items: flex-start !important;
+          }
         }
         @media (max-width: 768px) {
           .footer-top-row {
-            flex-direction: column;
-            align-items: center;
+            grid-template-columns: 1fr;
             text-align: center;
-            gap: 36px;
+            gap: 40px;
           }
           .footer-top-row > div {
             max-width: 100% !important;
+            align-items: center !important;
           }
           .footer-nav-links {
             justify-content: center;
+            grid-template-columns: repeat(2, auto);
           }
           .footer-bottom-row {
             justify-content: center;
