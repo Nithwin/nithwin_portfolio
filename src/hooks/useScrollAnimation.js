@@ -5,8 +5,8 @@ import { useInView } from "react-intersection-observer";
 export const useScrollAnimation = () => {
   const controls = useAnimation();
   const [ref, inView] = useInView({
-    threshold: 0.3,
-    triggerOnce: true,
+    threshold: 0.1,
+    triggerOnce: false,
   });
 
   useEffect(() => {
@@ -17,6 +17,6 @@ export const useScrollAnimation = () => {
 
   return { ref, controls, variants: {
     visible: { opacity: 1, y: 0 },
-    hidden: { opacity: 0, y: 50 }
+    hidden: { opacity: 0, y: 30 }
   }};
 };

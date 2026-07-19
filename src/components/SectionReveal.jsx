@@ -10,11 +10,11 @@ export const staggerContainer = {
 };
 
 export const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 30 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
   }
 };
 
@@ -33,7 +33,7 @@ export const scaleUp = {
 };
 
 export const slideInLeft = {
-  hidden: { opacity: 0, x: -60 },
+  hidden: { opacity: 0, x: -40 },
   show: {
     opacity: 1,
     x: 0,
@@ -42,7 +42,7 @@ export const slideInLeft = {
 };
 
 export const slideInRight = {
-  hidden: { opacity: 0, x: 60 },
+  hidden: { opacity: 0, x: 40 },
   show: {
     opacity: 1,
     x: 0,
@@ -53,10 +53,11 @@ export const slideInRight = {
 const SectionReveal = ({ children, id, className = '' }) => (
   <motion.section
     id={id}
-    className={`relative section-padding overflow-hidden ${className}`}
+    className={`relative section-padding ${className}`}
+    style={{ overflow: 'visible' }}
     initial="hidden"
     whileInView="show"
-    viewport={{ once: false, amount: 0.1, margin: '-80px' }}
+    viewport={{ once: false, amount: 0.05 }}
     variants={staggerContainer}
   >
     {children}

@@ -103,6 +103,9 @@ body {
 @media (min-width: 1024px) {
   .container-main { padding: 0 48px; }
 }
+@media (max-width: 480px) {
+  .container-main { padding: 0 16px; }
+}
 
 /* ============================= SECTION WRAPPER ============================= */
 .section-padding {
@@ -111,8 +114,14 @@ body {
 }
 @media (max-width: 768px) {
   .section-padding {
-    padding-top: 72px;
-    padding-bottom: 72px;
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+}
+@media (max-width: 480px) {
+  .section-padding {
+    padding-top: 48px;
+    padding-bottom: 48px;
   }
 }
 
@@ -130,6 +139,12 @@ body {
   border-color: rgba(123, 47, 255, 0.25);
   box-shadow: var(--shadow-glow);
   transform: translateY(-4px);
+}
+/* Disable hover transform on touch devices to avoid tap jank */
+@media (pointer: coarse) {
+  .glass-card:hover {
+    transform: none;
+  }
 }
 
 /* ============================= GRADIENT TEXT ============================= */
@@ -195,6 +210,18 @@ body {
   background: rgba(123, 47, 255, 0.1);
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(123, 47, 255, 0.2);
+}
+
+/* Mobile button sizing */
+@media (max-width: 480px) {
+  .btn-primary {
+    padding: 10px 22px;
+    font-size: 0.85rem;
+  }
+  .btn-outline {
+    padding: 9px 20px;
+    font-size: 0.85rem;
+  }
 }
 
 /* ============================= SECTION LABEL ============================= */
@@ -290,6 +317,13 @@ body {
   border-color: rgba(123, 47, 255, 0.35);
   transform: translateY(-6px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(123, 47, 255, 0.15);
+}
+/* Disable hover transform on touch devices */
+@media (pointer: coarse) {
+  .project-card:hover {
+    transform: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
 }
 .project-card .overlay {
   position: absolute;

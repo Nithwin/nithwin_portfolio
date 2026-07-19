@@ -16,14 +16,14 @@ const GITHUB_USERNAME = "Nithwin";
 const DifficultyCard = ({ label, count, total, color, icon: Icon }) => {
   const pct = total ? Math.round((count / total) * 100) : 0;
   return (
-    <div style={{ padding: "16px", borderRadius: "16px", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-        <span style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--text-secondary)" }}>{label}</span>
-        <Icon size={16} style={{ color }} />
+    <div className="difficulty-card" style={{ borderRadius: "16px", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+        <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "var(--text-secondary)" }}>{label}</span>
+        <Icon size={14} style={{ color }} />
       </div>
       <div style={{ marginBottom: "8px" }}>
-        <span style={{ fontSize: "1.6rem", fontFamily: "var(--font-syne)", fontWeight: 700, color }}>{count}</span>
-        <span style={{ fontSize: "0.75rem", marginLeft: "4px", color: "var(--text-muted)" }}>/ {total}</span>
+        <span className="difficulty-count" style={{ fontFamily: "var(--font-syne)", fontWeight: 700, color }}>{count}</span>
+        <span style={{ fontSize: "0.7rem", marginLeft: "4px", color: "var(--text-muted)" }}>/ {total}</span>
       </div>
       <div className="progress-bar" style={{ height: "4px", marginBottom: "6px" }}>
         <motion.div
@@ -35,19 +35,19 @@ const DifficultyCard = ({ label, count, total, color, icon: Icon }) => {
           transition={{ duration: 1, ease: "easeOut" }}
         />
       </div>
-      <p style={{ fontSize: "0.65rem", color: "var(--text-muted)", textAlign: "right" }}>{pct}% solved</p>
+      <p style={{ fontSize: "0.6rem", color: "var(--text-muted)", textAlign: "right" }}>{pct}% solved</p>
     </div>
   );
 };
 
 const StatItem = ({ icon: Icon, label, value, color }) => (
-  <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px", borderRadius: "12px", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
-    <div style={{ width: "36px", height: "36px", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", background: `${color}15`, color: color }}>
-      <Icon size={16} />
+  <div className="gh-stat-item" style={{ display: "flex", alignItems: "center", gap: "10px", borderRadius: "12px", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
+    <div style={{ width: "32px", height: "32px", borderRadius: "10px", display: "flex", alignItems: "center", justifyContent: "center", background: `${color}15`, color: color, flexShrink: 0 }}>
+      <Icon size={14} />
     </div>
-    <div>
-      <p style={{ fontSize: "1.1rem", fontWeight: 700, fontFamily: "var(--font-syne)", color: "var(--text-primary)", lineHeight: 1 }}>{value}</p>
-      <p style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "4px" }}>{label}</p>
+    <div style={{ minWidth: 0 }}>
+      <p className="gh-stat-value" style={{ fontWeight: 700, fontFamily: "var(--font-syne)", color: "var(--text-primary)", lineHeight: 1 }}>{value}</p>
+      <p className="gh-stat-label" style={{ color: "var(--text-muted)", marginTop: "3px" }}>{label}</p>
     </div>
   </div>
 );
@@ -100,12 +100,12 @@ const CodingProfiles = () => {
       <div className="grid-bg" />
       <div className="container-main">
         {/* Header */}
-        <motion.div variants={fadeUp} style={{ textAlign: "center", marginBottom: "48px" }}>
+        <motion.div variants={fadeUp} style={{ textAlign: "center", marginBottom: "40px" }}>
           <span className="section-label">Developer Stats</span>
-          <h2 style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", fontFamily: "var(--font-syne)", fontWeight: 700, marginTop: "16px", color: "var(--text-primary)" }}>
+          <h2 className="cp-heading" style={{ fontFamily: "var(--font-syne)", fontWeight: 700, marginTop: "16px", color: "var(--text-primary)" }}>
             Coding <span className="gradient-text">Profiles</span>
           </h2>
-          <p style={{ marginTop: "12px", fontSize: "1rem", maxWidth: "520px", margin: "12px auto 0", color: "var(--text-muted)" }}>
+          <p className="cp-subtitle" style={{ margin: "12px auto 0", color: "var(--text-muted)" }}>
             Tracking my journey through algorithms, open source, and daily contributions.
           </p>
         </motion.div>
@@ -114,13 +114,13 @@ const CodingProfiles = () => {
           {/* ==================== LEETCODE CARD ==================== */}
           <motion.div variants={fadeUp} className="profile-card glass-card">
             <div className="profile-header">
-              <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
                 <div className="profile-icon" style={{ background: "rgba(255,161,22,0.1)", border: "1px solid rgba(255,161,22,0.25)", color: "#FFA116" }}>
-                  <SiLeetcode size={28} />
+                  <SiLeetcode size={24} />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: "1.4rem", fontFamily: "var(--font-syne)", fontWeight: 700, color: "var(--text-primary)" }}>LeetCode</h3>
-                  <a href={`https://leetcode.com/u/${USERNAME}/`} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.85rem", color: "var(--text-muted)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                  <h3 className="profile-title" style={{ fontFamily: "var(--font-syne)", fontWeight: 700, color: "var(--text-primary)" }}>LeetCode</h3>
+                  <a href={`https://leetcode.com/u/${USERNAME}/`} target="_blank" rel="noopener noreferrer" className="profile-link" style={{ color: "var(--text-muted)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}>
                     @{USERNAME} <FaExternalLinkAlt size={10} />
                   </a>
                 </div>
@@ -134,25 +134,25 @@ const CodingProfiles = () => {
             ) : (
               <div className="profile-body">
                 {/* Main Stats Row */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "24px" }}>
-                  <div style={{ padding: "16px", borderRadius: "16px", background: "rgba(255,161,22,0.05)", border: "1px solid rgba(255,161,22,0.15)", textAlign: "center" }}>
-                    <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "4px" }}>Total Solved</p>
-                    <p style={{ fontSize: "2.2rem", fontFamily: "var(--font-syne)", fontWeight: 700, color: "#FFA116", lineHeight: 1 }}>{lcStats.totalSolved}</p>
+                <div className="lc-stats-row" style={{ marginBottom: "20px" }}>
+                  <div className="lc-solved-box" style={{ borderRadius: "16px", background: "rgba(255,161,22,0.05)", border: "1px solid rgba(255,161,22,0.15)", textAlign: "center" }}>
+                    <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "4px" }}>Total Solved</p>
+                    <p className="lc-solved-count" style={{ fontFamily: "var(--font-syne)", fontWeight: 700, color: "#FFA116", lineHeight: 1 }}>{lcStats.totalSolved}</p>
                   </div>
-                  <div style={{ padding: "16px", borderRadius: "16px", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)", display: "flex", flexDirection: "column", justifyContent: "center", gap: "12px" }}>
+                  <div style={{ borderRadius: "16px", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)", display: "flex", flexDirection: "column", justifyContent: "center", gap: "10px", padding: "14px" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Global Rank</span>
-                      <span style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--text-primary)" }}>{lcStats.ranking ? `#${lcStats.ranking.toLocaleString()}` : "—"}</span>
+                      <span style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>Global Rank</span>
+                      <span className="lc-rank-val" style={{ fontWeight: 700, color: "var(--text-primary)" }}>{lcStats.ranking ? `#${lcStats.ranking.toLocaleString()}` : "—"}</span>
                     </div>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Acceptance</span>
-                      <span style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--neon)" }}>{lcAcceptance}</span>
+                      <span style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>Acceptance</span>
+                      <span className="lc-rank-val" style={{ fontWeight: 700, color: "var(--neon)" }}>{lcAcceptance}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Difficulty Grid */}
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px" }}>
+                <div className="difficulty-grid">
                   <DifficultyCard label="Easy" count={lcStats.easySolved} total={lcStats.totalEasy} color="#22C55E" icon={VscPassFilled} />
                   <DifficultyCard label="Medium" count={lcStats.mediumSolved} total={lcStats.totalMedium} color="#EAB308" icon={BiAdjust} />
                   <DifficultyCard label="Hard" count={lcStats.hardSolved} total={lcStats.totalHard} color="#EF4444" icon={CgDanger} />
@@ -164,17 +164,17 @@ const CodingProfiles = () => {
           {/* ==================== GITHUB CARD ==================== */}
           <motion.div variants={fadeUp} className="profile-card glass-card">
             <div className="profile-header">
-              <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
                 <div className="profile-icon" style={{ 
                   background: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)", 
                   border: isDark ? "1px solid rgba(255,255,255,0.2)" : "1px solid rgba(0,0,0,0.1)", 
                   color: isDark ? "#FFFFFF" : "#0A0A12" 
                 }}>
-                  <FaGithub size={28} />
+                  <FaGithub size={24} />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: "1.4rem", fontFamily: "var(--font-syne)", fontWeight: 700, color: "var(--text-primary)" }}>GitHub</h3>
-                  <a href={`https://github.com/${GITHUB_USERNAME}`} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.85rem", color: "var(--text-muted)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                  <h3 className="profile-title" style={{ fontFamily: "var(--font-syne)", fontWeight: 700, color: "var(--text-primary)" }}>GitHub</h3>
+                  <a href={`https://github.com/${GITHUB_USERNAME}`} target="_blank" rel="noopener noreferrer" className="profile-link" style={{ color: "var(--text-muted)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px" }}>
                     @{GITHUB_USERNAME} <FaExternalLinkAlt size={10} />
                   </a>
                 </div>
@@ -189,16 +189,16 @@ const CodingProfiles = () => {
               <div className="profile-body" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
                 
                 {/* GitHub Bio & Profile details */}
-                <div style={{ marginBottom: "24px", display: "flex", gap: "16px", alignItems: "center" }}>
-                  <img src={ghStats.avatar_url} alt="GitHub Avatar" style={{ width: "64px", height: "64px", borderRadius: "50%", border: "2px solid rgba(255,255,255,0.1)" }} />
-                  <div>
-                    <h4 style={{ fontSize: "1.1rem", fontWeight: 600, color: "var(--text-primary)" }}>{ghStats.name || GITHUB_USERNAME}</h4>
-                    <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "4px" }}>{ghStats.bio || "Open Source Enthusiast"}</p>
+                <div className="gh-bio-row" style={{ marginBottom: "20px", display: "flex", gap: "14px", alignItems: "center" }}>
+                  <img src={ghStats.avatar_url} alt="GitHub Avatar" className="gh-avatar" style={{ borderRadius: "50%", border: "2px solid rgba(255,255,255,0.1)" }} />
+                  <div style={{ minWidth: 0 }}>
+                    <h4 className="gh-name" style={{ fontWeight: 600, color: "var(--text-primary)" }}>{ghStats.name || GITHUB_USERNAME}</h4>
+                    <p className="gh-bio" style={{ color: "var(--text-muted)", marginTop: "4px" }}>{ghStats.bio || "Open Source Enthusiast"}</p>
                   </div>
                 </div>
 
                 {/* Stats Grid */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "24px", flex: 1 }}>
+                <div className="gh-stats-grid" style={{ marginBottom: "20px", flex: 1 }}>
                   <StatItem icon={RiGitRepositoryLine} label="Public Repos" value={ghStats.public_repos} color="#7B2FFF" />
                   <StatItem icon={FaUserFriends} label="Followers" value={ghStats.followers} color="#00D4FF" />
                   <StatItem icon={FaRegCheckCircle} label="Following" value={ghStats.following} color="#22C55E" />
@@ -206,7 +206,7 @@ const CodingProfiles = () => {
                 </div>
 
                 {/* Quick CTA */}
-                <a href={`https://github.com/${GITHUB_USERNAME}?tab=repositories`} target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ width: "100%", justifyContent: "center", padding: "12px", borderRadius: "12px" }}>
+                <a href={`https://github.com/${GITHUB_USERNAME}?tab=repositories`} target="_blank" rel="noopener noreferrer" className="btn-outline gh-cta-btn" style={{ width: "100%", justifyContent: "center", borderRadius: "12px" }}>
                   <FaGithub size={14} />
                   <span>View Repositories</span>
                 </a>
@@ -217,33 +217,50 @@ const CodingProfiles = () => {
       </div>
 
       <style>{`
+        /* ── Coding Profiles Section Heading ── */
+        .cp-heading {
+          font-size: clamp(1.8rem, 5vw, 3.5rem);
+        }
+        .cp-subtitle {
+          font-size: 0.95rem;
+          max-width: 520px;
+        }
+
+        /* ── Profiles Grid ── */
         .profiles-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 32px;
+          gap: 28px;
         }
         .profile-card {
-          padding: 32px;
+          padding: 28px;
           border-radius: 24px;
           display: flex;
           flex-direction: column;
-          min-height: 420px;
+          min-height: 400px;
         }
         .profile-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 32px;
-          padding-bottom: 24px;
+          margin-bottom: 24px;
+          padding-bottom: 20px;
           border-bottom: 1px solid var(--border);
         }
         .profile-icon {
-          width: 56px;
-          height: 56px;
-          border-radius: 16px;
+          width: 48px;
+          height: 48px;
+          border-radius: 14px;
           display: flex;
           align-items: center;
           justify-content: center;
+          flex-shrink: 0;
+        }
+        .profile-title {
+          font-size: 1.25rem;
+        }
+        .profile-link {
+          font-size: 0.8rem;
         }
         .profile-body {
           flex: 1;
@@ -267,23 +284,186 @@ const CodingProfiles = () => {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
         }
-        
+
+        /* ── LeetCode Stats ── */
+        .lc-stats-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 14px;
+        }
+        .lc-solved-box {
+          padding: 14px;
+        }
+        .lc-solved-count {
+          font-size: 2rem;
+        }
+        .lc-rank-val {
+          font-size: 0.85rem;
+        }
+        .difficulty-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 10px;
+        }
+        .difficulty-card {
+          padding: 14px;
+        }
+        .difficulty-count {
+          font-size: 1.4rem;
+        }
+
+        /* ── GitHub Stats ── */
+        .gh-avatar {
+          width: 56px;
+          height: 56px;
+        }
+        .gh-name {
+          font-size: 1rem;
+        }
+        .gh-bio {
+          font-size: 0.8rem;
+        }
+        .gh-stats-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+        .gh-stat-item {
+          padding: 10px 12px;
+        }
+        .gh-stat-value {
+          font-size: 1rem;
+        }
+        .gh-stat-label {
+          font-size: 0.65rem;
+        }
+        .gh-cta-btn {
+          padding: 11px;
+        }
+
+        /* ════════ TABLET BREAKPOINT ════════ */
         @media (max-width: 960px) {
           .profiles-grid {
             grid-template-columns: 1fr;
-            gap: 24px;
+            gap: 20px;
           }
           .profile-card {
             min-height: auto;
           }
         }
+
+        /* ════════ MOBILE BREAKPOINT ════════ */
         @media (max-width: 480px) {
+          .cp-heading {
+            font-size: 1.6rem;
+          }
+          .cp-subtitle {
+            font-size: 0.85rem;
+          }
           .profile-card {
-            padding: 24px;
+            padding: 18px;
+            border-radius: 18px;
           }
           .profile-header {
-            margin-bottom: 24px;
-            padding-bottom: 16px;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+          }
+          .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+          }
+          .profile-icon svg {
+            width: 20px;
+            height: 20px;
+          }
+          .profile-title {
+            font-size: 1.1rem;
+          }
+          .profile-link {
+            font-size: 0.72rem;
+          }
+
+          /* LeetCode mobile */
+          .lc-stats-row {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+          }
+          .lc-solved-box {
+            padding: 12px;
+          }
+          .lc-solved-count {
+            font-size: 1.6rem;
+          }
+          .lc-rank-val {
+            font-size: 0.78rem;
+          }
+
+          /* Difficulty cards — 3 columns but tighter */
+          .difficulty-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+          }
+          .difficulty-card {
+            padding: 10px 8px;
+            border-radius: 12px;
+          }
+          .difficulty-count {
+            font-size: 1.1rem;
+          }
+
+          /* GitHub mobile */
+          .gh-avatar {
+            width: 44px;
+            height: 44px;
+          }
+          .gh-name {
+            font-size: 0.9rem;
+          }
+          .gh-bio {
+            font-size: 0.75rem;
+          }
+          .gh-stats-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+          }
+          .gh-stat-item {
+            padding: 8px 10px;
+            gap: 8px;
+            border-radius: 10px;
+          }
+          .gh-stat-value {
+            font-size: 0.9rem;
+          }
+          .gh-stat-label {
+            font-size: 0.6rem;
+          }
+          .gh-cta-btn {
+            padding: 10px;
+            font-size: 0.82rem !important;
+          }
+        }
+
+        /* ════════ VERY SMALL SCREENS ════════ */
+        @media (max-width: 360px) {
+          .profile-card {
+            padding: 14px;
+          }
+          .difficulty-grid {
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 4px;
+          }
+          .difficulty-card {
+            padding: 8px 6px;
+          }
+          .difficulty-count {
+            font-size: 0.95rem;
+          }
+          .lc-solved-count {
+            font-size: 1.3rem;
+          }
+          .gh-stats-grid {
+            gap: 6px;
           }
         }
       `}</style>

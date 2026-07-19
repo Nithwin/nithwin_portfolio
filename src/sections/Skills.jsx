@@ -56,12 +56,12 @@ const CATEGORIES = [
 const MarqueeRow = ({ skills, reverse = false }) => {
   const doubled = [...skills, ...skills, ...skills]; // triple for seamless loop
   return (
-    <div style={{ overflow: "hidden", padding: "8px 0", position: "relative" }}>
+    <div style={{ overflow: "hidden", padding: "6px 0", position: "relative" }}>
       {/* Edge fades */}
       <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "60px", background: "linear-gradient(to right, var(--bg-primary), transparent)", zIndex: 2, pointerEvents: "none" }} />
       <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: "60px", background: "linear-gradient(to left, var(--bg-primary), transparent)", zIndex: 2, pointerEvents: "none" }} />
       <motion.div
-        style={{ display: "flex", gap: "12px", width: "max-content" }}
+        style={{ display: "flex", gap: "10px", width: "max-content" }}
         animate={{ x: reverse ? ["0%", "-33.33%"] : ["-33.33%", "0%"] }}
         transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
       >
@@ -70,15 +70,16 @@ const MarqueeRow = ({ skills, reverse = false }) => {
           return (
             <div
               key={`${skill.name}-${i}`}
+              className="skill-pill"
               style={{
-                display: "flex", alignItems: "center", gap: "16px",
-                padding: "16px 32px", borderRadius: "50px", flexShrink: 0,
+                display: "flex", alignItems: "center", flexShrink: 0,
                 border: `1.5px solid ${skill.color}30`,
                 background: `${skill.color}0A`,
+                borderRadius: "50px",
               }}
             >
-              <Icon size={38} style={{ color: skill.color }} />
-              <span style={{ fontSize: "1.15rem", fontWeight: 600, whiteSpace: "nowrap", color: "var(--text-secondary)" }}>
+              <Icon className="skill-icon" style={{ color: skill.color }} />
+              <span className="skill-name" style={{ fontWeight: 600, whiteSpace: "nowrap", color: "var(--text-secondary)" }}>
                 {skill.name}
               </span>
             </div>
@@ -106,12 +107,12 @@ const Skills = () => {
       <div className="grid-bg" />
       <div className="container-main">
         {/* Header */}
-        <motion.div variants={fadeUp} style={{ textAlign: "center", marginBottom: "48px" }}>
+        <motion.div variants={fadeUp} style={{ textAlign: "center", marginBottom: "40px" }}>
           <span className="section-label">Expertise</span>
-          <h2 style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", fontFamily: "var(--font-syne)", fontWeight: 700, marginTop: "16px", color: "var(--text-primary)" }}>
+          <h2 className="skills-heading" style={{ fontFamily: "var(--font-syne)", fontWeight: 700, marginTop: "16px", color: "var(--text-primary)" }}>
             Skills & <span className="gradient-text">Technologies</span>
           </h2>
-          <p style={{ marginTop: "12px", fontSize: "1rem", maxWidth: "500px", margin: "12px auto 0", color: "var(--text-muted)" }}>
+          <p className="skills-subtitle" style={{ margin: "12px auto 0", color: "var(--text-muted)" }}>
             Technologies I use to bring ideas to life — from design to deployment.
           </p>
         </motion.div>
@@ -119,8 +120,8 @@ const Skills = () => {
         {/* Marquee Rows */}
         <motion.div variants={fadeUp} style={{ marginBottom: "20px" }}>
           {adjustedCategories.map((cat, i) => (
-            <div key={cat.label} style={{ marginBottom: "16px" }}>
-              <p style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.12em", fontWeight: 600, color: "var(--text-muted)", marginBottom: "8px", paddingLeft: "8px" }}>
+            <div key={cat.label} style={{ marginBottom: "14px" }}>
+              <p className="skills-cat-label" style={{ textTransform: "uppercase", letterSpacing: "0.12em", fontWeight: 600, color: "var(--text-muted)", paddingLeft: "8px" }}>
                 {cat.label}
               </p>
               <MarqueeRow skills={cat.skills} reverse={i % 2 === 1} />
@@ -128,6 +129,88 @@ const Skills = () => {
           ))}
         </motion.div>
       </div>
+
+      <style>{`
+        /* ── Skills defaults (desktop) ── */
+        .skills-heading {
+          font-size: clamp(2rem, 5vw, 3.5rem);
+        }
+        .skills-subtitle {
+          font-size: 1rem;
+          max-width: 500px;
+        }
+        .skills-cat-label {
+          font-size: 0.7rem;
+          margin-bottom: 8px;
+        }
+        .skill-pill {
+          gap: 14px;
+          padding: 14px 28px;
+        }
+        .skill-icon {
+          width: 34px;
+          height: 34px;
+          flex-shrink: 0;
+        }
+        .skill-name {
+          font-size: 1.05rem;
+        }
+
+        /* ════════ TABLET ════════ */
+        @media (max-width: 768px) {
+          .skill-pill {
+            gap: 10px;
+            padding: 10px 20px;
+          }
+          .skill-icon {
+            width: 24px;
+            height: 24px;
+          }
+          .skill-name {
+            font-size: 0.88rem;
+          }
+        }
+
+        /* ════════ MOBILE ════════ */
+        @media (max-width: 480px) {
+          .skills-heading {
+            font-size: 1.6rem;
+          }
+          .skills-subtitle {
+            font-size: 0.85rem;
+          }
+          .skills-cat-label {
+            font-size: 0.62rem;
+            margin-bottom: 5px;
+          }
+          .skill-pill {
+            gap: 8px;
+            padding: 8px 14px;
+          }
+          .skill-icon {
+            width: 18px;
+            height: 18px;
+          }
+          .skill-name {
+            font-size: 0.75rem;
+          }
+        }
+
+        /* ════════ VERY SMALL ════════ */
+        @media (max-width: 360px) {
+          .skill-pill {
+            gap: 6px;
+            padding: 6px 12px;
+          }
+          .skill-icon {
+            width: 16px;
+            height: 16px;
+          }
+          .skill-name {
+            font-size: 0.7rem;
+          }
+        }
+      `}</style>
     </SectionReveal>
   );
 };

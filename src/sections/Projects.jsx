@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../config/firebase";
 import SectionReveal, { fadeUp } from "../components/SectionReveal";
@@ -23,7 +23,7 @@ const ProjectCard = ({ project, index }) => (
     style={{ height: "100%", display: "flex", flexDirection: "column" }}
   >
     {/* Thumbnail */}
-    <div style={{ position: "relative", height: "200px", overflow: "hidden", borderRadius: "20px 20px 0 0", flexShrink: 0 }}>
+    <div className="project-thumb" style={{ position: "relative", overflow: "hidden", flexShrink: 0 }}>
       {project.imageUrl ? (
         <img
           src={project.imageUrl}
@@ -64,31 +64,31 @@ const ProjectCard = ({ project, index }) => (
     </div>
 
     {/* Body */}
-    <div style={{ padding: "24px", display: "flex", flexDirection: "column", flex: 1 }}>
+    <div className="project-body" style={{ display: "flex", flexDirection: "column", flex: 1 }}>
       {project.tags && (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "14px" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginBottom: "12px" }}>
           {project.tags.slice(0, 4).map((tag) => (
-            <span key={tag} style={{ fontSize: "0.68rem", padding: "3px 10px", borderRadius: "50px", fontWeight: 600, background: "rgba(123,47,255,0.1)", color: "var(--purple-light)", border: "1px solid rgba(123,47,255,0.22)" }}>
+            <span key={tag} className="project-tag" style={{ borderRadius: "50px", fontWeight: 600, background: "rgba(123,47,255,0.1)", color: "var(--purple-light)", border: "1px solid rgba(123,47,255,0.22)" }}>
               {tag}
             </span>
           ))}
         </div>
       )}
-      <h3 style={{ fontSize: "1.08rem", fontFamily: "var(--font-syne)", fontWeight: 700, color: "var(--text-primary)", marginBottom: "10px", lineHeight: 1.4 }}>
+      <h3 className="project-title" style={{ fontFamily: "var(--font-syne)", fontWeight: 700, color: "var(--text-primary)", lineHeight: 1.4 }}>
         {project.title}
       </h3>
-      <p style={{ fontSize: "0.875rem", lineHeight: 1.7, color: "var(--text-muted)", marginBottom: "20px", flex: 1, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+      <p className="project-desc" style={{ lineHeight: 1.7, color: "var(--text-muted)", flex: 1, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
         {project.description}
       </p>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "auto" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "auto" }}>
         {project.demoUrl && (
-          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ padding: "8px 18px", fontSize: "0.8rem", gap: "6px", borderRadius: "50px" }}>
+          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="btn-primary project-btn" style={{ gap: "6px", borderRadius: "50px" }}>
             <span>Live Demo</span>
             <FaExternalLinkAlt size={10} style={{ position: "relative", zIndex: 1 }} />
           </a>
         )}
         {project.githubUrl && (
-          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ padding: "7px 18px", fontSize: "0.8rem", gap: "6px", borderRadius: "50px" }}>
+          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-outline project-btn" style={{ gap: "6px", borderRadius: "50px" }}>
             <FaGithub size={13} />
             Code
           </a>
@@ -156,6 +156,7 @@ const DesktopCarousel = ({ projects }) => {
       {/* Scroll track */}
       <div
         ref={scrollRef}
+        className="proj-scroll"
         style={{
           display: "flex",
           gap: `${GAP}px`,
@@ -225,38 +226,41 @@ const MobileGrid = ({ projects }) => {
   const hasMore = projects.length > INITIAL;
 
   return (
-    <div>
-      <AnimatePresence>
-        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-          {shown.map((project, i) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: i * 0.07 }}
-            >
-              <ProjectCard project={project} index={i} />
-            </motion.div>
-          ))}
-        </div>
-      </AnimatePresence>
+    <div style={{ position: "relative" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+        {shown.map((project, i) => (
+          <motion.div
+            key={project.id}
+            initial="hidden"
+            animate="show"
+            variants={fadeUp}
+            transition={{ duration: 0.35, delay: i >= INITIAL ? (i - INITIAL) * 0.08 : 0 }}
+          >
+            <ProjectCard project={project} index={i} />
+          </motion.div>
+        ))}
+      </div>
 
       {hasMore && (
         <motion.button
           onClick={() => setExpanded(!expanded)}
-          whileHover={{ scale: 1.03, y: -2 }}
           whileTap={{ scale: 0.97 }}
+          className="view-more-btn"
           style={{
-            display: "flex", alignItems: "center", gap: "8px",
-            margin: "32px auto 0",
+            display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
+            margin: "24px auto 0",
             padding: "12px 28px", borderRadius: "50px",
             background: expanded ? "transparent" : "linear-gradient(135deg, #7B2FFF, #5050DD)",
             border: expanded ? "1.5px solid rgba(123,47,255,0.5)" : "none",
             color: expanded ? "var(--purple-light)" : "#fff",
-            fontSize: "0.92rem", fontWeight: 600,
+            fontSize: "0.88rem", fontWeight: 600,
             cursor: "pointer", fontFamily: "inherit",
             transition: "all 0.3s ease",
             boxShadow: expanded ? "none" : "0 8px 30px rgba(123,47,255,0.35)",
+            width: "100%",
+            maxWidth: "280px",
+            position: "relative",
+            zIndex: 10,
           }}
         >
           {expanded ? (
@@ -351,12 +355,12 @@ const Projects = () => {
 
       <div className="container-main">
         {/* Section Header */}
-        <motion.div variants={fadeUp} style={{ textAlign: "center", marginBottom: "56px" }}>
+        <motion.div variants={fadeUp} style={{ textAlign: "center", marginBottom: "40px" }}>
           <span className="section-label">Portfolio</span>
-          <h2 style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", fontFamily: "var(--font-syne)", fontWeight: 700, marginTop: "18px", color: "var(--text-primary)" }}>
+          <h2 className="proj-heading" style={{ fontFamily: "var(--font-syne)", fontWeight: 700, marginTop: "18px", color: "var(--text-primary)" }}>
             My <span className="gradient-text">Projects</span>
           </h2>
-          <p style={{ fontSize: "1rem", maxWidth: "520px", margin: "16px auto 0", color: "var(--text-muted)", lineHeight: 1.7 }}>
+          <p className="proj-subtitle" style={{ margin: "14px auto 0", color: "var(--text-muted)", lineHeight: 1.7 }}>
             A selection of things I've built — from AI tools to web platforms.
           </p>
         </motion.div>
@@ -395,14 +399,102 @@ const Projects = () => {
 
       {/* Responsive layout CSS */}
       <style>{`
+        .proj-heading {
+          font-size: clamp(1.8rem, 5vw, 3.5rem);
+        }
+        .proj-subtitle {
+          font-size: 0.95rem;
+          max-width: 520px;
+        }
+
+        /* Project card responsive */
+        .project-thumb {
+          height: 200px;
+          border-radius: 20px 20px 0 0;
+        }
+        .project-body {
+          padding: 20px;
+        }
+        .project-tag {
+          font-size: 0.65rem;
+          padding: 3px 9px;
+        }
+        .project-title {
+          font-size: 1.05rem;
+          margin-bottom: 8px;
+        }
+        .project-desc {
+          font-size: 0.85rem;
+          margin-bottom: 16px;
+        }
+        .project-btn {
+          padding: 8px 16px;
+          font-size: 0.78rem;
+        }
+
         /* Desktop: show carousel, hide mobile grid */
         .projects-desktop-carousel { display: block; }
         .projects-mobile-grid { display: none; }
 
         @media (max-width: 768px) {
           /* Mobile: hide carousel, show grid */
-          .projects-desktop-carousel { display: none; }
-          .projects-mobile-grid { display: block; }
+          .projects-desktop-carousel { display: none !important; }
+          .projects-mobile-grid { display: block !important; }
+        }
+
+        /* ════════ MOBILE ════════ */
+        @media (max-width: 480px) {
+          .proj-heading {
+            font-size: 1.6rem;
+          }
+          .proj-subtitle {
+            font-size: 0.85rem;
+          }
+          .project-thumb {
+            height: 160px;
+            border-radius: 16px 16px 0 0;
+          }
+          .project-body {
+            padding: 16px;
+          }
+          .project-tag {
+            font-size: 0.6rem;
+            padding: 2px 8px;
+          }
+          .project-title {
+            font-size: 0.95rem;
+          }
+          .project-desc {
+            font-size: 0.8rem;
+            margin-bottom: 12px;
+          }
+          .project-btn {
+            padding: 7px 14px;
+            font-size: 0.75rem;
+          }
+          .project-card {
+            border-radius: 16px;
+          }
+          .view-more-btn {
+            font-size: 0.82rem !important;
+            padding: 10px 22px !important;
+          }
+        }
+
+        /* ════════ VERY SMALL ════════ */
+        @media (max-width: 360px) {
+          .project-thumb {
+            height: 140px;
+          }
+          .project-body {
+            padding: 14px;
+          }
+          .project-title {
+            font-size: 0.9rem;
+          }
+          .project-desc {
+            font-size: 0.78rem;
+          }
         }
       `}</style>
     </SectionReveal>
