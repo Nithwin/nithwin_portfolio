@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nithwin-portfolio.web.app/sitemap.xml
