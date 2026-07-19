@@ -8,6 +8,7 @@ import { VscPassFilled } from "react-icons/vsc";
 import { BiAdjust } from "react-icons/bi";
 import { CgDanger } from "react-icons/cg";
 import { RiGitRepositoryLine } from "react-icons/ri";
+import { useTheme } from "../context/ThemeContext";
 
 const USERNAME = "vmnithwin";
 const GITHUB_USERNAME = "Nithwin";
@@ -52,6 +53,7 @@ const StatItem = ({ icon: Icon, label, value, color }) => (
 );
 
 const CodingProfiles = () => {
+  const { isDark } = useTheme();
   const [lcStats, setLcStats] = useState(null);
   const [ghStats, setGhStats] = useState(null);
   const [loadingLc, setLoadingLc] = useState(true);
@@ -163,7 +165,11 @@ const CodingProfiles = () => {
           <motion.div variants={fadeUp} className="profile-card glass-card">
             <div className="profile-header">
               <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                <div className="profile-icon" style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)", color: "#FFFFFF" }}>
+                <div className="profile-icon" style={{ 
+                  background: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)", 
+                  border: isDark ? "1px solid rgba(255,255,255,0.2)" : "1px solid rgba(0,0,0,0.1)", 
+                  color: isDark ? "#FFFFFF" : "#0A0A12" 
+                }}>
                   <FaGithub size={28} />
                 </div>
                 <div>
@@ -176,7 +182,7 @@ const CodingProfiles = () => {
             </div>
 
             {loadingGh ? (
-              <div className="loading-container"><div className="spinner" style={{ borderTopColor: "#FFF" }} /></div>
+              <div className="loading-container"><div className="spinner" style={{ borderTopColor: isDark ? "#FFF" : "#0A0A12" }} /></div>
             ) : !ghStats ? (
               <div className="error-container">Unable to load GitHub stats right now.</div>
             ) : (
@@ -229,7 +235,7 @@ const CodingProfiles = () => {
           align-items: center;
           margin-bottom: 32px;
           padding-bottom: 24px;
-          border-bottom: 1px solid rgba(255,255,255,0.06);
+          border-bottom: 1px solid var(--border);
         }
         .profile-icon {
           width: 56px;
@@ -254,7 +260,7 @@ const CodingProfiles = () => {
           width: 36px;
           height: 36px;
           border-radius: 50%;
-          border: 3px solid rgba(255,255,255,0.1);
+          border: 3px solid var(--border);
           animation: spin 1s linear infinite;
         }
         @keyframes spin {

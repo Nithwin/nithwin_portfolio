@@ -9,6 +9,7 @@ import {
 } from "react-icons/si";
 import { FiVideo } from "react-icons/fi";
 import { VscVscode } from "react-icons/vsc";
+import { useTheme } from "../context/ThemeContext";
 
 const CATEGORIES = [
   {
@@ -89,6 +90,17 @@ const MarqueeRow = ({ skills, reverse = false }) => {
 };
 
 const Skills = () => {
+  const { isDark } = useTheme();
+
+  // Adjust colors that are pure white in dark mode to black in light mode
+  const adjustedCategories = CATEGORIES.map((cat) => ({
+    ...cat,
+    skills: cat.skills.map((skill) => ({
+      ...skill,
+      color: skill.color === "#FFFFFF" && !isDark ? "#0A0A12" : skill.color,
+    })),
+  }));
+
   return (
     <SectionReveal id="skills">
       <div className="grid-bg" />
@@ -106,7 +118,7 @@ const Skills = () => {
 
         {/* Marquee Rows */}
         <motion.div variants={fadeUp} style={{ marginBottom: "20px" }}>
-          {CATEGORIES.map((cat, i) => (
+          {adjustedCategories.map((cat, i) => (
             <div key={cat.label} style={{ marginBottom: "16px" }}>
               <p style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.12em", fontWeight: 600, color: "var(--text-muted)", marginBottom: "8px", paddingLeft: "8px" }}>
                 {cat.label}
