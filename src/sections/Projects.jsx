@@ -38,7 +38,7 @@ const ProjectCard = ({ project }) => (
     {/* Content */}
     <div style={{ padding: "24px" }}>
       {project.tags && (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "12px" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "14px" }}>
           {project.tags.slice(0, 3).map((tag) => (
             <span key={tag} style={{ fontSize: "0.7rem", padding: "3px 10px", borderRadius: "50px", fontWeight: 500, background: "rgba(123,47,255,0.1)", color: "var(--purple-light)", border: "1px solid rgba(123,47,255,0.2)" }}>
               {tag}
@@ -46,13 +46,13 @@ const ProjectCard = ({ project }) => (
           ))}
         </div>
       )}
-      <h3 style={{ fontSize: "1.05rem", fontFamily: "var(--font-syne)", fontWeight: 600, color: "var(--text-primary)", marginBottom: "8px" }}>
+      <h3 style={{ fontSize: "1.08rem", fontFamily: "var(--font-syne)", fontWeight: 600, color: "var(--text-primary)", marginBottom: "10px" }}>
         {project.title}
       </h3>
-      <p style={{ fontSize: "0.85rem", lineHeight: 1.6, color: "var(--text-muted)", marginBottom: "16px", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+      <p style={{ fontSize: "0.88rem", lineHeight: 1.65, color: "var(--text-muted)", marginBottom: "18px", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
         {project.description}
       </p>
-      <div style={{ display: "flex", gap: "10px" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
         {project.demoUrl && (
           <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ padding: "8px 20px", fontSize: "0.8rem", gap: "6px" }}>
             <span>Live Demo</span>
@@ -103,19 +103,19 @@ const Projects = () => {
       <div className="grid-bg" />
       <div className="container-main">
         {/* Header */}
-        <motion.div variants={fadeUp} style={{ textAlign: "center", marginBottom: "48px" }}>
+        <motion.div variants={fadeUp} style={{ textAlign: "center", marginBottom: "56px" }}>
           <span className="section-label">Portfolio</span>
-          <h2 style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", fontFamily: "var(--font-syne)", fontWeight: 700, marginTop: "16px", color: "var(--text-primary)" }}>
+          <h2 style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", fontFamily: "var(--font-syne)", fontWeight: 700, marginTop: "18px", color: "var(--text-primary)" }}>
             My <span className="gradient-text">Projects</span>
           </h2>
-          <p style={{ marginTop: "12px", fontSize: "1rem", maxWidth: "500px", margin: "12px auto 0", color: "var(--text-muted)" }}>
+          <p style={{ marginTop: "16px", fontSize: "1rem", maxWidth: "520px", margin: "16px auto 0", color: "var(--text-muted)", lineHeight: 1.7 }}>
             A selection of things I've built — from web platforms to mobile apps.
           </p>
         </motion.div>
 
         {/* Filter pills */}
         {allTags.length > 1 && (
-          <motion.div variants={fadeUp} style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "10px", marginBottom: "40px" }}>
+          <motion.div variants={fadeUp} className="project-filter-row">
             {allTags.slice(0, 8).map((tag) => (
               <button
                 key={tag}
@@ -153,7 +153,7 @@ const Projects = () => {
               <p>No projects found. Check back soon!</p>
             </div>
           ) : (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "24px" }}>
+            <div className="projects-grid">
               {filtered.map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}
@@ -161,6 +161,38 @@ const Projects = () => {
           )
         )}
       </div>
+
+      {/* Responsive styles for Projects */}
+      <style>{`
+        .project-filter-row {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 10px;
+          margin-bottom: 48px;
+        }
+        .projects-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+          gap: 28px;
+        }
+        @media (max-width: 768px) {
+          .project-filter-row {
+            gap: 8px;
+            margin-bottom: 36px;
+          }
+          .projects-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+          }
+        }
+        @media (max-width: 480px) {
+          .project-filter-row button {
+            padding: 6px 16px !important;
+            font-size: 0.8rem !important;
+          }
+        }
+      `}</style>
     </SectionReveal>
   );
 };

@@ -66,9 +66,9 @@ const About = () => {
 
       <div
         className="container-main"
-        style={{ position: "relative", zIndex: 10, paddingTop: "60px", paddingBottom: "80px" }}
+        style={{ position: "relative", zIndex: 10 }}
       >
-        {/* ── Responsive layout ── */}
+        {/* Responsive layout styles */}
         <style>{`
           .about-layout {
             display: grid;
@@ -83,10 +83,33 @@ const About = () => {
           @media (max-width: 900px) {
             .about-layout {
               grid-template-columns: 1fr;
-              gap: 48px;
+              gap: 40px;
             }
             .about-left-col {
               position: static;
+              text-align: center;
+            }
+            .about-left-col .about-label-row {
+              justify-content: center;
+            }
+            .about-left-col h2 {
+              font-size: clamp(1.7rem, 5vw, 2.6rem) !important;
+            }
+            .about-left-col p {
+              max-width: 560px;
+              margin-left: auto;
+              margin-right: auto;
+            }
+            .about-actions-row {
+              justify-content: center !important;
+            }
+          }
+          @media (max-width: 480px) {
+            .about-layout {
+              gap: 32px;
+            }
+            .about-card {
+              padding: 24px !important;
             }
           }
         `}</style>
@@ -96,7 +119,7 @@ const About = () => {
           <div className="about-left-col">
             <motion.div variants={fadeUp}>
               {/* Label */}
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "18px" }}>
+              <div className="about-label-row" style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "20px" }}>
                 <RiSparklingFill size={14} style={{ color: "var(--neon)" }} />
                 <span className="section-label" style={{ margin: 0 }}>About Me</span>
               </div>
@@ -110,7 +133,7 @@ const About = () => {
                   lineHeight: 1.18,
                   letterSpacing: "-0.03em",
                   color: "var(--text-primary)",
-                  marginBottom: "24px",
+                  marginBottom: "28px",
                 }}
               >
                 Building the future,{" "}
@@ -124,7 +147,7 @@ const About = () => {
                   lineHeight: 1.82,
                   color: "var(--text-secondary)",
                   fontFamily: "var(--font-jakarta), sans-serif",
-                  marginBottom: "16px",
+                  marginBottom: "18px",
                 }}
               >
                 I'm{" "}
@@ -139,7 +162,7 @@ const About = () => {
                   lineHeight: 1.82,
                   color: "var(--text-muted)",
                   fontFamily: "var(--font-jakarta), sans-serif",
-                  marginBottom: "36px",
+                  marginBottom: "40px",
                 }}
               >
                 Whether I'm designing a Generative AI pipeline, shipping a
@@ -149,7 +172,7 @@ const About = () => {
               </p>
 
               {/* Location pill + Download CTA */}
-              <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "16px" }}>
+              <div className="about-actions-row" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "16px" }}>
                 <div
                   style={{
                     display: "inline-flex",
@@ -205,6 +228,7 @@ const About = () => {
                 key={title}
                 variants={fadeUp}
                 custom={i}
+                className="about-card"
                 whileHover={{ y: -5, borderColor: color }}
                 style={{
                   padding: "32px",

@@ -6,6 +6,7 @@ import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { SiLeetcode } from "react-icons/si";
 import { HiArrowRight } from "react-icons/hi";
 import { RiDownloadLine, RiArrowDownLine } from "react-icons/ri";
+import { useTheme } from "../context/ThemeContext";
 
 const ROLES = [
   "Executing Generative AI & LLM Solutions...",
@@ -15,6 +16,7 @@ const ROLES = [
 ];
 
 const Hero = () => {
+  const { isDark } = useTheme();
   const heroRef = useRef(null);
   const imageRef = useRef(null);
   const [roleIndex, setRoleIndex] = useState(0);
@@ -79,6 +81,11 @@ const Hero = () => {
     const el = document.getElementById("about");
     if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: "smooth" });
   };
+
+  // Choose hero image based on theme
+  const heroImage = isDark
+    ? "./assets/about.png"
+    : "./assets/file_00000000217081f88c1c299190a59705.png";
 
   return (
     <section
@@ -148,27 +155,56 @@ const Hero = () => {
           }
           @media (max-width: 1023px) {
             section#home {
-              padding-top: 148px !important;
+              padding-top: 140px !important;
+              min-height: auto !important;
+              padding-bottom: 48px !important;
             }
             .hero-scroll-invite {
-              margin-top: 68px !important;
-              margin-bottom: 32px !important;
+              margin-top: 48px !important;
+              margin-bottom: 24px !important;
+              justify-content: center !important;
             }
             .hero-grid {
               flex-direction: column-reverse !important;
               align-items: center !important;
-              gap: 40px !important;
+              gap: 36px !important;
             }
             .hero-left {
               width: 100% !important;
               text-align: center !important;
             }
             .hero-right {
-              width: clamp(280px, 86vw, 440px) !important;
-              height: clamp(330px, 90vw, 490px) !important;
+              width: clamp(240px, 70vw, 380px) !important;
+              height: clamp(280px, 75vw, 420px) !important;
             }
             .hero-cta-group, .hero-social-row {
               justify-content: center !important;
+            }
+            .hero-bio {
+              margin-left: auto !important;
+              margin-right: auto !important;
+            }
+          }
+          @media (max-width: 480px) {
+            section#home {
+              padding-top: 120px !important;
+            }
+            .hero-right {
+              width: clamp(200px, 65vw, 300px) !important;
+              height: clamp(240px, 70vw, 340px) !important;
+            }
+            .hero-cta-group {
+              flex-direction: column !important;
+              align-items: center !important;
+              width: 100% !important;
+            }
+            .hero-cta-group .btn-primary,
+            .hero-cta-group .btn-outline {
+              width: 100% !important;
+              justify-content: center !important;
+            }
+            .hero-terminal-box {
+              padding: 10px 14px !important;
             }
           }
         `}</style>
@@ -243,7 +279,7 @@ const Hero = () => {
                     color: "#F8F8FF",
                     fontFamily: "var(--font-mono)",
                     fontWeight: 500,
-                    fontSize: "clamp(0.88rem, 1.7vw, 1.02rem)",
+                    fontSize: "clamp(0.82rem, 1.5vw, 1.02rem)",
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "4px",
@@ -375,7 +411,7 @@ const Hero = () => {
             </div>
           </motion.div>
 
-          {/* ===================== RIGHT COLUMN: CLEAN ARCHITECTURAL FRAME FOR ABOUT.PNG ===================== */}
+          {/* ===================== RIGHT COLUMN: CLEAN ARCHITECTURAL FRAME ===================== */}
           <motion.div
             className="hero-right hero-visual-container"
             style={{
@@ -412,12 +448,14 @@ const Hero = () => {
                 style={{
                   position: "absolute",
                   inset: 0,
-                  background: "radial-gradient(circle at center, rgba(123, 47, 255, 0.18) 0%, transparent 80%)",
+                  background: isDark
+                    ? "radial-gradient(circle at center, rgba(123, 47, 255, 0.18) 0%, transparent 80%)"
+                    : "radial-gradient(circle at center, rgba(123, 47, 255, 0.08) 0%, transparent 80%)",
                   pointerEvents: "none",
                 }}
               />
 
-              {/* Character Image (`about.png`) */}
+              {/* Character Image — swaps between dark and light mode */}
               <motion.div
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
@@ -432,7 +470,8 @@ const Hero = () => {
                 }}
               >
                 <img
-                  src="./assets/about.png"
+                  key={heroImage}
+                  src={heroImage}
                   alt="Nithwin V M"
                   style={{
                     width: "100%",
