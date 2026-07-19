@@ -52,15 +52,6 @@ const CATEGORIES = [
   },
 ];
 
-const PROFICIENCIES = [
-  { label: "React / Next.js", value: 90, color: "#61DAFB" },
-  { label: "Flutter / Dart", value: 80, color: "#02569B" },
-  { label: "UI/UX Design (Figma)", value: 75, color: "#F24E1E" },
-  { label: "Firebase / MongoDB", value: 82, color: "#FFCA28" },
-  { label: "JavaScript / TypeScript", value: 88, color: "#F7DF1E" },
-  { label: "Python", value: 70, color: "#3776AB" },
-];
-
 const MarqueeRow = ({ skills, reverse = false }) => {
   const doubled = [...skills, ...skills, ...skills]; // triple for seamless loop
   return (
@@ -79,14 +70,14 @@ const MarqueeRow = ({ skills, reverse = false }) => {
             <div
               key={`${skill.name}-${i}`}
               style={{
-                display: "flex", alignItems: "center", gap: "10px",
-                padding: "10px 20px", borderRadius: "50px", flexShrink: 0,
+                display: "flex", alignItems: "center", gap: "16px",
+                padding: "16px 32px", borderRadius: "50px", flexShrink: 0,
                 border: `1.5px solid ${skill.color}30`,
                 background: `${skill.color}0A`,
               }}
             >
-              <Icon size={20} style={{ color: skill.color }} />
-              <span style={{ fontSize: "0.85rem", fontWeight: 500, whiteSpace: "nowrap", color: "var(--text-secondary)" }}>
+              <Icon size={38} style={{ color: skill.color }} />
+              <span style={{ fontSize: "1.15rem", fontWeight: 600, whiteSpace: "nowrap", color: "var(--text-secondary)" }}>
                 {skill.name}
               </span>
             </div>
@@ -114,41 +105,13 @@ const Skills = () => {
         </motion.div>
 
         {/* Marquee Rows */}
-        <motion.div variants={fadeUp} style={{ marginBottom: "60px" }}>
+        <motion.div variants={fadeUp} style={{ marginBottom: "20px" }}>
           {CATEGORIES.map((cat, i) => (
             <div key={cat.label} style={{ marginBottom: "16px" }}>
               <p style={{ fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.12em", fontWeight: 600, color: "var(--text-muted)", marginBottom: "8px", paddingLeft: "8px" }}>
                 {cat.label}
               </p>
               <MarqueeRow skills={cat.skills} reverse={i % 2 === 1} />
-            </div>
-          ))}
-        </motion.div>
-
-        {/* Proficiency bars */}
-        <motion.div variants={fadeUp} style={{ textAlign: "center", marginBottom: "32px" }}>
-          <h3 style={{ fontSize: "clamp(1.3rem, 3vw, 1.8rem)", fontFamily: "var(--font-syne)", fontWeight: 700, color: "var(--text-primary)" }}>
-            Core <span className="gradient-text">Proficiencies</span>
-          </h3>
-        </motion.div>
-
-        <motion.div variants={fadeUp} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
-          {PROFICIENCIES.map(({ label, value, color }) => (
-            <div key={label}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                <span style={{ fontSize: "0.875rem", fontWeight: 500, color: "var(--text-secondary)" }}>{label}</span>
-                <span style={{ fontSize: "0.85rem", fontWeight: 700, color }}>{value}%</span>
-              </div>
-              <div className="progress-bar">
-                <motion.div
-                  className="progress-fill"
-                  style={{ background: `linear-gradient(90deg, ${color}88, ${color})` }}
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: value / 100 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
-                />
-              </div>
             </div>
           ))}
         </motion.div>

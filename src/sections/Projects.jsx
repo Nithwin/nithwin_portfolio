@@ -1,66 +1,94 @@
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../config/firebase";
 import SectionReveal, { fadeUp } from "../components/SectionReveal";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
-import { RiStackLine } from "react-icons/ri";
+import { FaGithub, FaExternalLinkAlt, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { RiStackLine, RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri";
 
-const ProjectCard = ({ project }) => (
-  <motion.div variants={fadeUp} className="project-card">
-    {/* Image */}
-    <div style={{ position: "relative", height: "200px", overflow: "hidden", borderRadius: "20px 20px 0 0" }}>
+/* ── Gradient backgrounds for cards with no image ── */
+const FALLBACK_GRADIENTS = [
+  "linear-gradient(135deg, rgba(123,47,255,0.22), rgba(0,212,255,0.12))",
+  "linear-gradient(135deg, rgba(0,212,255,0.18), rgba(0,255,209,0.1))",
+  "linear-gradient(135deg, rgba(0,255,209,0.15), rgba(123,47,255,0.18))",
+  "linear-gradient(135deg, rgba(255,161,22,0.15), rgba(123,47,255,0.15))",
+  "linear-gradient(135deg, rgba(123,47,255,0.18), rgba(255,71,87,0.1))",
+];
+
+/* ─────────────────── PROJECT CARD ─────────────────── */
+const ProjectCard = ({ project, index }) => (
+  <motion.div
+    variants={fadeUp}
+    className="project-card"
+    style={{ height: "100%", display: "flex", flexDirection: "column" }}
+  >
+    {/* Thumbnail */}
+    <div style={{ position: "relative", height: "200px", overflow: "hidden", borderRadius: "20px 20px 0 0", flexShrink: 0 }}>
       {project.imageUrl ? (
-        <img src={project.imageUrl} alt={project.title} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }} />
-      ) : (
-        <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, rgba(123,47,255,0.15), rgba(0,212,255,0.08))" }}>
-          <RiStackLine size={44} style={{ color: "rgba(123,47,255,0.3)" }} />
-        </div>
-      )}
+        <img
+          src={project.imageUrl}
+          alt={project.title}
+          style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.5s ease" }}
+          onError={(e) => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }}
+        />
+      ) : null}
+      <div
+        style={{
+          width: "100%", height: "100%",
+          display: project.imageUrl ? "none" : "flex",
+          alignItems: "center", justifyContent: "center",
+          background: FALLBACK_GRADIENTS[index % FALLBACK_GRADIENTS.length],
+        }}
+      >
+        <RiStackLine size={44} style={{ color: "rgba(123,47,255,0.45)" }} />
+      </div>
       <div className="overlay" />
       {/* Hover action buttons */}
-      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", opacity: 0, transition: "opacity 0.3s", zIndex: 5 }} className="project-card-actions">
+      <div
+        className="project-card-actions"
+        style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", opacity: 0, transition: "opacity 0.3s", zIndex: 5 }}
+      >
         {project.githubUrl && (
           <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
-            style={{ width: "44px", height: "44px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(255,255,255,0.15)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.2)" }}>
+            style={{ width: "44px", height: "44px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(255,255,255,0.15)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.25)" }}>
             <FaGithub size={18} color="#fff" />
           </a>
         )}
         {project.demoUrl && (
           <a href={project.demoUrl} target="_blank" rel="noopener noreferrer"
-            style={{ width: "44px", height: "44px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(123,47,255,0.6)", backdropFilter: "blur(8px)", border: "1px solid rgba(123,47,255,0.4)" }}>
+            style={{ width: "44px", height: "44px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(123,47,255,0.7)", backdropFilter: "blur(8px)", border: "1px solid rgba(123,47,255,0.4)" }}>
             <FaExternalLinkAlt size={14} color="#fff" />
           </a>
         )}
       </div>
     </div>
 
-    {/* Content */}
-    <div style={{ padding: "24px" }}>
+    {/* Body */}
+    <div style={{ padding: "24px", display: "flex", flexDirection: "column", flex: 1 }}>
       {project.tags && (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "14px" }}>
-          {project.tags.slice(0, 3).map((tag) => (
-            <span key={tag} style={{ fontSize: "0.7rem", padding: "3px 10px", borderRadius: "50px", fontWeight: 500, background: "rgba(123,47,255,0.1)", color: "var(--purple-light)", border: "1px solid rgba(123,47,255,0.2)" }}>
+          {project.tags.slice(0, 4).map((tag) => (
+            <span key={tag} style={{ fontSize: "0.68rem", padding: "3px 10px", borderRadius: "50px", fontWeight: 600, background: "rgba(123,47,255,0.1)", color: "var(--purple-light)", border: "1px solid rgba(123,47,255,0.22)" }}>
               {tag}
             </span>
           ))}
         </div>
       )}
-      <h3 style={{ fontSize: "1.08rem", fontFamily: "var(--font-syne)", fontWeight: 600, color: "var(--text-primary)", marginBottom: "10px" }}>
+      <h3 style={{ fontSize: "1.08rem", fontFamily: "var(--font-syne)", fontWeight: 700, color: "var(--text-primary)", marginBottom: "10px", lineHeight: 1.4 }}>
         {project.title}
       </h3>
-      <p style={{ fontSize: "0.88rem", lineHeight: 1.65, color: "var(--text-muted)", marginBottom: "18px", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+      <p style={{ fontSize: "0.875rem", lineHeight: 1.7, color: "var(--text-muted)", marginBottom: "20px", flex: 1, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
         {project.description}
       </p>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "auto" }}>
         {project.demoUrl && (
-          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ padding: "8px 20px", fontSize: "0.8rem", gap: "6px" }}>
+          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ padding: "8px 18px", fontSize: "0.8rem", gap: "6px", borderRadius: "50px" }}>
             <span>Live Demo</span>
             <FaExternalLinkAlt size={10} style={{ position: "relative", zIndex: 1 }} />
           </a>
         )}
         {project.githubUrl && (
-          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ padding: "7px 20px", fontSize: "0.8rem", gap: "6px" }}>
+          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ padding: "7px 18px", fontSize: "0.8rem", gap: "6px", borderRadius: "50px" }}>
             <FaGithub size={13} />
             Code
           </a>
@@ -68,18 +96,185 @@ const ProjectCard = ({ project }) => (
       </div>
     </div>
 
-    {/* Inline hover style for action buttons */}
     <style>{`
       .project-card:hover .project-card-actions { opacity: 1 !important; }
-      .project-card:hover img { transform: scale(1.08); }
+      .project-card:hover img { transform: scale(1.06); }
     `}</style>
   </motion.div>
 );
 
+/* ─────────────────── DESKTOP CAROUSEL ─────────────────── */
+const DesktopCarousel = ({ projects }) => {
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const CARD_W = 360; // card width + gap
+  const GAP = 24;
+
+  const updateArrows = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 8);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 8);
+  };
+
+  const scroll = (dir) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * (CARD_W + GAP), behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", updateArrows, { passive: true });
+    updateArrows();
+    return () => el.removeEventListener("scroll", updateArrows);
+  }, [projects]);
+
+  return (
+    <div style={{ position: "relative" }}>
+      {/* Left arrow */}
+      <button
+        onClick={() => scroll(-1)}
+        disabled={!canScrollLeft}
+        style={{
+          position: "absolute", left: "-20px", top: "50%", transform: "translateY(-50%)",
+          zIndex: 20, width: "44px", height: "44px", borderRadius: "50%",
+          border: "1px solid var(--border)", background: "var(--bg-card)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          cursor: canScrollLeft ? "pointer" : "default",
+          opacity: canScrollLeft ? 1 : 0.25,
+          transition: "opacity 0.3s, box-shadow 0.3s",
+          boxShadow: canScrollLeft ? "0 4px 20px rgba(0,0,0,0.4)" : "none",
+        }}
+      >
+        <FaChevronLeft size={14} style={{ color: "var(--text-primary)" }} />
+      </button>
+
+      {/* Scroll track */}
+      <div
+        ref={scrollRef}
+        style={{
+          display: "flex",
+          gap: `${GAP}px`,
+          overflowX: "auto",
+          scrollSnapType: "x mandatory",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          paddingBottom: "8px",
+        }}
+      >
+        <style>{`.proj-scroll::-webkit-scrollbar { display: none; }`}</style>
+        {projects.map((project, i) => (
+          <div
+            key={project.id}
+            style={{
+              minWidth: `${CARD_W}px`,
+              maxWidth: `${CARD_W}px`,
+              scrollSnapAlign: "start",
+              flexShrink: 0,
+            }}
+          >
+            <ProjectCard project={project} index={i} />
+          </div>
+        ))}
+      </div>
+
+      {/* Right arrow */}
+      <button
+        onClick={() => scroll(1)}
+        disabled={!canScrollRight}
+        style={{
+          position: "absolute", right: "-20px", top: "50%", transform: "translateY(-50%)",
+          zIndex: 20, width: "44px", height: "44px", borderRadius: "50%",
+          border: "1px solid var(--border)", background: "var(--bg-card)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          cursor: canScrollRight ? "pointer" : "default",
+          opacity: canScrollRight ? 1 : 0.25,
+          transition: "opacity 0.3s, box-shadow 0.3s",
+          boxShadow: canScrollRight ? "0 4px 20px rgba(0,0,0,0.4)" : "none",
+        }}
+      >
+        <FaChevronRight size={14} style={{ color: "var(--text-primary)" }} />
+      </button>
+
+      {/* Dot indicators */}
+      <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginTop: "24px" }}>
+        {projects.map((_, i) => (
+          <div
+            key={i}
+            style={{
+              width: "6px", height: "6px", borderRadius: "50%",
+              background: i < 3 ? "var(--purple)" : "rgba(255,255,255,0.15)",
+              transition: "background 0.3s",
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ─────────────────── MOBILE GRID (3 + View More) ─────────────────── */
+const MobileGrid = ({ projects }) => {
+  const INITIAL = 3;
+  const [expanded, setExpanded] = useState(false);
+  const shown = expanded ? projects : projects.slice(0, INITIAL);
+  const hasMore = projects.length > INITIAL;
+
+  return (
+    <div>
+      <AnimatePresence>
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          {shown.map((project, i) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: i * 0.07 }}
+            >
+              <ProjectCard project={project} index={i} />
+            </motion.div>
+          ))}
+        </div>
+      </AnimatePresence>
+
+      {hasMore && (
+        <motion.button
+          onClick={() => setExpanded(!expanded)}
+          whileHover={{ scale: 1.03, y: -2 }}
+          whileTap={{ scale: 0.97 }}
+          style={{
+            display: "flex", alignItems: "center", gap: "8px",
+            margin: "32px auto 0",
+            padding: "12px 28px", borderRadius: "50px",
+            background: expanded ? "transparent" : "linear-gradient(135deg, #7B2FFF, #5050DD)",
+            border: expanded ? "1.5px solid rgba(123,47,255,0.5)" : "none",
+            color: expanded ? "var(--purple-light)" : "#fff",
+            fontSize: "0.92rem", fontWeight: 600,
+            cursor: "pointer", fontFamily: "inherit",
+            transition: "all 0.3s ease",
+            boxShadow: expanded ? "none" : "0 8px 30px rgba(123,47,255,0.35)",
+          }}
+        >
+          {expanded ? (
+            <><RiArrowUpSLine size={20} /> Show Less</>
+          ) : (
+            <><RiArrowDownSLine size={20} /> View More ({projects.length - INITIAL} more)</>
+          )}
+        </motion.button>
+      )}
+    </div>
+  );
+};
+
+/* ─────────────────── MAIN SECTION ─────────────────── */
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState("All");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -88,6 +283,7 @@ const Projects = () => {
         setProjects(snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
       } catch (err) {
         console.error("Error fetching projects:", err);
+        setError(err.message);
       } finally {
         setLoading(false);
       }
@@ -95,102 +291,75 @@ const Projects = () => {
     fetchProjects();
   }, []);
 
-  const allTags = ["All", ...new Set(projects.flatMap((p) => p.tags || []))];
-  const filtered = filter === "All" ? projects : projects.filter((p) => p.tags?.includes(filter));
-
   return (
     <SectionReveal id="projects">
       <div className="grid-bg" />
+
       <div className="container-main">
-        {/* Header */}
+        {/* Section Header */}
         <motion.div variants={fadeUp} style={{ textAlign: "center", marginBottom: "56px" }}>
           <span className="section-label">Portfolio</span>
           <h2 style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", fontFamily: "var(--font-syne)", fontWeight: 700, marginTop: "18px", color: "var(--text-primary)" }}>
             My <span className="gradient-text">Projects</span>
           </h2>
-          <p style={{ marginTop: "16px", fontSize: "1rem", maxWidth: "520px", margin: "16px auto 0", color: "var(--text-muted)", lineHeight: 1.7 }}>
-            A selection of things I've built — from web platforms to mobile apps.
+          <p style={{ fontSize: "1rem", maxWidth: "520px", margin: "16px auto 0", color: "var(--text-muted)", lineHeight: 1.7 }}>
+            A selection of things I've built — from AI tools to web platforms.
           </p>
         </motion.div>
 
-        {/* Filter pills */}
-        {allTags.length > 1 && (
-          <motion.div variants={fadeUp} className="project-filter-row">
-            {allTags.slice(0, 8).map((tag) => (
-              <button
-                key={tag}
-                onClick={() => setFilter(tag)}
-                style={{
-                  padding: "8px 20px", borderRadius: "50px", fontSize: "0.85rem", fontWeight: 500,
-                  cursor: "pointer", border: "none", fontFamily: "inherit", transition: "all 0.3s",
-                  ...(filter === tag
-                    ? { background: "var(--purple)", color: "#fff", boxShadow: "0 4px 20px rgba(123,47,255,0.35)" }
-                    : { background: "var(--bg-card)", color: "var(--text-secondary)", border: "1px solid var(--border)" }),
-                }}
-              >
-                {tag}
-              </button>
-            ))}
-          </motion.div>
-        )}
-
-        {/* Loading */}
+        {/* Loading spinner */}
         {loading && (
-          <div style={{ display: "flex", justifyContent: "center", padding: "60px 0" }}>
+          <div style={{ display: "flex", justifyContent: "center", padding: "80px 0" }}>
             <motion.div
-              style={{ width: "40px", height: "40px", borderRadius: "50%", border: "3px solid rgba(123,47,255,0.2)", borderTopColor: "var(--purple)" }}
+              style={{ width: "44px", height: "44px", borderRadius: "50%", border: "3px solid rgba(123,47,255,0.15)", borderTopColor: "var(--purple)" }}
               animate={{ rotate: 360 }}
               transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
             />
           </div>
         )}
 
-        {/* Grid */}
-        {!loading && (
-          filtered.length === 0 ? (
-            <div style={{ textAlign: "center", padding: "60px 0", color: "var(--text-muted)" }}>
-              <RiStackLine size={44} style={{ margin: "0 auto 16px", opacity: 0.3 }} />
-              <p>No projects found. Check back soon!</p>
-            </div>
-          ) : (
-            <div className="projects-grid">
-              {filtered.map((project) => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
-            </div>
-          )
+        {/* Error state */}
+        {!loading && error && (
+          <motion.div variants={fadeUp} className="glass-card" style={{ padding: "48px", textAlign: "center", borderRadius: "24px" }}>
+            <RiStackLine size={44} style={{ margin: "0 auto 16px", color: "var(--text-muted)", opacity: 0.4 }} />
+            <p style={{ color: "var(--text-muted)", marginBottom: "8px" }}>Couldn't load projects right now.</p>
+            <p style={{ fontSize: "0.78rem", color: "var(--text-muted)", opacity: 0.6 }}>{error}</p>
+          </motion.div>
+        )}
+
+        {/* Empty state */}
+        {!loading && !error && projects.length === 0 && (
+          <div style={{ textAlign: "center", padding: "80px 0", color: "var(--text-muted)" }}>
+            <RiStackLine size={44} style={{ margin: "0 auto 16px", opacity: 0.3 }} />
+            <p>No projects found. Check back soon!</p>
+          </div>
+        )}
+
+        {/* Desktop: horizontal scroll carousel (hidden on mobile via CSS) */}
+        {!loading && !error && projects.length > 0 && (
+          <>
+            <motion.div variants={fadeUp} className="projects-desktop-carousel">
+              <DesktopCarousel projects={projects} />
+            </motion.div>
+
+            {/* Mobile: stacked grid with View More */}
+            <motion.div variants={fadeUp} className="projects-mobile-grid">
+              <MobileGrid projects={projects} />
+            </motion.div>
+          </>
         )}
       </div>
 
-      {/* Responsive styles for Projects */}
+      {/* Responsive layout CSS */}
       <style>{`
-        .project-filter-row {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          gap: 10px;
-          margin-bottom: 48px;
-        }
-        .projects-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-          gap: 28px;
-        }
+        /* Desktop: show carousel, hide mobile grid */
+        .projects-desktop-carousel { display: block; }
+        .projects-mobile-grid { display: none; }
+
         @media (max-width: 768px) {
-          .project-filter-row {
-            gap: 8px;
-            margin-bottom: 36px;
-          }
-          .projects-grid {
-            grid-template-columns: 1fr;
-            gap: 24px;
-          }
-        }
-        @media (max-width: 480px) {
-          .project-filter-row button {
-            padding: 6px 16px !important;
-            font-size: 0.8rem !important;
-          }
+          /* Mobile: hide carousel, show grid */
+          .projects-desktop-carousel { display: none; }
+          .projects-mobile-grid { display: block; }
         }
       `}</style>
     </SectionReveal>

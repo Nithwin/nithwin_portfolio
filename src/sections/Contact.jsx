@@ -62,10 +62,34 @@ const Contact = () => {
           </p>
         </motion.div>
 
+        {/* Responsive CSS */}
+        <style>{`
+          .contact-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+          }
+          .contact-info-col {
+            flex: 1 1 300px;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+          }
+          .contact-form-col {
+            flex: 1 1 400px;
+          }
+          @media (max-width: 900px) {
+            .contact-info-col {
+              max-width: 100%;
+            }
+          }
+        `}</style>
+
         {/* 2-column layout */}
-        <motion.div variants={fadeUp} style={{ display: "flex", flexWrap: "wrap", gap: "32px" }}>
+        <motion.div variants={fadeUp} className="contact-layout">
           {/* Left: Info */}
-          <div style={{ flex: "1 1 300px", maxWidth: "400px", display: "flex", flexDirection: "column", gap: "16px" }}>
+          <div className="contact-info-col">
             {contactInfo.map(({ icon: Icon, label, value, href }) => (
               <div key={label} style={{
                 display: "flex", alignItems: "center", gap: "14px", padding: "18px",
@@ -129,7 +153,7 @@ const Contact = () => {
           </div>
 
           {/* Right: Form */}
-          <div style={{ flex: "1 1 400px" }}>
+          <div className="contact-form-col">
             <form ref={formRef} onSubmit={handleSubmit} className="glass-card" style={{ padding: "32px", borderRadius: "24px" }}>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px", marginBottom: "16px" }}>
                 <div>
