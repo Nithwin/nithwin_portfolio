@@ -400,3 +400,8 @@ body {
 .will-change-opacity {
   will-change: opacity;
 }
+
+/* ============================= CURSOR GLOW (desktop only) ============================= */
+@media (pointer: coarse), (max-width: 768px) {
+  .cursor-glow { display: none !important; }
+}

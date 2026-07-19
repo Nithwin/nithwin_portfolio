@@ -4,6 +4,7 @@ import "./styles/globals.css";
 import { ThemeProvider } from "./context/ThemeContext";
 import Navigation from "./components/layout/Navigation";
 import Footer from "./components/layout/Footer";
+import CursorGlow from "./components/CursorGlow";
 import Hero from "./sections/Hero";
 import About from "./sections/About";
 import Projects from "./sections/Projects";
@@ -56,7 +57,7 @@ const LoadingScreen = () => (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} style={{ textAlign: "center" }}>
       <h1 style={{
         fontSize: "1.8rem",
-        fontFamily: "Syne, sans-serif",
+        fontFamily: "Poppins, sans-serif",
         fontWeight: 700,
         background: "linear-gradient(135deg, #7B2FFF, #00D4FF)",
         WebkitBackgroundClip: "text",
@@ -102,6 +103,7 @@ const App = () => {
             transition={{ duration: 0.4 }}
             style={{ background: "var(--bg-primary)", minHeight: "100vh" }}
           >
+            <CursorGlow />
             <Navigation />
             <Hero />
             <About />
