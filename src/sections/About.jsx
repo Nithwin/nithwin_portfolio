@@ -1,6 +1,6 @@
 import React from "react";
-import { motion } from "framer-motion";
-import SectionReveal, { fadeUp } from "../components/SectionReveal";
+import { motion, useScroll, useTransform } from "framer-motion";
+import SectionReveal, { fadeUp, slideInLeft, slideInRight } from "../components/SectionReveal";
 import {
   RiSparklingFill,
   RiMapPinLine,
@@ -8,27 +8,34 @@ import {
   RiCodeSSlashLine,
   RiLightbulbLine,
   RiDownloadLine,
+  RiArrowRightUpLine,
 } from "react-icons/ri";
 
 const highlights = [
   {
     icon: RiBrainLine,
     color: "#7B2FFF",
-    title: "Generative AI & LLM Engineering",
-    desc: "I build RAG pipelines, autonomous agent loops, and LLM-powered tools using Python, LangChain, and vector databases — turning raw model capabilities into real enterprise automation.",
+    title: "Generative AI",
+    desc: "Building RAG pipelines, LLM agents, and AI-powered tools that automate real workflows.",
   },
   {
     icon: RiCodeSSlashLine,
     color: "#00D4FF",
-    title: "Full Stack Cloud Development",
-    desc: "From Next.js 15 frontends to Node.js backends and PostgreSQL/MongoDB databases, I engineer complete web ecosystems optimized for performance, scalability, and SEO.",
+    title: "Full Stack Engineering",
+    desc: "End-to-end web ecosystems — React, Next.js, Node, PostgreSQL — optimized for scale.",
   },
   {
     icon: RiLightbulbLine,
     color: "#00FFD1",
-    title: "Algorithms & Problem Solving",
-    desc: "Daily LeetCode practice keeps my algorithmic thinking sharp. I approach every system design challenge with a data-first mindset — writing code that scales cleanly under concurrency.",
+    title: "Problem Solving",
+    desc: "750+ LeetCode problems solved. Data-first thinking for every design challenge.",
   },
+];
+
+const stats = [
+  { value: "750+", label: "LeetCode Solved" },
+  { value: "15+", label: "Projects Built" },
+  { value: "400+", label: "Users Served" },
 ];
 
 const About = () => {
@@ -36,7 +43,7 @@ const About = () => {
     <SectionReveal id="about">
       <div className="grid-bg" />
 
-      {/* Background aurora glow */}
+      {/* Ambient aurora */}
       <div
         style={{
           position: "absolute",
@@ -45,239 +52,204 @@ const About = () => {
           width: "500px",
           height: "500px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(123,47,255,0.13) 0%, transparent 70%)",
-          filter: "blur(80px)",
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: "10%",
-          left: "0",
-          width: "400px",
-          height: "400px",
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(123,47,255,0.12) 0%, transparent 70%)",
           filter: "blur(80px)",
           pointerEvents: "none",
         }}
       />
 
-      <div
-        className="container-main"
-        style={{ position: "relative", zIndex: 10 }}
-      >
-        {/* Responsive layout styles */}
+      <div className="container-main" style={{ position: "relative", zIndex: 10 }}>
+        {/* ─── Responsive CSS ─── */}
         <style>{`
-          .about-layout {
+          .about-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 64px;
-            align-items: start;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 72px;
+            align-items: center;
           }
-          .about-left-col {
-            position: sticky;
-            top: 130px;
+          .about-stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+          }
+          .about-highlights-col {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
           }
           @media (max-width: 900px) {
-            .about-layout {
+            .about-grid {
               grid-template-columns: 1fr;
-              gap: 40px;
+              gap: 48px;
             }
-            .about-left-col {
-              position: static;
-              text-align: center;
-            }
-            .about-left-col .about-label-row {
-              justify-content: center;
-            }
-            .about-left-col h2 {
-              font-size: clamp(1.7rem, 5vw, 2.6rem) !important;
-            }
-            .about-left-col p {
-              max-width: 560px;
-              margin-left: auto;
-              margin-right: auto;
-            }
-            .about-actions-row {
-              justify-content: center !important;
-            }
+            .about-left { text-align: center; }
+            .about-left .about-label-row { justify-content: center; }
+            .about-left p { margin-left: auto; margin-right: auto; }
+            .about-cta-row { justify-content: center !important; }
           }
           @media (max-width: 480px) {
-            .about-layout {
-              gap: 32px;
-            }
-            .about-card {
-              padding: 24px !important;
-            }
+            .about-grid { gap: 36px; }
+            .about-stats-row { gap: 10px; }
+            .highlight-card { padding: 20px !important; }
           }
         `}</style>
 
-        <div className="about-layout">
-          {/* ─────────────────── LEFT: BIO ─────────────────── */}
-          <div className="about-left-col">
-            <motion.div variants={fadeUp}>
-              {/* Label */}
-              <div className="about-label-row" style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "20px" }}>
-                <RiSparklingFill size={14} style={{ color: "var(--neon)" }} />
-                <span className="section-label" style={{ margin: 0 }}>About Me</span>
-              </div>
+        <div className="about-grid">
+          {/* ─────────── LEFT COLUMN ─────────── */}
+          <motion.div variants={slideInLeft} className="about-left">
+            {/* Label */}
+            <div className="about-label-row" style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "20px" }}>
+              <RiSparklingFill size={14} style={{ color: "var(--neon)" }} />
+              <span className="section-label" style={{ margin: 0 }}>About Me</span>
+            </div>
 
-              {/* Headline */}
-              <h2
-                style={{
-                  fontSize: "clamp(2rem, 4.2vw, 3.2rem)",
-                  fontFamily: "var(--font-outfit), sans-serif",
-                  fontWeight: 800,
-                  lineHeight: 1.18,
-                  letterSpacing: "-0.03em",
-                  color: "var(--text-primary)",
-                  marginBottom: "28px",
-                }}
-              >
-                Building the future,{" "}
-                <span className="gradient-text">one system at a time.</span>
-              </h2>
+            {/* Headline */}
+            <h2
+              style={{
+                fontSize: "clamp(2rem, 4.2vw, 3.2rem)",
+                fontFamily: "var(--font-outfit), sans-serif",
+                fontWeight: 800,
+                lineHeight: 1.15,
+                letterSpacing: "-0.03em",
+                color: "var(--text-primary)",
+                marginBottom: "24px",
+              }}
+            >
+              Crafting intelligent{" "}
+              <span className="gradient-text">digital experiences.</span>
+            </h2>
 
-              {/* Bio paragraphs */}
-              <p
-                style={{
-                  fontSize: "1.05rem",
-                  lineHeight: 1.82,
-                  color: "var(--text-secondary)",
-                  fontFamily: "var(--font-jakarta), sans-serif",
-                  marginBottom: "18px",
-                }}
-              >
-                I'm{" "}
-                <strong style={{ color: "var(--cyan)" }}>Nithwin V M</strong>, a
-                Full Stack & Generative AI Software Engineer based in India.
-                I'm passionate about crafting intelligent, high-performance
-                web platforms that feel as good as they perform.
-              </p>
-              <p
-                style={{
-                  fontSize: "0.98rem",
-                  lineHeight: 1.82,
-                  color: "var(--text-muted)",
-                  fontFamily: "var(--font-jakarta), sans-serif",
-                  marginBottom: "40px",
-                }}
-              >
-                Whether I'm designing a Generative AI pipeline, shipping a
-                full-stack product, or solving a hard LeetCode problem at
-                midnight — I bring the same obsessive focus to clean,
-                modular code that scales under real-world pressure.
-              </p>
+            {/* Bio — concise */}
+            <p
+              style={{
+                fontSize: "1.05rem",
+                lineHeight: 1.8,
+                color: "var(--text-secondary)",
+                fontFamily: "var(--font-jakarta), sans-serif",
+                maxWidth: "520px",
+                marginBottom: "32px",
+              }}
+            >
+              I'm <strong style={{ color: "var(--cyan)" }}>Nithwin V M</strong>, a Full Stack & Generative AI Engineer based in India. I build high-performance web platforms and intelligent AI systems that solve real problems.
+            </p>
 
-              {/* Location pill + Download CTA */}
-              <div className="about-actions-row" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "16px" }}>
-                <div
+            {/* Stats row */}
+            <div className="about-stats-row" style={{ marginBottom: "32px" }}>
+              {stats.map(({ value, label }) => (
+                <motion.div
+                  key={label}
+                  whileHover={{ y: -4, borderColor: "rgba(123,47,255,0.35)" }}
                   style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    padding: "9px 18px",
-                    borderRadius: "50px",
-                    background: "rgba(0,212,255,0.08)",
-                    border: "1px solid rgba(0,212,255,0.2)",
-                    fontSize: "0.88rem",
-                    fontFamily: "var(--font-mono), monospace",
-                    fontWeight: 600,
-                    color: "var(--cyan)",
-                  }}
-                >
-                  <RiMapPinLine size={15} />
-                  India // Open to Global Remote
-                </div>
-
-                <motion.a
-                  href="/assets/resume.pdf"
-                  download
-                  whileHover={{ scale: 1.04, y: -2 }}
-                  whileTap={{ scale: 0.96 }}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    padding: "10px 22px",
-                    borderRadius: "50px",
-                    fontSize: "0.92rem",
-                    fontFamily: "var(--font-jakarta), sans-serif",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                    color: "var(--text-primary)",
+                    padding: "20px 16px",
+                    borderRadius: "16px",
                     background: "var(--bg-card)",
                     border: "1px solid var(--border)",
-                    boxShadow: "var(--shadow-card)",
-                    transition: "all 0.3s ease",
+                    textAlign: "center",
+                    transition: "all 0.35s ease",
                   }}
                 >
-                  <RiDownloadLine size={16} />
-                  Resume
-                </motion.a>
-              </div>
-            </motion.div>
-          </div>
+                  <p className="gradient-text" style={{ fontSize: "1.6rem", fontFamily: "var(--font-syne)", fontWeight: 800, lineHeight: 1, marginBottom: "6px" }}>
+                    {value}
+                  </p>
+                  <p style={{ fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--text-muted)" }}>
+                    {label}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
 
-          {/* ─────────────────── RIGHT: HIGHLIGHT CARDS ─────────────────── */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            {/* CTA Row */}
+            <div className="about-cta-row" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "14px" }}>
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "9px 18px",
+                  borderRadius: "50px",
+                  background: "rgba(0,212,255,0.08)",
+                  border: "1px solid rgba(0,212,255,0.2)",
+                  fontSize: "0.85rem",
+                  fontFamily: "var(--font-mono), monospace",
+                  fontWeight: 600,
+                  color: "var(--cyan)",
+                }}
+              >
+                <RiMapPinLine size={14} />
+                India // Open to Remote
+              </div>
+
+              <motion.a
+                href="/assets/resume.pdf"
+                download
+                whileHover={{ scale: 1.04, y: -2 }}
+                whileTap={{ scale: 0.96 }}
+                className="btn-outline"
+                style={{
+                  padding: "9px 22px",
+                  fontSize: "0.88rem",
+                  borderRadius: "50px",
+                  gap: "8px",
+                }}
+              >
+                <RiDownloadLine size={16} />
+                Resume
+              </motion.a>
+            </div>
+          </motion.div>
+
+          {/* ─────────── RIGHT COLUMN ─────────── */}
+          <motion.div variants={slideInRight} className="about-highlights-col">
             {highlights.map(({ icon: Icon, color, title, desc }, i) => (
               <motion.div
                 key={title}
-                variants={fadeUp}
-                custom={i}
-                className="about-card"
-                whileHover={{ y: -5, borderColor: color }}
+                whileHover={{ y: -5, borderColor: color, boxShadow: `0 12px 40px ${color}18` }}
+                className="highlight-card"
                 style={{
-                  padding: "32px",
-                  borderRadius: "24px",
+                  padding: "28px",
+                  borderRadius: "20px",
                   background: "var(--bg-card)",
                   border: "1px solid var(--border)",
-                  boxShadow: "var(--shadow-card)",
                   position: "relative",
                   overflow: "hidden",
-                  transition: "border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease",
+                  transition: "all 0.35s ease",
                   cursor: "default",
                 }}
               >
-                {/* Accent top line */}
+                {/* Accent line */}
                 <div
                   style={{
                     position: "absolute",
                     top: 0,
                     left: 0,
                     right: 0,
-                    height: "3px",
+                    height: "2px",
                     background: `linear-gradient(90deg, ${color}, transparent)`,
                   }}
                 />
 
-                {/* Icon + Title row */}
-                <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "16px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "12px" }}>
                   <div
                     style={{
-                      width: "48px",
-                      height: "48px",
-                      borderRadius: "14px",
-                      background: `${color}18`,
-                      border: `1px solid ${color}35`,
+                      width: "46px",
+                      height: "46px",
+                      borderRadius: "13px",
+                      background: `${color}15`,
+                      border: `1px solid ${color}30`,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       flexShrink: 0,
                     }}
                   >
-                    <Icon size={24} style={{ color }} />
+                    <Icon size={22} style={{ color }} />
                   </div>
                   <h3
                     style={{
-                      fontSize: "1.18rem",
+                      fontSize: "1.12rem",
                       fontFamily: "var(--font-outfit), sans-serif",
                       fontWeight: 700,
                       color: "var(--text-primary)",
-                      letterSpacing: "-0.015em",
                       margin: 0,
                     }}
                   >
@@ -285,11 +257,10 @@ const About = () => {
                   </h3>
                 </div>
 
-                {/* Description */}
                 <p
                   style={{
-                    fontSize: "0.97rem",
-                    lineHeight: 1.78,
+                    fontSize: "0.92rem",
+                    lineHeight: 1.7,
                     color: "var(--text-muted)",
                     fontFamily: "var(--font-jakarta), sans-serif",
                     margin: 0,
@@ -299,7 +270,7 @@ const About = () => {
                 </p>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </SectionReveal>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Unbounded:wght@700;800;900&family=Bricolage+Grotesque:opsz,wght@12..96,700..900&family=Montserrat:wght@800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 /* ============================= THEME TOKENS ============================= */
@@ -14,15 +14,12 @@
   --color-text-primary: #F8F8FF;
   --color-text-secondary: #A0A0B8;
   --color-text-muted: #606078;
-  --font-syne: "Syne", sans-serif;
+  --font-syne: "Poppins", sans-serif;
   --font-inter: "Inter", sans-serif;
   --font-space: "Space Grotesk", sans-serif;
   --font-jakarta: "Plus Jakarta Sans", sans-serif;
-  --font-outfit: "Outfit", sans-serif;
+  --font-outfit: "Poppins", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
-  --font-unbounded: "Unbounded", sans-serif;
-  --font-bricolage: "Bricolage Grotesque", sans-serif;
-  --font-montserrat: "Montserrat", sans-serif;
 }
 
 /* ============================= ROOT VARIABLES ============================= */
@@ -74,6 +71,8 @@ html {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -107,8 +106,14 @@ body {
 
 /* ============================= SECTION WRAPPER ============================= */
 .section-padding {
-  padding-top: 100px;
-  padding-bottom: 100px;
+  padding-top: 96px;
+  padding-bottom: 96px;
+}
+@media (max-width: 768px) {
+  .section-padding {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
 }
 
 /* ============================= GLASS CARD ============================= */
@@ -386,4 +391,12 @@ body {
 }
 .light-theme .btn-outline {
   border-color: rgba(123, 47, 255, 0.4);
+}
+
+/* ============================= SMOOTH SCROLL UTILITIES ============================= */
+.will-change-transform {
+  will-change: transform;
+}
+.will-change-opacity {
+  will-change: opacity;
 }

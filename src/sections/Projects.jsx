@@ -270,22 +270,76 @@ const MobileGrid = ({ projects }) => {
   );
 };
 
+const INITIAL_PROJECTS = [
+  {
+    "id": "4RfZQgcPLhNl4nqTLUry",
+    "imageUrl": "https://raw.githubusercontent.com/Nithwin/windmist/main/images/Gemini_Generated_Image_4fucu04fucu04fuc.png",
+    "description": "Built WindMist, an open-source AI coding assistant for the terminal in Go with a modular provider architecture. Developed repository-aware file editing tools, streaming AI responses, and intelligent context retrieval.",
+    "title": "WindMist — Open-Source AI Coding Assistant",
+    "demoUrl": "https://windmist.vercel.app",
+    "githubUrl": "https://github.com/Nithwin/windmist",
+    "tags": ["Go", "AI", "CLI", "Docker", "GitHub Actions"]
+  },
+  {
+    "id": "8PoIL7UQ62xfD7A9Q3mj",
+    "demoUrl": null,
+    "description": "Built a full-stack online examination platform serving 400+ students, supporting reliable real-time examinations for 80+ concurrent users. Implemented hybrid code execution with client-side offloading and 11 browser-based anti-cheating mechanisms.",
+    "title": "ShadowCoders - Scalable Examination Platform",
+    "imageUrl": null,
+    "tags": ["Next.js", "Express.js", "PostgreSQL", "Socket.IO", "Prisma"],
+    "githubUrl": "https://github.com/Nithwin/ShadowCoders"
+  },
+  {
+    "id": "BPMdm9Qxi7kQjgS6YKQP",
+    "githubUrl": "https://github.com/Nithwin/SICD",
+    "tags": ["Python", "YOLOv8", "Computer Vision", "Flask", "OpenCV"],
+    "description": "Designed a customized YOLOv8 architecture for accurate real-time student ID card detection using CBAM attention and small-object detection enhancements. Published the research as 'CA-YOLOv8' in IEEE Xplore.",
+    "imageUrl": "https://i.ibb.co/jkvzdyV9/Screenshot-From-2026-05-04-22-42-15.png",
+    "title": "Smart ID Card Detection - CA-YOLOv8",
+    "demoUrl": "https://sicd.vercel.app"
+  },
+  {
+    "id": "Ey7LGj5URwZiD0PHNe9Q",
+    "demoUrl": null,
+    "description": "Developed a real-time terminal-based chat application using TCP/IP socket programming. Implemented a client-server architecture supporting reliable bidirectional communication over raw sockets.",
+    "imageUrl": null,
+    "title": "Terminal TCP/IP Chat Network",
+    "tags": ["C++", "Socket Programming", "TCP/IP", "Linux"],
+    "githubUrl": "https://github.com/Nithwin/Cpp_Projects"
+  },
+  {
+    "id": "NmX1klXElPxVLHU8CprT",
+    "title": "AmmuBus - Tourist Bus Booking Platform",
+    "imageUrl": "https://i.ibb.co/5ghkHcn8/Screenshot-From-2026-07-19-15-29-24.png",
+    "description": "A comprehensive web platform for booking tourist buses across 126+ cities in India. Features a vast network of bus partners and verified operators for seamless group travels.",
+    "demoUrl": "http://ammubus.in/",
+    "githubUrl": "https://github.com/Nithwin/ammubus-web",
+    "tags": ["Web App", "React", "Travel", "Booking"]
+  }
+];
+
 /* ─────────────────── MAIN SECTION ─────────────────── */
 const Projects = () => {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState(INITIAL_PROJECTS);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
+        const cached = localStorage.getItem("cached_projects");
+        if (cached) {
+          setProjects(JSON.parse(cached));
+        }
+
         const snap = await getDocs(collection(db, "projects"));
-        setProjects(snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+        const data = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        
+        if (data.length > 0) {
+          setProjects(data);
+          localStorage.setItem("cached_projects", JSON.stringify(data));
+        }
       } catch (err) {
         console.error("Error fetching projects:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
       }
     };
     fetchProjects();
@@ -307,19 +361,8 @@ const Projects = () => {
           </p>
         </motion.div>
 
-        {/* Loading spinner */}
-        {loading && (
-          <div style={{ display: "flex", justifyContent: "center", padding: "80px 0" }}>
-            <motion.div
-              style={{ width: "44px", height: "44px", borderRadius: "50%", border: "3px solid rgba(123,47,255,0.15)", borderTopColor: "var(--purple)" }}
-              animate={{ rotate: 360 }}
-              transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-            />
-          </div>
-        )}
-
         {/* Error state */}
-        {!loading && error && (
+        {error && (
           <motion.div variants={fadeUp} className="glass-card" style={{ padding: "48px", textAlign: "center", borderRadius: "24px" }}>
             <RiStackLine size={44} style={{ margin: "0 auto 16px", color: "var(--text-muted)", opacity: 0.4 }} />
             <p style={{ color: "var(--text-muted)", marginBottom: "8px" }}>Couldn't load projects right now.</p>
@@ -328,7 +371,7 @@ const Projects = () => {
         )}
 
         {/* Empty state */}
-        {!loading && !error && projects.length === 0 && (
+        {!error && projects.length === 0 && (
           <div style={{ textAlign: "center", padding: "80px 0", color: "var(--text-muted)" }}>
             <RiStackLine size={44} style={{ margin: "0 auto 16px", opacity: 0.3 }} />
             <p>No projects found. Check back soon!</p>
@@ -336,7 +379,7 @@ const Projects = () => {
         )}
 
         {/* Desktop: horizontal scroll carousel (hidden on mobile via CSS) */}
-        {!loading && !error && projects.length > 0 && (
+        {!error && projects.length > 0 && (
           <>
             <motion.div variants={fadeUp} className="projects-desktop-carousel">
               <DesktopCarousel projects={projects} />

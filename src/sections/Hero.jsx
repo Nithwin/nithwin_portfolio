@@ -477,7 +477,7 @@ const Hero = () => {
                     width: "100%",
                     height: "100%",
                     objectFit: "contain",
-                    transform: "scale(1.02)",
+                    transform: isDark ? "scale(1.02)" : "scale(1.3)",
                     transition: "transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
                   }}
                 />
