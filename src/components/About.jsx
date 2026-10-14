@@ -48,13 +48,22 @@ export default function About() {
           ((window.scrollY / maxS) * 100).toFixed(1) + "%";
       }
 
+      const containerRect = container.getBoundingClientRect();
       const sectionRect = aboutSection
         ? aboutSection.getBoundingClientRect()
-        : container.getBoundingClientRect();
-      const topOffset = 96;
-      const scrolled = topOffset - sectionRect.top;
-      const scrollRange = Math.max(200, sectionRect.height - window.innerHeight);
-      const prog = Math.min(1, Math.max(0, scrolled / scrollRange));
+        : containerRect;
+
+      // Reveal starts as soon as manifesto reaches 2/3 of the viewport height
+      const triggerLine = window.innerHeight * (2 / 3);
+      const scrolled = triggerLine - containerRect.top;
+      const totalRange = Math.max(
+        260,
+        sectionRect.height -
+          (containerRect.top - sectionRect.top) -
+          (window.innerHeight - triggerLine) +
+          60
+      );
+      const prog = Math.min(1, Math.max(0, scrolled / totalRange));
 
       const litCount = Math.floor(prog * wordSpans.length);
       wordSpans.forEach((sp, idx) => {
@@ -123,7 +132,7 @@ export default function About() {
               <div className="timeline-card">
                 <div className="timeline-meta">
                   <span className="timeline-year">2022 — 2026</span>
-                  <span className="timeline-badge">FOUNDATION</span>
+                  <span className="timeline-badge">EDUCATION</span>
                 </div>
                 <h3 className="timeline-title">Nandha Engineering College</h3>
                 <p className="timeline-desc">
