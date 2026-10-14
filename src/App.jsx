@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import "./styles/globals.css";
 import { HERO_ART } from "./data/heroArt";
 import { PROJECTS } from "./data/projectsData";
+import { FaGithub, FaBars, FaTimes } from "react-icons/fa";
 
 export default function App() {
   const [theme, setTheme] = useState("dark");
@@ -9,6 +10,8 @@ export default function App() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeModalProject, setActiveModalProject] = useState(null);
   const [heroMode, setHeroMode] = useState("liquid");
+  const [activeNav, setActiveNav] = useState("top");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const darkImgSrc = useRef(HERO_ART.dark);
   const lightImgSrc = useRef(HERO_ART.light);
@@ -22,6 +25,32 @@ export default function App() {
     const nextTheme = theme === "dark" ? "light" : "dark";
     setTheme(nextTheme);
     document.documentElement.setAttribute("data-theme", nextTheme);
+  };
+
+  // Active section scroll spy
+  useEffect(() => {
+    const sectionIds = ["top", "about", "work", "neural-lab", "skills", "footer"];
+    const onScroll = () => {
+      const scrollPos = window.scrollY + 180;
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPos >= top && scrollPos < top + height) {
+            setActiveNav(id);
+          }
+        }
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const scrollToSection = (id) => {
+    setMobileMenuOpen(false);
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
   /* ========================================================================
@@ -212,44 +241,30 @@ export default function App() {
     function renderLogo() {
       t += 1;
       ctx.clearRect(0, 0, W, H);
-      ctx.fillStyle = "#0D0D12";
-      ctx.fillRect(0, 0, W, H);
 
-      ctx.save();
-      ctx.font = "900 38px 'Inter', sans-serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-
-      ctx.shadowColor = "#FF3B1D";
-      ctx.shadowBlur = 14;
-      ctx.fillStyle = "#FF3B1D";
-      ctx.fillText("NITHWIN", W * 0.5, H * 0.54);
-
-      ctx.shadowBlur = 0;
-      ctx.strokeStyle = "#FFF5EE";
-      ctx.lineWidth = 1.1;
-      ctx.strokeText("NITHWIN", W * 0.5, H * 0.54);
-      ctx.restore();
+      const isL = themeRef.current === "light";
+      const boltColor = isL ? "#0038FF" : "#FF3B1D";
+      const coreColor = isL ? "#FFFFFF" : "#FFF7F2";
 
       if (t % 2 === 0) {
-        const sx = 34 + Math.random() * 60;
-        const ex = W - 34 - Math.random() * 60;
+        const sx = 20 + Math.random() * 60;
+        const ex = W - 20 - Math.random() * 60;
         drawElectricBolt(
           sx,
-          22 + Math.random() * 24,
+          18 + Math.random() * 26,
           ex,
-          22 + Math.random() * 28,
+          18 + Math.random() * 28,
           18,
-          "#FF3B1D",
+          boltColor,
           2.2
         );
         drawElectricBolt(
           sx,
-          24 + Math.random() * 22,
+          20 + Math.random() * 24,
           ex,
-          24 + Math.random() * 24,
-          12,
-          "#FFF7F2",
+          20 + Math.random() * 26,
+          10,
+          coreColor,
           1.1
         );
       }
@@ -985,7 +1000,19 @@ export default function App() {
            ======================================================================== */}
       <header className="site-header">
         <div className="header-inner">
-          <a href="#top" className="lightning-brand-pill" data-cursor="LIGHTNING">
+          <a
+            href="#top"
+            className="lightning-brand-pill"
+            data-cursor="LIGHTNING"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection("top");
+            }}
+          >
+            <span className="logo-status-dot" title="Available for opportunities" />
+            <span className="logo-text">
+              NITHWIN<span className="logo-dot">.</span>
+            </span>
             <canvas
               id="logo-lightning-canvas"
               width="368"
@@ -994,27 +1021,87 @@ export default function App() {
           </a>
 
           <nav className="nav-center" aria-label="Primary Navigation">
-            <a href="#top" className="nav-link active" data-cursor="HOME">
+            <a
+              href="#top"
+              className={`nav-link ${activeNav === "top" ? "active" : ""}`}
+              data-cursor="HOME"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("top");
+              }}
+            >
               Home
             </a>
-            <a href="#about" className="nav-link" data-cursor="STORY">
+            <a
+              href="#about"
+              className={`nav-link ${activeNav === "about" ? "active" : ""}`}
+              data-cursor="STORY"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("about");
+              }}
+            >
               About Story
             </a>
-            <a href="#work" className="nav-link" data-cursor="PROJECTS">
+            <a
+              href="#work"
+              className={`nav-link ${activeNav === "work" ? "active" : ""}`}
+              data-cursor="PROJECTS"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("work");
+              }}
+            >
               Projects
             </a>
-            <a href="#neural-lab" className="nav-link" data-cursor="3D AI">
+            <a
+              href="#neural-lab"
+              className={`nav-link ${activeNav === "neural-lab" ? "active" : ""}`}
+              data-cursor="3D AI"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("neural-lab");
+              }}
+            >
               3D Neural Lab
             </a>
-            <a href="#skills" className="nav-link" data-cursor="SKILLS">
+            <a
+              href="#skills"
+              className={`nav-link ${activeNav === "skills" ? "active" : ""}`}
+              data-cursor="SKILLS"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("skills");
+              }}
+            >
               Skills &amp; GitHub
             </a>
-            <a href="#footer" className="nav-link" data-cursor="CONTACT">
+            <a
+              href="#footer"
+              className={`nav-link ${activeNav === "footer" ? "active" : ""}`}
+              data-cursor="CONTACT"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("footer");
+              }}
+            >
               Contact
             </a>
           </nav>
 
           <div className="header-right">
+            <a
+              href="https://github.com/Nithwin"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pill-btn nav-github-btn"
+              data-cursor="GITHUB"
+              title="GitHub Profile"
+            >
+              <FaGithub size={13} />
+              <span>GitHub</span>
+            </a>
+
             <button
               id="theme-toggle"
               onClick={handleToggleTheme}
@@ -1026,9 +1113,64 @@ export default function App() {
                 {theme === "dark" ? "Light Mode" : "Dark Mode"}
               </span>
             </button>
+
+            <button
+              className="pill-btn mobile-menu-btn"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <FaTimes size={14} /> : <FaBars size={14} />}
+            </button>
           </div>
         </div>
         <div className="scroll-bar" id="scroll-bar"></div>
+
+        {mobileMenuOpen && (
+          <div className="mobile-nav-drawer">
+            <a
+              href="#top"
+              className={`mobile-nav-link ${activeNav === "top" ? "active" : ""}`}
+              onClick={() => scrollToSection("top")}
+            >
+              01 // Home
+            </a>
+            <a
+              href="#about"
+              className={`mobile-nav-link ${activeNav === "about" ? "active" : ""}`}
+              onClick={() => scrollToSection("about")}
+            >
+              02 // About Story
+            </a>
+            <a
+              href="#work"
+              className={`mobile-nav-link ${activeNav === "work" ? "active" : ""}`}
+              onClick={() => scrollToSection("work")}
+            >
+              03 // Projects
+            </a>
+            <a
+              href="#neural-lab"
+              className={`mobile-nav-link ${activeNav === "neural-lab" ? "active" : ""}`}
+              onClick={() => scrollToSection("neural-lab")}
+            >
+              04 // 3D Neural Lab
+            </a>
+            <a
+              href="#skills"
+              className={`mobile-nav-link ${activeNav === "skills" ? "active" : ""}`}
+              onClick={() => scrollToSection("skills")}
+            >
+              05 // Skills &amp; GitHub
+            </a>
+            <a
+              href="#footer"
+              className={`mobile-nav-link ${activeNav === "footer" ? "active" : ""}`}
+              onClick={() => scrollToSection("footer")}
+            >
+              06 // Contact
+            </a>
+          </div>
+        )}
       </header>
 
       <main className="container" id="top">
@@ -1038,18 +1180,19 @@ export default function App() {
         <section className="hero-section">
           <div className="hero-grid">
             <div>
-              <span className="eyebrow">
+              <div className="eyebrow hero-eyebrow">
+                <span className="eyebrow-indicator" />
                 AI / ML · LLM &amp; GENAI · C++20 SYSTEMS · GO BACKEND
-              </span>
+              </div>
               <h1 className="hero-headline">
-                Engineering <span className="accent-text">GenAI</span> &amp; C++
-                Realities.
+                Engineering <span className="accent-text">GenAI</span> &amp;{" "}
+                <span className="accent-text">C++</span> Realities.
               </h1>
               <p className="hero-subtitle">
                 I'm <strong>Nithwin V M</strong> — engineering{" "}
                 <strong>1M-token Go AI CLI agents (WindMist)</strong>,{" "}
-                <strong>C++20 kernel memory allocators</strong>, distributed log
-                brokers, and{" "}
+                <strong>C++20 kernel memory allocators</strong>,{" "}
+                <strong>distributed log brokers</strong>, and{" "}
                 <strong>IEEE-published computer vision</strong>.
               </p>
 
@@ -1059,11 +1202,15 @@ export default function App() {
                   <span>→</span>
                 </a>
                 <a
-                  href="#neural-lab"
+                  href="https://github.com/Nithwin"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="btn-secondary"
-                  data-cursor="3D TRAINER"
+                  data-cursor="GITHUB"
+                  style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
                 >
-                  <span>3D Neural Network Lab</span>
+                  <FaGithub size={16} />
+                  <span>GitHub Profile ↗</span>
                 </a>
               </div>
 
