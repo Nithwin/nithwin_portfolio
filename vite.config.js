@@ -13,6 +13,7 @@ export default defineConfig({
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
           'firebase-vendor': ['firebase/app', 'firebase/firestore'],
+          'three-vendor': ['three'],
         },
       },
     },
