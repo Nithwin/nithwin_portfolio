@@ -29,8 +29,18 @@
     <meta name="twitter:description" content="Building high-performance web platforms and intelligent AI systems." />
     <meta name="twitter:image" content="./assets/about.png" />
 
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#0A0A12" />
+    <!-- Theme Persistence Immediately in Head (prevents FOUC on refresh) -->
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem("portfolio-theme") || localStorage.getItem("nithwin_theme");
+          if (saved === "light" || saved === "dark") {
+            document.documentElement.setAttribute("data-theme", saved);
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <meta name="theme-color" content="#070709" />
     <meta name="color-scheme" content="dark light" />
 
     <!-- Preconnect to Google Fonts -->

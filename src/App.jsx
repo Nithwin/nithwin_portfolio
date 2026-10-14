@@ -5,7 +5,23 @@ import { PROJECTS } from "./data/projectsData";
 import { FaGithub, FaBars, FaTimes } from "react-icons/fa";
 
 export default function App() {
-  const [theme, setTheme] = useState("dark");
+  const getInitialTheme = () => {
+    try {
+      const saved =
+        localStorage.getItem("portfolio-theme") ||
+        localStorage.getItem("nithwin_theme");
+      if (saved === "light" || saved === "dark") return saved;
+      if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: light)").matches
+      ) {
+        return "light";
+      }
+    } catch (e) {}
+    return "dark";
+  };
+
+  const [theme, setTheme] = useState(getInitialTheme);
   const [sliderIndex, setSliderIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeModalProject, setActiveModalProject] = useState(null);
@@ -17,8 +33,17 @@ export default function App() {
   const lightImgSrc = useRef(HERO_ART.light);
   const heroModeRef = useRef("liquid");
   heroModeRef.current = heroMode;
-  const themeRef = useRef("dark");
+  const themeRef = useRef(getInitialTheme());
   themeRef.current = theme;
+
+  // Sync initial theme with DOM & localStorage
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    try {
+      localStorage.setItem("portfolio-theme", theme);
+      localStorage.setItem("nithwin_theme", theme);
+    } catch (e) {}
+  }, [theme]);
 
   // Toggle Dark / Light Theme with Radial Circular Wipe Transition
   const handleToggleTheme = (e) => {
@@ -28,6 +53,10 @@ export default function App() {
       setTheme(nextTheme);
       themeRef.current = nextTheme;
       document.documentElement.setAttribute("data-theme", nextTheme);
+      try {
+        localStorage.setItem("portfolio-theme", nextTheme);
+        localStorage.setItem("nithwin_theme", nextTheme);
+      } catch (e) {}
     };
 
     // If user prefers reduced motion or browser lacks View Transitions
