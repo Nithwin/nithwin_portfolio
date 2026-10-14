@@ -286,17 +286,20 @@ export default function App() {
       ctx.fillStyle = "#07070A";
       ctx.fillRect(0, 0, W, H);
 
-      // Atmospheric swirling nebula clouds
-      ctx.fillStyle = isL
-        ? "rgba(10, 20, 45, 0.45)"
-        : "rgba(18, 17, 24, 0.45)";
-      for (let i = 0; i < 6; i++) {
-        const rx = (i / 5) * W;
-        const ry = i % 2 === 0 ? H * 0.22 : H * 0.75;
-        ctx.beginPath();
-        ctx.arc(rx, ry, 240, 0, Math.PI * 2);
-        ctx.fill();
+      // Clean architectural hairline grid (replaces circular blobs)
+      const gridSize = 80;
+      ctx.strokeStyle = `rgba(255, 255, 255, ${0.02 + flashAlpha * 0.04})`;
+      ctx.lineWidth = 0.75;
+      ctx.beginPath();
+      for (let x = 0; x < W; x += gridSize) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, H);
       }
+      for (let y = 0; y < H; y += gridSize) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+      }
+      ctx.stroke();
 
       // Theme-tinted atmospheric storm flash
       if (flashAlpha > 0.01) {
