@@ -53,52 +53,6 @@ export default function App() {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
-  /* ========================================================================
-     1. CUSTOM MAGNETIC CURSOR
-     ======================================================================== */
-  useEffect(() => {
-    const dot = document.getElementById("cursor-dot");
-    const ring = document.getElementById("cursor-ring");
-    const txt = document.getElementById("cursor-text");
-    if (!dot || !ring || !txt) return;
-
-    let mx = window.innerWidth / 2,
-      my = window.innerHeight / 2,
-      rx = mx,
-      ry = my;
-    let animId;
-
-    const onMouseMove = (e) => {
-      mx = e.clientX;
-      my = e.clientY;
-      dot.style.left = mx + "px";
-      dot.style.top = my + "px";
-
-      const el = e.target.closest("[data-cursor]");
-      if (el) {
-        ring.classList.add("active");
-        txt.textContent = el.getAttribute("data-cursor");
-      } else {
-        ring.classList.remove("active");
-      }
-    };
-
-    const loop = () => {
-      rx += (mx - rx) * 0.22;
-      ry += (my - ry) * 0.22;
-      ring.style.left = rx + "px";
-      ring.style.top = ry + "px";
-      animId = requestAnimationFrame(loop);
-    };
-
-    window.addEventListener("mousemove", onMouseMove);
-    animId = requestAnimationFrame(loop);
-
-    return () => {
-      window.removeEventListener("mousemove", onMouseMove);
-      cancelAnimationFrame(animId);
-    };
-  }, []);
 
   /* ========================================================================
      2. CINEMATIC STORM CLOUD & LIGHTNING BREAK PRELOADER
@@ -211,68 +165,14 @@ export default function App() {
   }, []);
 
   /* ========================================================================
-     3. HEADER "NITHWIN" PILL WITH LIVE ORANGE LIGHTNING ARCS
+     3. HEADER "NITHWIN" LIGHTNING VIDEO LOGO
      ======================================================================== */
+  const videoLogoRef = useRef(null);
   useEffect(() => {
-    const canvas = document.getElementById("logo-lightning-canvas");
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    const W = canvas.width,
-      H = canvas.height;
-    let t = 0;
-    let rafId;
-
-    function drawElectricBolt(x1, y1, x2, y2, displace, col, width) {
-      if (displace < 2) {
-        ctx.strokeStyle = col;
-        ctx.lineWidth = width;
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
-        return;
-      }
-      const mx = (x1 + x2) * 0.5 + (Math.random() - 0.5) * displace;
-      const my = (y1 + y2) * 0.5 + (Math.random() - 0.5) * displace;
-      drawElectricBolt(x1, y1, mx, my, displace * 0.5, col, width);
-      drawElectricBolt(mx, my, x2, y2, displace * 0.5, col, width);
+    if (videoLogoRef.current) {
+      videoLogoRef.current.playbackRate = 0.5;
+      videoLogoRef.current.play().catch(() => {});
     }
-
-    function renderLogo() {
-      t += 1;
-      ctx.clearRect(0, 0, W, H);
-
-      const isL = themeRef.current === "light";
-      const boltColor = isL ? "#0038FF" : "#FF3B1D";
-      const coreColor = isL ? "#FFFFFF" : "#FFF7F2";
-
-      if (t % 2 === 0) {
-        const sx = 20 + Math.random() * 60;
-        const ex = W - 20 - Math.random() * 60;
-        drawElectricBolt(
-          sx,
-          18 + Math.random() * 26,
-          ex,
-          18 + Math.random() * 28,
-          18,
-          boltColor,
-          2.2
-        );
-        drawElectricBolt(
-          sx,
-          20 + Math.random() * 24,
-          ex,
-          20 + Math.random() * 26,
-          10,
-          coreColor,
-          1.1
-        );
-      }
-      rafId = requestAnimationFrame(renderLogo);
-    }
-    rafId = requestAnimationFrame(renderLogo);
-
-    return () => cancelAnimationFrame(rafId);
   }, []);
 
   /* ========================================================================
@@ -944,11 +844,6 @@ export default function App() {
 
   return (
     <>
-      {/* Custom Magnetic Cursor */}
-      <div id="cursor-dot"></div>
-      <div id="cursor-ring">
-        <span id="cursor-text">EXPLORE</span>
-      </div>
 
       {/* ========================================================================
            1. CINEMATIC STORM CLOUD & LIGHTNING BREAK PRELOADER
@@ -1003,21 +898,21 @@ export default function App() {
           <a
             href="#top"
             className="lightning-brand-pill"
-            data-cursor="LIGHTNING"
+            aria-label="Nithwin V M"
             onClick={(e) => {
               e.preventDefault();
               scrollToSection("top");
             }}
           >
-            <span className="logo-status-dot" title="Available for opportunities" />
-            <span className="logo-text">
-              NITHWIN<span className="logo-dot">.</span>
-            </span>
-            <canvas
-              id="logo-lightning-canvas"
-              width="368"
-              height="92"
-            ></canvas>
+            <video
+              ref={videoLogoRef}
+              src="./assets/nithwin.mp4"
+              loop
+              muted
+              autoPlay
+              playsInline
+              className="logo-lightning-video"
+            />
           </a>
 
           <nav className="nav-center" aria-label="Primary Navigation">
@@ -1181,7 +1076,6 @@ export default function App() {
           <div className="hero-grid">
             <div>
               <div className="eyebrow hero-eyebrow">
-                <span className="eyebrow-indicator" />
                 AI / ML · LLM &amp; GENAI · C++20 SYSTEMS · GO BACKEND
               </div>
               <h1 className="hero-headline">
