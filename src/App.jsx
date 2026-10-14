@@ -149,15 +149,18 @@ export default function App() {
     skipBtn.addEventListener("click", finishPreloader);
 
     const timer = setInterval(() => {
-      progress += 25;
-      if (Math.random() < 0.7) spawnBolt();
+      progress += Math.floor(Math.random() * 4) + 2; // Increments by 2-5%
+      if (Math.random() < 0.35) spawnBolt();
       if (progress >= 100) {
         progress = 100;
         clearInterval(timer);
-        setTimeout(finishPreloader, 80);
+        numEl.textContent = "100%";
+        spawnBolt();
+        setTimeout(finishPreloader, 300);
+      } else {
+        numEl.textContent = String(progress).padStart(2, "0") + "%";
       }
-      numEl.textContent = String(progress).padStart(2, "0") + "%";
-    }, 45);
+    }, 55);
 
     function renderStorm() {
       if (closed) return;
