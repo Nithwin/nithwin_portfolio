@@ -84,6 +84,9 @@ export default function Preloader({ theme }) {
       numEl.textContent = "100%";
       if (barFill) barFill.style.width = "100%";
       pre.classList.add("done");
+      setTimeout(() => {
+        if (pre) pre.style.display = "none";
+      }, 850);
     }
 
     skipBtn.addEventListener("click", finishPreloader);
@@ -205,6 +208,8 @@ export default function Preloader({ theme }) {
 
   return (
     <div id="storm-preloader" data-preloader-theme={theme}>
+      <div className="shutter-panel shutter-top"></div>
+      <div className="shutter-panel shutter-bottom"></div>
       <canvas id="storm-canvas"></canvas>
 
       <div className="preloader-ui preloader-top">

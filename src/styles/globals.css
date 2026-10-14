@@ -134,14 +134,14 @@
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background-color: #070709;
+      background-color: transparent;
       color: #F4F3EF;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       padding: 44px 56px;
-      transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.5s ease;
+      pointer-events: auto;
     }
 
     [data-theme="light"] #storm-preloader,
@@ -150,10 +150,46 @@
       --preloader-accent-rgb: 0, 56, 255;
     }
 
+    .shutter-panel {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 50.5%;
+      background-color: #070709;
+      z-index: 0;
+      transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+      will-change: transform;
+    }
+
+    .shutter-top {
+      top: 0;
+      border-bottom: 1.5px solid var(--preloader-accent);
+      box-shadow: 0 2px 14px rgba(var(--preloader-accent-rgb), 0.35);
+    }
+
+    .shutter-bottom {
+      bottom: 0;
+      border-top: 1.5px solid var(--preloader-accent);
+      box-shadow: 0 -2px 14px rgba(var(--preloader-accent-rgb), 0.35);
+    }
+
     #storm-preloader.done {
-      transform: translateY(-102%);
-      opacity: 0;
       pointer-events: none;
+    }
+
+    #storm-preloader.done .shutter-top {
+      transform: translateY(-100%);
+    }
+
+    #storm-preloader.done .shutter-bottom {
+      transform: translateY(100%);
+    }
+
+    #storm-preloader.done #storm-canvas,
+    #storm-preloader.done .preloader-center-box,
+    #storm-preloader.done .preloader-ui {
+      opacity: 0;
+      transition: opacity 0.24s ease;
     }
 
     #storm-canvas {
