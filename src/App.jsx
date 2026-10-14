@@ -221,6 +221,31 @@ export default function App() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Smooth scroll-reveal observer for non-About sections (re-animates on every scroll)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-revealed");
+          } else {
+            entry.target.classList.remove("is-revealed");
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: "0px 0px -30px 0px",
+        threshold: 0.05,
+      }
+    );
+
+    const elements = document.querySelectorAll(".reveal-item, .reveal-group");
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [projectsList, certsList, isExpanded, isCertsExpanded]);
+
   const scrollToSection = (id) => {
     setMobileMenuOpen(false);
     const el = document.getElementById(id);

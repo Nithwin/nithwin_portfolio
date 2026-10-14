@@ -18,7 +18,7 @@ export default function ContactInfo() {
   };
 
   return (
-    <div className="contact-telemetry-col">
+    <div className="contact-telemetry-col reveal-item">
       <div className="contact-hud-card">
         <span className="eyebrow" style={{ marginBottom: "2px" }}>
           EMAIL

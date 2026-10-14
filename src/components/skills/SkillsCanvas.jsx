@@ -157,7 +157,7 @@ export default function SkillsCanvas({ theme, isMobile }) {
   }, []);
 
   return (
-    <div className="floating-skills-card">
+    <div className="floating-skills-card reveal-item">
       <div>
         <div className="eyebrow" style={{ marginBottom: "6px" }}>
           CORE TECHNOLOGIES

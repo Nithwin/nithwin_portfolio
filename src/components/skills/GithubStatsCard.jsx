@@ -16,7 +16,7 @@ export default function GithubStatsCard() {
   }, []);
 
   return (
-    <div className="github-stats-card">
+    <div className="github-stats-card reveal-item">
       <div>
         <div className="eyebrow" style={{ marginBottom: "6px" }}>
           CODING PROFILES

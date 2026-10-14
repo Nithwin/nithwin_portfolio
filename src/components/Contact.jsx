@@ -5,7 +5,7 @@ import ContactForm from "./contact/ContactForm";
 export default function Contact() {
   return (
     <section className="section-block" id="contact">
-      <div className="section-header-row">
+      <div className="section-header-row reveal-item">
         <div>
           <span className="eyebrow">CONTACT</span>
           <h2 className="section-title">Let's Connect</h2>
@@ -16,7 +16,7 @@ export default function Contact() {
         </p>
       </div>
 
-      <div className="contact-grid">
+      <div className="contact-grid reveal-group">
         <ContactInfo />
         <ContactForm />
       </div>

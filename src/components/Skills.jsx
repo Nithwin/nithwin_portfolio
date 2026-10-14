@@ -21,7 +21,7 @@ export default function Skills({ theme }) {
       id="skills"
       style={{ borderBottom: "none" }}
     >
-      <div className="section-header-row">
+      <div className="section-header-row reveal-item">
         <div>
           <span className="eyebrow">TECH STACK &amp; PROFILES</span>
           <h2 className="section-title">Skills &amp; Activity</h2>
@@ -48,7 +48,7 @@ export default function Skills({ theme }) {
         </div>
       </div>
 
-      <div className="skills-and-github-grid">
+      <div className="skills-and-github-grid reveal-group">
         <SkillsCanvas theme={theme} isMobile={isMobile} />
         <GithubStatsCard />
       </div>

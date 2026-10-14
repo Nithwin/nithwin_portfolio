@@ -2807,3 +2807,62 @@
         padding: 16px 14px;
       }
     }
+
+    /* ==========================================================================
+       SCROLL-DRIVEN REVEAL ANIMATIONS (SMOOTH & STAGGERED FADE-GLIDE)
+       ========================================================================== */
+    .reveal-item {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal-item.is-revealed {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Staggered delay for child items inside a reveal-group */
+    .reveal-group > .reveal-item {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal-group.is-revealed > .reveal-item {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal-group.is-revealed > .reveal-item:nth-child(1) { transition-delay: 0.04s; }
+    .reveal-group.is-revealed > .reveal-item:nth-child(2) { transition-delay: 0.12s; }
+    .reveal-group.is-revealed > .reveal-item:nth-child(3) { transition-delay: 0.20s; }
+    .reveal-group.is-revealed > .reveal-item:nth-child(4) { transition-delay: 0.28s; }
+    .reveal-group.is-revealed > .reveal-item:nth-child(5) { transition-delay: 0.36s; }
+    .reveal-group.is-revealed > .reveal-item:nth-child(6) { transition-delay: 0.44s; }
+
+    /* Ensure card hover lift overrides reveal transform once revealed */
+    .work-card.is-revealed:hover,
+    .cert-card.is-revealed:hover,
+    .reveal-group.is-revealed > .work-card:hover,
+    .reveal-group.is-revealed > .cert-card:hover {
+      transform: translateY(-4px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal-item,
+      .reveal-group > .reveal-item {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+

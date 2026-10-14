@@ -49,7 +49,7 @@ export default function Certifications({
 
   return (
     <section className="section-block" id="certs">
-      <div className="section-header-row">
+      <div className="section-header-row reveal-item">
         <div>
           <span className="eyebrow">CREDENTIALS</span>
           <h2 className="section-title">Certifications</h2>
@@ -118,7 +118,9 @@ export default function Certifications({
         onTouchEnd={handleTouchEnd}
       >
         <div
-          className={`certs-track ${isCertsExpanded ? "expanded-grid" : ""}`}
+          className={`certs-track reveal-group ${
+            isCertsExpanded ? "expanded-grid" : ""
+          }`}
           style={{
             gridTemplateColumns: isCertsExpanded
               ? undefined
@@ -138,7 +140,7 @@ export default function Certifications({
           }}
         >
           {certsList.map((cert) => (
-            <article key={cert.id} className="cert-card">
+            <article key={cert.id} className="cert-card reveal-item">
               {cert.imageUrl ? (
                 <div className="cert-img-wrap">
                   <img

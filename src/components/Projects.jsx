@@ -151,7 +151,7 @@ export default function Projects({
 
   return (
     <section className="section-block" id="work">
-      <div className="section-header-row">
+      <div className="section-header-row reveal-item">
         <div>
           <span className="eyebrow">FEATURED WORK</span>
           <h2 className="section-title">Projects</h2>
@@ -211,7 +211,9 @@ export default function Projects({
         onTouchEnd={handleTouchEnd}
       >
         <div
-          className={`projects-track ${isExpanded ? "expanded-grid" : ""}`}
+          className={`projects-track reveal-group ${
+            isExpanded ? "expanded-grid" : ""
+          }`}
           style={{
             gridTemplateColumns: isExpanded
               ? undefined
@@ -233,7 +235,7 @@ export default function Projects({
           {projectsList.map((p, idx) => (
             <article
               key={idx}
-              className="work-card"
+              className="work-card reveal-item"
               data-cursor="CASE STUDY"
               onClick={() => onSelectProject(p)}
             >

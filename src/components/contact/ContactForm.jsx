@@ -59,7 +59,10 @@ export default function ContactForm() {
   };
 
   return (
-    <form className="contact-form-card" onSubmit={handleContactSubmit}>
+    <form
+      className="contact-form-card reveal-item"
+      onSubmit={handleContactSubmit}
+    >
       <div className="contact-form-row">
         <div className="contact-form-field">
           <label className="contact-form-label" htmlFor="contact-name">YOUR NAME *</label>
