@@ -2,32 +2,42 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" sizes="32x32" href="./assets/logo.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="./assets/logo.png" />
-    <link rel="apple-touch-icon" href="./assets/logo.png" />
+    <!-- Favicon & Brand Icons -->
+    <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Primary SEO -->
-    <title>Nithwin V M — Full Stack & Generative AI Engineer | Portfolio</title>
-    <meta name="description" content="Nithwin V M is a Full Stack & Generative AI Engineer from India, building high-performance web platforms, LLM-powered tools, and award-winning digital experiences with React, Next.js, Python, and Firebase." />
-    <meta name="keywords" content="Nithwin V M, Full Stack Developer, Generative AI Engineer, React Developer, Next.js, Flutter, Python, LLM, Portfolio, India, Software Engineer" />
+    <title>Nithwin V M — Full Stack &amp; AI Systems Engineer</title>
+    <meta name="description" content="Nithwin V M is a Full Stack & Generative AI Engineer from India, building high-performance systems in Go and C++20, LLM CLI agents, and award-winning digital experiences." />
+    <meta name="keywords" content="Nithwin V M, Full Stack Developer, Generative AI Engineer, C++20, Go, React, Next.js, LLM, CA-YOLOv8, IEEE Researcher, India, Software Engineer" />
     <meta name="author" content="Nithwin V M" />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://nithwin.dev" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://nithwin.site" />
 
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://nithwin.dev" />
+    <meta property="og:url" content="https://nithwin.site" />
     <meta property="og:title" content="Nithwin V M — Full Stack & Generative AI Engineer" />
-    <meta property="og:description" content="Building high-performance web platforms and intelligent AI systems. React, Next.js, Python, LLM pipelines." />
-    <meta property="og:image" content="./assets/about.png" />
+    <meta property="og:description" content="Building high-throughput Go APIs, C++20 systems, and intelligent GenAI agents. IEEE Xplore Published Researcher." />
+    <meta property="og:image" content="https://nithwin.site/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Nithwin V M - Full Stack & Generative AI Engineer" />
     <meta property="og:site_name" content="Nithwin V M Portfolio" />
+    <meta property="og:locale" content="en_US" />
 
-    <!-- Twitter -->
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@vmnithwin" />
+    <meta name="twitter:creator" content="@vmnithwin" />
     <meta name="twitter:title" content="Nithwin V M — Full Stack & Generative AI Engineer" />
-    <meta name="twitter:description" content="Building high-performance web platforms and intelligent AI systems." />
-    <meta name="twitter:image" content="./assets/about.png" />
+    <meta name="twitter:description" content="Building high-throughput Go backends, C++20 systems, and intelligent GenAI agents." />
+    <meta name="twitter:image" content="https://nithwin.site/assets/og-image.png" />
+    <meta name="twitter:image:alt" content="Nithwin V M Portfolio Preview" />
 
     <!-- Theme Persistence Immediately in Head (prevents FOUC on refresh) -->
     <script>
@@ -40,28 +50,63 @@
         } catch (e) {}
       })();
     </script>
-    <meta name="theme-color" content="#070709" />
+    <meta name="theme-color" content="#0A0A0C" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#FBF9F1" media="(prefers-color-scheme: light)" />
     <meta name="color-scheme" content="dark light" />
 
-    <!-- Preconnect to Google Fonts -->
+    <!-- Preconnect & Non-Blocking Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    />
 
-    <!-- JSON-LD Structured Data -->
+    <!-- JSON-LD Structured Data Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Nithwin V M",
-      "url": "https://nithwin.dev",
-      "jobTitle": "Full Stack & Generative AI Engineer",
-      "description": "Building high-performance web platforms and intelligent AI systems from India.",
-      "sameAs": [
-        "https://github.com/Nithwin",
-        "https://www.linkedin.com/in/nithwin-v-m-7b5b13252/",
-        "https://leetcode.com/u/vmnithwin/"
-      ],
-      "knowsAbout": ["React", "Next.js", "Python", "Generative AI", "LLM", "Flutter", "Firebase", "Node.js"]
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://nithwin.site/#person",
+          "name": "Nithwin V M",
+          "url": "https://nithwin.site",
+          "jobTitle": "Full Stack & Generative AI Engineer",
+          "description": "Crafting high-concurrency backends in Go and C++20, LLM CLI agents, and award-winning digital experiences from India.",
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "Nandha Engineering College"
+          },
+          "sameAs": [
+            "https://github.com/Nithwin",
+            "https://www.linkedin.com/in/nithwin-v-m-7b5b13252/",
+            "https://leetcode.com/u/vmnithwin/",
+            "https://medium.com/@vmnithwin"
+          ],
+          "knowsAbout": [
+            "C++20",
+            "Go",
+            "React",
+            "Next.js",
+            "Python",
+            "Generative AI",
+            "PyTorch",
+            "CA-YOLOv8",
+            "Docker",
+            "Firebase"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://nithwin.site/#website",
+          "url": "https://nithwin.site",
+          "name": "Nithwin V M Portfolio",
+          "publisher": {
+            "@id": "https://nithwin.site/#person"
+          }
+        }
+      ]
     }
     </script>
   </head>

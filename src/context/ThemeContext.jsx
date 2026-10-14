@@ -1,29 +1,57 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const ThemeContext = createContext();
+const getSystemDark = () => {
+  if (typeof document === 'undefined') return true;
+  const attr = document.documentElement.getAttribute('data-theme');
+  if (attr === 'light') return false;
+  if (attr === 'dark') return true;
+  try {
+    const saved = localStorage.getItem('portfolio-theme') || localStorage.getItem('nithwin_theme');
+    if (saved === 'light') return false;
+    if (saved === 'dark') return true;
+  } catch (e) {}
+  return true;
+};
+
+const defaultContext = {
+  isDark: true,
+  toggleTheme: () => {},
+};
+
+const ThemeContext = createContext(defaultContext);
 
 export const ThemeProvider = ({ children }) => {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(getSystemDark);
 
   useEffect(() => {
-    const saved = localStorage.getItem('portfolio-theme');
-    if (saved) setIsDark(saved === 'dark');
+    const syncTheme = () => {
+      const currentDark = document.documentElement.getAttribute('data-theme') !== 'light';
+      setIsDark(currentDark);
+    };
+
+    syncTheme();
+
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.type === 'attributes' && m.attributeName === 'data-theme') {
+          syncTheme();
+        }
+      }
+    });
+
+    observer.observe(document.documentElement, { attributes: true });
+    return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    // Apply class to <html> so it cascades everywhere
-    if (isDark) {
-      document.documentElement.classList.remove('light-theme');
-    } else {
-      document.documentElement.classList.add('light-theme');
-    }
-    document.documentElement.style.backgroundColor = isDark ? '#0A0A12' : '#F5F5FF';
-  }, [isDark]);
-
   const toggleTheme = () => {
-    setIsDark(prev => {
+    setIsDark((prev) => {
       const next = !prev;
-      localStorage.setItem('portfolio-theme', next ? 'dark' : 'light');
+      const themeStr = next ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', themeStr);
+      try {
+        localStorage.setItem('portfolio-theme', themeStr);
+        localStorage.setItem('nithwin_theme', themeStr);
+      } catch (e) {}
       return next;
     });
   };
@@ -35,4 +63,14 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    const isDark =
+      typeof document !== 'undefined'
+        ? document.documentElement.getAttribute('data-theme') !== 'light'
+        : true;
+    return { isDark, toggleTheme: () => {} };
+  }
+  return context;
+};

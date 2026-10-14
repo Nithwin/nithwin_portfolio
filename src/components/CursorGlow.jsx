@@ -30,29 +30,35 @@ const CursorGlow = () => {
     };
     animate();
 
-    // Interactive hover
-    const interactives = document.querySelectorAll("a, button, [data-cursor]");
-    const onEnter = (e) => {
-      ringRef.current?.classList.add("active");
-      if (textRef.current) {
-        textRef.current.textContent = e.currentTarget.dataset.cursor || "OPEN";
+    // Interactive hover with event delegation (works for both static and dynamic elements)
+    const onOver = (e) => {
+      const target = e.target.closest("a, button, [data-cursor], [role='button'], input[type='submit']");
+      if (target) {
+        ringRef.current?.classList.add("active");
+        if (textRef.current) {
+          textRef.current.textContent = target.dataset.cursor || "EXPLORE";
+        }
       }
     };
-    const onLeave = () => {
-      ringRef.current?.classList.remove("active");
+
+    const onOut = (e) => {
+      const target = e.target.closest("a, button, [data-cursor], [role='button'], input[type='submit']");
+      if (target) {
+        const related = e.relatedTarget?.closest?.("a, button, [data-cursor], [role='button'], input[type='submit']");
+        if (!related) {
+          ringRef.current?.classList.remove("active");
+        }
+      }
     };
-    interactives.forEach((el) => {
-      el.addEventListener("mouseenter", onEnter);
-      el.addEventListener("mouseleave", onLeave);
-    });
+
+    document.addEventListener("mouseover", onOver);
+    document.addEventListener("mouseout", onOut);
 
     return () => {
       window.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseover", onOver);
+      document.removeEventListener("mouseout", onOut);
       cancelAnimationFrame(rafRef.current);
-      interactives.forEach((el) => {
-        el.removeEventListener("mouseenter", onEnter);
-        el.removeEventListener("mouseleave", onLeave);
-      });
     };
   }, []);
 
