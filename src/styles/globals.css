@@ -171,7 +171,7 @@
       background-color: #070709;
       border: 1.5px solid var(--border-strong);
       overflow: hidden;
-      box-shadow: 0 0 16px rgba(255, 59, 29, 0.22);
+      box-shadow: 0 0 16px rgba(255, 59, 29, 0.28);
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
       text-decoration: none;
@@ -181,17 +181,19 @@
 
     [data-theme="light"] .lightning-brand-pill {
       background-color: #070709;
-      box-shadow: 0 0 16px rgba(0, 56, 255, 0.2);
+      border-color: rgba(0, 56, 255, 0.45);
+      box-shadow: 0 0 16px rgba(0, 56, 255, 0.26);
     }
 
     .lightning-brand-pill:hover {
       border-color: var(--accent);
       transform: translateY(-1.5px);
-      box-shadow: 0 0 24px rgba(255, 59, 29, 0.4);
+      box-shadow: 0 0 24px rgba(255, 59, 29, 0.45);
     }
 
     [data-theme="light"] .lightning-brand-pill:hover {
-      box-shadow: 0 0 24px rgba(0, 56, 255, 0.35);
+      border-color: #0038FF;
+      box-shadow: 0 0 24px rgba(0, 56, 255, 0.45);
     }
 
     .logo-lightning-video {
@@ -202,6 +204,14 @@
       object-fit: contain;
       border-radius: 20px;
       pointer-events: none;
+      /* Dark Theme: Vibrant Electric Orange (matches #FF3B1D) */
+      filter: hue-rotate(105deg) saturate(1.25) contrast(1.1);
+      transition: filter 0.4s ease, transform 0.25s ease;
+    }
+
+    /* Light Theme: Vibrant Electric Cobalt Blue (matches #0038FF) */
+    [data-theme="light"] .logo-lightning-video {
+      filter: hue-rotate(305deg) saturate(1.2) contrast(1.08);
     }
 
     .nav-center {
