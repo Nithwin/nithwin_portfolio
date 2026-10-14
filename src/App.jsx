@@ -20,11 +20,57 @@ export default function App() {
   const themeRef = useRef("dark");
   themeRef.current = theme;
 
-  // Toggle Dark / Light Theme
-  const handleToggleTheme = () => {
+  // Toggle Dark / Light Theme with Radial Circular Wipe Transition
+  const handleToggleTheme = (e) => {
     const nextTheme = theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
-    document.documentElement.setAttribute("data-theme", nextTheme);
+
+    const updateDOM = () => {
+      setTheme(nextTheme);
+      themeRef.current = nextTheme;
+      document.documentElement.setAttribute("data-theme", nextTheme);
+    };
+
+    // If user prefers reduced motion or browser lacks View Transitions
+    if (
+      !document.startViewTransition ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      updateDOM();
+      return;
+    }
+
+    // Determine circular expansion epicenter from click coordinates or button bounding rect
+    const btn = document.getElementById("theme-toggle");
+    const rect = btn?.getBoundingClientRect();
+    const x = e?.clientX ?? (rect ? rect.left + rect.width / 2 : window.innerWidth / 2);
+    const y = e?.clientY ?? (rect ? rect.top + rect.height / 2 : window.innerHeight / 2);
+
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    const transition = document.startViewTransition(() => {
+      updateDOM();
+    });
+
+    transition.ready.then(() => {
+      document.documentElement.animate(
+        {
+          clipPath: [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`,
+          ],
+        },
+        {
+          duration: 650,
+          easing: "cubic-bezier(0.2, 0, 0, 1)",
+          pseudoElement: "::view-transition-new(root)",
+        }
+      );
+    }).catch(() => {
+      updateDOM();
+    });
   };
 
   // Active section scroll spy
