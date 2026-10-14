@@ -1,112 +1,67 @@
 import React, { useEffect, useRef } from "react";
 
-/**
- * CursorGlow — a subtle ambient glow that follows the mouse cursor.
- * Uses lerp-based RAF animation for silky 60fps tracking.
- * Only visible on desktop pointer devices.
- */
 const CursorGlow = () => {
-  const glowRef = useRef(null);
-  const innerRef = useRef(null);
+  const dotRef = useRef(null);
+  const ringRef = useRef(null);
+  const textRef = useRef(null);
+  const pos = useRef({ x: -200, y: -200 });
+  const ringPos = useRef({ x: -200, y: -200 });
+  const rafRef = useRef(null);
 
   useEffect(() => {
-    const glow = glowRef.current;
-    const inner = innerRef.current;
-    if (!glow || !inner) return;
-
-    // Check if device has a fine pointer (mouse)
-    if (window.matchMedia("(pointer: coarse)").matches) return;
-
-    let x = 0, y = 0;
-    let ix = 0, iy = 0;
-    let targetX = window.innerWidth / 2;
-    let targetY = window.innerHeight / 2;
-    let rafId;
-    let visible = false;
-
     const onMove = (e) => {
-      targetX = e.clientX;
-      targetY = e.clientY;
-      if (!visible) {
-        visible = true;
-        glow.style.opacity = "1";
-        inner.style.opacity = "1";
-      }
+      pos.current = { x: e.clientX, y: e.clientY };
     };
-
-    const onLeave = () => {
-      visible = false;
-      glow.style.opacity = "0";
-      inner.style.opacity = "0";
-    };
+    window.addEventListener("mousemove", onMove);
 
     const animate = () => {
-      // Outer glow — slow, dreamy follow
-      x += (targetX - x) * 0.08;
-      y += (targetY - y) * 0.08;
-      glow.style.transform = `translate3d(${x - 200}px, ${y - 200}px, 0)`;
-
-      // Inner dot — snappy follow
-      ix += (targetX - ix) * 0.2;
-      iy += (targetY - iy) * 0.2;
-      inner.style.transform = `translate3d(${ix - 4}px, ${iy - 4}px, 0)`;
-
-      rafId = requestAnimationFrame(animate);
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate(${pos.current.x - 3.5}px, ${pos.current.y - 3.5}px) translate(-50%, -50%) translate(3.5px, 3.5px)`;
+        dotRef.current.style.left = pos.current.x + "px";
+        dotRef.current.style.top = pos.current.y + "px";
+      }
+      if (ringRef.current) {
+        ringPos.current.x += (pos.current.x - ringPos.current.x) * 0.12;
+        ringPos.current.y += (pos.current.y - ringPos.current.y) * 0.12;
+        ringRef.current.style.left = ringPos.current.x + "px";
+        ringRef.current.style.top = ringPos.current.y + "px";
+      }
+      rafRef.current = requestAnimationFrame(animate);
     };
+    animate();
 
-    window.addEventListener("mousemove", onMove, { passive: true });
-    document.addEventListener("mouseleave", onLeave);
-    rafId = requestAnimationFrame(animate);
+    // Interactive hover
+    const interactives = document.querySelectorAll("a, button, [data-cursor]");
+    const onEnter = (e) => {
+      ringRef.current?.classList.add("active");
+      if (textRef.current) {
+        textRef.current.textContent = e.currentTarget.dataset.cursor || "OPEN";
+      }
+    };
+    const onLeave = () => {
+      ringRef.current?.classList.remove("active");
+    };
+    interactives.forEach((el) => {
+      el.addEventListener("mouseenter", onEnter);
+      el.addEventListener("mouseleave", onLeave);
+    });
 
     return () => {
       window.removeEventListener("mousemove", onMove);
-      document.removeEventListener("mouseleave", onLeave);
-      cancelAnimationFrame(rafId);
+      cancelAnimationFrame(rafRef.current);
+      interactives.forEach((el) => {
+        el.removeEventListener("mouseenter", onEnter);
+        el.removeEventListener("mouseleave", onLeave);
+      });
     };
   }, []);
 
   return (
     <>
-      {/* Outer ambient glow */}
-      <div
-        ref={glowRef}
-        className="cursor-glow"
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "400px",
-          height: "400px",
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(123,47,255,0.07) 0%, rgba(0,212,255,0.03) 40%, transparent 70%)",
-          pointerEvents: "none",
-          zIndex: 9998,
-          willChange: "transform",
-          opacity: 0,
-          transition: "opacity 0.6s ease",
-        }}
-      />
-      {/* Inner crisp dot */}
-      <div
-        ref={innerRef}
-        className="cursor-glow"
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "8px",
-          height: "8px",
-          borderRadius: "50%",
-          background: "rgba(123,47,255,0.5)",
-          boxShadow: "0 0 12px rgba(123,47,255,0.3)",
-          pointerEvents: "none",
-          zIndex: 9999,
-          willChange: "transform",
-          opacity: 0,
-          transition: "opacity 0.4s ease",
-          mixBlendMode: "screen",
-        }}
-      />
+      <div id="cursor-dot" ref={dotRef} />
+      <div id="cursor-ring" ref={ringRef}>
+        <span id="cursor-text" ref={textRef} />
+      </div>
     </>
   );
 };
