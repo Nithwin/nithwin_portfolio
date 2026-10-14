@@ -65,9 +65,11 @@ export default function ContactForm() {
           <label className="contact-form-label" htmlFor="contact-name">YOUR NAME *</label>
           <input
             id="contact-name"
+            name="name"
+            autoComplete="name"
             type="text"
             required
-            className="contact-form-input"
+            className="contact-input contact-form-input"
             placeholder="John Doe"
             value={contactForm.name}
             onChange={(e) =>
@@ -79,9 +81,11 @@ export default function ContactForm() {
           <label className="contact-form-label" htmlFor="contact-email">YOUR EMAIL *</label>
           <input
             id="contact-email"
+            name="email"
+            autoComplete="email"
             type="email"
             required
-            className="contact-form-input"
+            className="contact-input contact-form-input"
             placeholder="john@example.com"
             value={contactForm.email}
             onChange={(e) =>
@@ -95,9 +99,10 @@ export default function ContactForm() {
         <label className="contact-form-label" htmlFor="contact-message">YOUR MESSAGE *</label>
         <textarea
           id="contact-message"
+          name="message"
           required
           rows={5}
-          className="contact-form-input contact-form-textarea"
+          className="contact-textarea contact-form-textarea"
           placeholder="Tell me about your project, team, or opportunity..."
           value={contactForm.message}
           onChange={(e) =>
@@ -109,10 +114,9 @@ export default function ContactForm() {
       <div className="contact-form-actions">
         <button
           type="submit"
-          className="btn-primary"
+          className="contact-submit-btn btn-primary"
           disabled={contactStatus === "sending"}
           data-cursor="SEND"
-          style={{ width: "100%", justifyContent: "center" }}
         >
           {contactStatus === "sending" ? (
             <span>TRANSMITTING MESSAGE...</span>

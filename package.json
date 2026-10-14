@@ -26,6 +26,7 @@
     "react-parallax-tilt": "^1.7.293",
     "react-toastify": "^11.0.5",
     "tailwindcss": "^4.1.4",
+    "three": "^0.186.1",
     "typewriter-effect": "^2.21.0"
   },
   "devDependencies": {
