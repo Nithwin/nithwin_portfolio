@@ -13,6 +13,9 @@ export default function Projects({
   const themeRef = useRef(theme);
   themeRef.current = theme;
 
+  const viewportRef = useRef(null);
+  const [viewportWidth, setViewportWidth] = useState(0);
+
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== "undefined" ? window.innerWidth <= 768 : false
   );
@@ -20,7 +23,11 @@ export default function Projects({
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
+      if (viewportRef.current) {
+        setViewportWidth(viewportRef.current.clientWidth);
+      }
     };
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -121,9 +128,20 @@ export default function Projects({
     return () => cancelAnimationFrame(rafId);
   }, [sliderIndex, isExpanded, projectsList, isMobile]);
 
+  const gap = isMobile ? 20 : 32;
+  const w =
+    viewportWidth ||
+    (typeof window !== "undefined"
+      ? Math.min(window.innerWidth - (isMobile ? 36 : 72), 1200)
+      : 600);
+  const cardWidth = isMobile ? w : (w - gap) / 2;
+
   const maxIndex = isMobile
     ? Math.max(0, projectsList.length - 1)
     : Math.max(0, projectsList.length - 2);
+
+  const safeIndex = Math.min(Math.max(0, sliderIndex), maxIndex);
+  const shiftX = isExpanded ? 0 : safeIndex * (cardWidth + gap);
 
   const handlePrev = () => {
     setIsExpanded(false);
@@ -135,17 +153,22 @@ export default function Projects({
     setSliderIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
   };
 
-  // Touch swipe support
+  // Touch swipe support (only horizontal swipes)
   const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
   };
   const handleTouchEnd = (e) => {
-    const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (diff > 45) {
-      handleNext();
-    } else if (diff < -45) {
-      handlePrev();
+    const diffX = touchStartX.current - e.changedTouches[0].clientX;
+    const diffY = touchStartY.current - e.changedTouches[0].clientY;
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
+      if (diffX > 0) {
+        handleNext();
+      } else if (diffX < 0) {
+        handlePrev();
+      }
     }
   };
 
@@ -170,10 +193,10 @@ export default function Projects({
             {isExpanded
               ? `SHOWING ALL 0${projectsList.length} PROJECTS`
               : isMobile
-              ? `SHOWING 0${sliderIndex + 1} OF 0${projectsList.length}`
-              : `SHOWING 0${sliderIndex + 1}–0${Math.min(
+              ? `SHOWING 0${safeIndex + 1} OF 0${projectsList.length}`
+              : `SHOWING 0${safeIndex + 1}–0${Math.min(
                   projectsList.length,
-                  sliderIndex + 2
+                  safeIndex + 2
                 )} OF 0${projectsList.length}`}
           </span>
           <button
@@ -206,38 +229,34 @@ export default function Projects({
       </div>
 
       <div
+        ref={viewportRef}
         className="projects-viewport"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
         <div
-          className={`projects-track reveal-group ${
-            isExpanded ? "expanded-grid" : ""
-          }`}
+          className={`projects-track ${isExpanded ? "expanded-grid" : ""}`}
           style={{
-            gridTemplateColumns: isExpanded
-              ? undefined
-              : isMobile
-              ? `repeat(${projectsList.length}, 100%)`
-              : `repeat(${projectsList.length}, calc(50% - 16px))`,
-            gap: isMobile ? "20px" : "32px",
-            transform: isExpanded
-              ? "none"
-              : isMobile
-              ? `translate3d(calc(-${sliderIndex * 100}% - ${
-                  sliderIndex * 20
-                }px), 0, 0)`
-              : `translate3d(calc(-${sliderIndex * 50}% - ${
-                  sliderIndex * 16
-                }px), 0, 0)`,
+            display: isExpanded ? "grid" : "flex",
+            flexWrap: isExpanded ? "wrap" : "nowrap",
+            gap: `${gap}px`,
+            transform: isExpanded ? "none" : `translate3d(-${shiftX}px, 0, 0)`,
+            transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+            width: isExpanded ? "100%" : "max-content",
           }}
         >
           {projectsList.map((p, idx) => (
             <article
               key={idx}
-              className="work-card reveal-item"
+              className="work-card reveal-item is-revealed"
               data-cursor="CASE STUDY"
               onClick={() => onSelectProject(p)}
+              style={{
+                width: isExpanded ? "100%" : `${cardWidth}px`,
+                maxWidth: isExpanded ? "100%" : `${cardWidth}px`,
+                flex: isExpanded ? "1 1 100%" : `0 0 ${cardWidth}px`,
+                boxSizing: "border-box",
+              }}
             >
               <div className="work-visual">
                 {p.imageUrl ? (

@@ -3042,6 +3042,13 @@
       transform: translateY(-4px);
     }
 
+    /* Slider cards are always visible so horizontal translation never blanks */
+    .projects-track .work-card,
+    .certs-track .cert-card {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .reveal-item,
       .reveal-group > .reveal-item {

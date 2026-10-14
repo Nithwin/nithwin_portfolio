@@ -7,6 +7,9 @@ export default function Certifications({
   isCertsExpanded,
   setIsCertsExpanded,
 }) {
+  const viewportRef = useRef(null);
+  const [viewportWidth, setViewportWidth] = useState(0);
+
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== "undefined" ? window.innerWidth <= 768 : false
   );
@@ -14,14 +17,29 @@ export default function Certifications({
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
+      if (viewportRef.current) {
+        setViewportWidth(viewportRef.current.clientWidth);
+      }
     };
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const gap = isMobile ? 20 : 32;
+  const w =
+    viewportWidth ||
+    (typeof window !== "undefined"
+      ? Math.min(window.innerWidth - (isMobile ? 36 : 72), 1200)
+      : 600);
+  const cardWidth = isMobile ? w : (w - gap) / 2;
+
   const maxIndex = isMobile
     ? Math.max(0, certsList.length - 1)
     : Math.max(0, certsList.length - 2);
+
+  const safeIndex = Math.min(Math.max(0, certSliderIndex), maxIndex);
+  const shiftX = isCertsExpanded ? 0 : safeIndex * (cardWidth + gap);
 
   const handlePrev = () => {
     setIsCertsExpanded(false);
@@ -33,17 +51,22 @@ export default function Certifications({
     setCertSliderIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
   };
 
-  // Touch swipe support
+  // Touch swipe support (only horizontal swipes)
   const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
   };
   const handleTouchEnd = (e) => {
-    const diff = touchStartX.current - e.changedTouches[0].clientX;
-    if (diff > 45) {
-      handleNext();
-    } else if (diff < -45) {
-      handlePrev();
+    const diffX = touchStartX.current - e.changedTouches[0].clientX;
+    const diffY = touchStartY.current - e.changedTouches[0].clientY;
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
+      if (diffX > 0) {
+        handleNext();
+      } else if (diffX < 0) {
+        handlePrev();
+      }
     }
   };
 
@@ -67,10 +90,10 @@ export default function Certifications({
             {isCertsExpanded
               ? `SHOWING ALL 0${certsList.length} CERTIFICATIONS`
               : isMobile
-              ? `SHOWING 0${certSliderIndex + 1} OF 0${certsList.length}`
-              : `SHOWING 0${certSliderIndex + 1}–0${Math.min(
+              ? `SHOWING 0${safeIndex + 1} OF 0${certsList.length}`
+              : `SHOWING 0${safeIndex + 1}–0${Math.min(
                   certsList.length,
-                  certSliderIndex + 2
+                  safeIndex + 2
                 )} OF 0${certsList.length}`}
           </span>
           <button
@@ -113,34 +136,33 @@ export default function Certifications({
       </div>
 
       <div
+        ref={viewportRef}
         className="certs-viewport"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
         <div
-          className={`certs-track reveal-group ${
-            isCertsExpanded ? "expanded-grid" : ""
-          }`}
+          className={`certs-track ${isCertsExpanded ? "expanded-grid" : ""}`}
           style={{
-            gridTemplateColumns: isCertsExpanded
-              ? undefined
-              : isMobile
-              ? `repeat(${certsList.length}, 100%)`
-              : `repeat(${certsList.length}, calc(50% - 16px))`,
-            gap: isMobile ? "20px" : "32px",
-            transform: isCertsExpanded
-              ? "none"
-              : isMobile
-              ? `translate3d(calc(-${certSliderIndex * 100}% - ${
-                  certSliderIndex * 20
-                }px), 0, 0)`
-              : `translate3d(calc(-${certSliderIndex * 50}% - ${
-                  certSliderIndex * 16
-                }px), 0, 0)`,
+            display: isCertsExpanded ? "grid" : "flex",
+            flexWrap: isCertsExpanded ? "wrap" : "nowrap",
+            gap: `${gap}px`,
+            transform: isCertsExpanded ? "none" : `translate3d(-${shiftX}px, 0, 0)`,
+            transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+            width: isCertsExpanded ? "100%" : "max-content",
           }}
         >
           {certsList.map((cert) => (
-            <article key={cert.id} className="cert-card reveal-item">
+            <article
+              key={cert.id}
+              className="cert-card reveal-item is-revealed"
+              style={{
+                width: isCertsExpanded ? "100%" : `${cardWidth}px`,
+                maxWidth: isCertsExpanded ? "100%" : `${cardWidth}px`,
+                flex: isCertsExpanded ? "1 1 100%" : `0 0 ${cardWidth}px`,
+                boxSizing: "border-box",
+              }}
+            >
               {cert.imageUrl ? (
                 <div className="cert-img-wrap">
                   <img

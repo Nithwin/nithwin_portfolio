@@ -221,22 +221,20 @@ export default function App() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Smooth scroll-reveal observer for non-About sections (re-animates on every scroll)
+  // Smooth scroll-reveal observer (retains revealed state so content never vanishes)
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-revealed");
-          } else {
-            entry.target.classList.remove("is-revealed");
           }
         });
       },
       {
         root: null,
-        rootMargin: "0px 0px -30px 0px",
-        threshold: 0.05,
+        rootMargin: "0px 0px 60px 0px",
+        threshold: 0.02,
       }
     );
 

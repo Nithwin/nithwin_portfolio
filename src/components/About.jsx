@@ -53,17 +53,26 @@ export default function About() {
         ? aboutSection.getBoundingClientRect()
         : containerRect;
 
-      // Reveal starts as soon as manifesto reaches 2/3 of the viewport height
-      const triggerLine = window.innerHeight * (2 / 3);
-      const scrolled = triggerLine - containerRect.top;
-      const totalRange = Math.max(
-        260,
-        sectionRect.height -
-          (containerRect.top - sectionRect.top) -
-          (window.innerHeight - triggerLine) +
-          60
-      );
-      const prog = Math.min(1, Math.max(0, scrolled / totalRange));
+      let prog;
+      if (window.innerWidth <= 1024) {
+        // Mobile / Tablet: Start illuminating as soon as manifesto enters lower viewport (88%)
+        // and reach 100% illumination by the time it reaches upper viewport (22%)
+        const startLine = window.innerHeight * 0.88;
+        const endLine = window.innerHeight * 0.22;
+        prog = Math.min(1, Math.max(0, (startLine - containerRect.top) / (startLine - endLine)));
+      } else {
+        // Desktop: Reveal starts when manifesto reaches 2/3 of viewport with sticky pinning
+        const triggerLine = window.innerHeight * (2 / 3);
+        const scrolled = triggerLine - containerRect.top;
+        const totalRange = Math.max(
+          260,
+          sectionRect.height -
+            (containerRect.top - sectionRect.top) -
+            (window.innerHeight - triggerLine) +
+            60
+        );
+        prog = Math.min(1, Math.max(0, scrolled / totalRange));
+      }
 
       const litCount = Math.floor(prog * wordSpans.length);
       wordSpans.forEach((sp, idx) => {
@@ -78,11 +87,26 @@ export default function About() {
       });
 
       if (timelineGlow) {
-        timelineGlow.style.height = `${Math.min(100, Math.max(0, prog * 100))}%`;
+        if (window.innerWidth <= 1024) {
+          const trackWrap = document.querySelector(".timeline-track-wrap");
+          if (trackWrap) {
+            const trackRect = trackWrap.getBoundingClientRect();
+            const trackScrolled = window.innerHeight * 0.75 - trackRect.top;
+            const trackProg = Math.min(1, Math.max(0, trackScrolled / Math.max(1, trackRect.height)));
+            timelineGlow.style.height = `${(trackProg * 100).toFixed(1)}%`;
+          }
+        } else {
+          timelineGlow.style.height = `${Math.min(100, Math.max(0, prog * 100))}%`;
+        }
       }
 
       timelineNodes.forEach((node, i) => {
-        node.classList.toggle("active", prog >= (i + 0.2) / timelineNodes.length);
+        if (window.innerWidth <= 1024) {
+          const nodeRect = node.getBoundingClientRect();
+          node.classList.toggle("active", nodeRect.top <= window.innerHeight * 0.72);
+        } else {
+          node.classList.toggle("active", prog >= (i + 0.2) / timelineNodes.length);
+        }
       });
     }
 
