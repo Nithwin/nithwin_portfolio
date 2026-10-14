@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="container">
         <div className="footer-columns">
           <div>
-            <div className="footer-col-title">NITHWIN V M</div>
+            <div className="footer-col-title">NITHWIN</div>
             <p className="work-desc" style={{ maxWidth: "34ch" }}>
               Full Stack, C++20 Systems &amp; Generative AI Engineer based in
               India. Crafting high-concurrency backends, LLM CLI agents, and

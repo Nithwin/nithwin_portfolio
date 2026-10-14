@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { FaGithub, FaBars, FaTimes } from "react-icons/fa";
+import { FaGithub, FaBars, FaTimes, FaSun, FaMoon } from "react-icons/fa";
 
 export default function Header({
   activeNav,
@@ -24,7 +24,8 @@ export default function Header({
         <a
           href="#top"
           className="lightning-brand-pill"
-          aria-label="Nithwin V M"
+          aria-label="Nithwin (Nithwin V M) — Portfolio"
+          title="Nithwin — Full Stack &amp; AI Systems Engineer"
           onClick={(e) => {
             e.preventDefault();
             scrollToSection("top");
@@ -133,8 +134,12 @@ export default function Header({
             data-cursor="THEME"
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
           >
-            <span className="theme-toggle-indicator">
-              <span className="theme-toggle-dot"></span>
+            <span id="theme-icon" aria-hidden="true">
+              {theme === "dark" ? (
+                <FaSun size={13} style={{ color: "var(--accent)" }} />
+              ) : (
+                <FaMoon size={13} style={{ color: "var(--accent)" }} />
+              )}
             </span>
             <span className="theme-toggle-text">
               {theme === "dark" ? "LIGHT" : "DARK"}
@@ -198,6 +203,23 @@ export default function Header({
           >
             Contact
           </a>
+          <div style={{ padding: "16px 20px 8px" }}>
+            <button
+              className="pill-btn theme-toggle-btn"
+              onClick={onToggleTheme}
+              style={{ width: "100%", justifyContent: "center", gap: "10px" }}
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            >
+              <span id="theme-icon" aria-hidden="true">
+                {theme === "dark" ? (
+                  <FaSun size={13} style={{ color: "var(--accent)" }} />
+                ) : (
+                  <FaMoon size={13} style={{ color: "var(--accent)" }} />
+                )}
+              </span>
+              <span>{theme === "dark" ? "SWITCH TO LIGHT" : "SWITCH TO DARK"}</span>
+            </button>
+          </div>
         </div>
       )}
     </header>

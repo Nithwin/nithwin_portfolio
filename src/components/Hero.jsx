@@ -203,7 +203,7 @@ export default function Hero({ theme }) {
       <div className="hero-grid">
         <div>
           <div className="eyebrow hero-eyebrow">
-            NITHWIN V M · FULL STACK &amp; GENAI
+            NITHWIN · FULL STACK &amp; GENAI
           </div>
           <h1 className="hero-headline">
             Building <span className="accent-text">intelligent software</span> &amp;{" "}

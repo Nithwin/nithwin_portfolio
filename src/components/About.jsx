@@ -88,7 +88,7 @@ export default function About() {
       <div className="about-scrolly-grid">
         <div className="about-sticky-left">
           <div className="about-header-block">
-            <span className="eyebrow">ABOUT ME</span>
+            <span className="eyebrow">ABOUT NITHWIN</span>
             <h2 className="section-title">Background &amp; Philosophy</h2>
             <p className="section-subtitle">
               Bridging algorithmic depth with intuitive full-stack platforms and intelligent AI systems.

@@ -229,7 +229,6 @@ export default function App() {
 
   return (
     <>
-      <CursorGlow />
       <Preloader theme={theme} />
       <Header
         activeNav={activeNav}
