@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import { FaSun, FaMoon, FaBars, FaTimes, FaFileDownload } from "react-icons/fa";
 
@@ -6,7 +6,7 @@ const NAV_LINKS = [
   { label: "Home", id: "home" },
   { label: "About", id: "about" },
   { label: "Projects", id: "projects" },
-  { label: "Publications", id: "publications" },
+  { label: "Research", id: "publications" },
   { label: "Skills", id: "skills" },
   { label: "Profiles", id: "coding-profiles" },
   { label: "Contact", id: "contact" },
@@ -15,22 +15,17 @@ const NAV_LINKS = [
 const Navigation = () => {
   const { isDark, toggleTheme } = useTheme();
   const [active, setActive] = useState("home");
-  const [scrollPct, setScrollPct] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const pillRef = useRef(null);
-  const canvasRef = useRef(null);
-  const animRef = useRef(null);
+  const [scrolled, setScrolled] = useState(false);
 
-  // Scroll progress + active section tracking
   useEffect(() => {
     const onScroll = () => {
-      const total = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollPct(total > 0 ? (window.scrollY / total) * 100 : 0);
+      setScrolled(window.scrollY > 40);
 
       const sections = NAV_LINKS.map((l) => document.getElementById(l.id)).filter(Boolean);
       let current = "home";
       for (const sec of sections) {
-        if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+        if (window.scrollY >= sec.offsetTop - 140) current = sec.id;
       }
       setActive(current);
     };
@@ -38,155 +33,183 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lightning canvas on brand pill
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    canvas.width = 160;
-    canvas.height = 44;
-
-    const bolts = [];
-    const spawnBolt = () => {
-      bolts.push({
-        x: 10 + Math.random() * 140,
-        y: 0,
-        life: 0,
-        maxLife: 8 + Math.random() * 8,
-        segments: generateBolt(10 + Math.random() * 140, 0, 10 + Math.random() * 140, 44),
-      });
-    };
-    const generateBolt = (x1, y1, x2, y2) => {
-      const pts = [{ x: x1, y: y1 }];
-      const steps = 6 + Math.floor(Math.random() * 4);
-      for (let i = 1; i < steps; i++) {
-        const t = i / steps;
-        pts.push({
-          x: x1 + (x2 - x1) * t + (Math.random() - 0.5) * 18,
-          y: y1 + (y2 - y1) * t,
-        });
-      }
-      pts.push({ x: x2, y: y2 });
-      return pts;
-    };
-
-    let frame = 0;
-    const tick = () => {
-      ctx.clearRect(0, 0, 160, 44);
-
-      // Draw name text
-      ctx.font = "700 12px 'JetBrains Mono', monospace";
-      ctx.letterSpacing = "3px";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillStyle = "#F4F3EF";
-      ctx.fillText("NITHWIN", 80, 22);
-
-      // Spawn bolts
-      if (frame % 18 === 0) spawnBolt();
-
-      for (let i = bolts.length - 1; i >= 0; i--) {
-        const b = bolts[i];
-        b.life++;
-        const alpha = 1 - b.life / b.maxLife;
-        ctx.strokeStyle = `rgba(255, 120, 60, ${alpha * 0.8})`;
-        ctx.lineWidth = 1;
-        ctx.shadowColor = "#FF3B1D";
-        ctx.shadowBlur = 6;
-        ctx.beginPath();
-        b.segments.forEach((p, j) => {
-          j === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
-        });
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-        if (b.life >= b.maxLife) bolts.splice(i, 1);
-      }
-
-      frame++;
-      animRef.current = requestAnimationFrame(tick);
-    };
-    tick();
-    return () => cancelAnimationFrame(animRef.current);
-  }, []);
-
   const scrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (el) window.scrollTo({ top: el.offsetTop - 82, behavior: "smooth" });
     setDrawerOpen(false);
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
     <>
-      <header className="site-header">
-        <div className="header-inner">
-          {/* Logo */}
-          <div>
-            <div
-              ref={pillRef}
-              className="lightning-brand-pill"
-              onClick={() => scrollTo("home")}
-              style={{ cursor: "pointer" }}
-            >
-              <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", zIndex: 1 }} />
-            </div>
+      <header className="floating-dock-wrap" style={{ transition: "all 0.3s ease" }}>
+        <nav
+          className="floating-dock"
+          style={{
+            transform: scrolled ? "scale(0.98)" : "scale(1)",
+            boxShadow: scrolled
+              ? "0 24px 50px -10px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12)"
+              : undefined,
+          }}
+        >
+          {/* Brand Logo & Available Indicator */}
+          <button
+            onClick={() => scrollTo("home")}
+            className="dock-logo"
+            style={{ cursor: "pointer" }}
+            aria-label="Nithwin V M - Home"
+          >
+            <span className="dock-status-dot" title="Available for opportunities" />
+            <span style={{ fontWeight: 800, letterSpacing: "-0.03em" }}>NITHWIN</span>
+          </button>
+
+          {/* Desktop Nav Items */}
+          <div className="dock-links" style={{ display: "none" }}>
+            {/* Handled by media query inline below */}
           </div>
 
-          {/* Nav Links */}
-          <nav className="nav-center">
-            {NAV_LINKS.map((l) => (
-              <button
-                key={l.id}
-                className={`nav-link${active === l.id ? " active" : ""}`}
-                onClick={() => scrollTo(l.id)}
-              >
-                {l.label}
-              </button>
-            ))}
-          </nav>
+          <div
+            className="dock-nav-desktop"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+            }}
+          >
+            {NAV_LINKS.map((link) => {
+              const isActive = active === link.id;
+              return (
+                <button
+                  key={link.id}
+                  onClick={() => scrollTo(link.id)}
+                  className={`dock-item ${isActive ? "active" : ""}`}
+                >
+                  {link.label}
+                </button>
+              );
+            })}
+          </div>
 
-          {/* Right */}
-          <div className="header-right">
+          {/* Actions: Theme Toggle & Resume */}
+          <div className="dock-actions">
             <button
               onClick={toggleTheme}
-              className="pill-btn"
-              title="Toggle theme"
+              className="dock-icon-btn"
+              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              aria-label="Toggle theme"
             >
-              {isDark ? <FaSun size={12} /> : <FaMoon size={12} />}
-              {isDark ? "Light" : "Dark"}
+              {isDark ? <FaSun size={14} color="#f4b942" /> : <FaMoon size={14} />}
             </button>
-            <a href="./assets/resume.pdf" download className="pill-btn">
-              <FaFileDownload size={11} />
-              Resume
+
+            <a
+              href="/resume.pdf"
+              download
+              className="dock-icon-btn"
+              title="Download Resume"
+              aria-label="Download Resume"
+              style={{
+                background: "var(--accent-dim)",
+                borderColor: "rgba(56, 189, 248, 0.3)",
+                color: "var(--accent)",
+              }}
+            >
+              <FaFileDownload size={13} />
             </a>
-            <button className="hamburger-btn" onClick={() => setDrawerOpen(true)}>
-              <span className="ham-line" />
-              <span className="ham-line" />
-              <span className="ham-line" />
+
+            {/* Mobile Hamburger Toggle */}
+            <button
+              onClick={() => setDrawerOpen((prev) => !prev)}
+              className="dock-icon-btn dock-mobile-toggle"
+              aria-label="Toggle navigation menu"
+            >
+              {drawerOpen ? <FaTimes size={15} /> : <FaBars size={15} />}
             </button>
           </div>
-        </div>
-        <div className="scroll-progress" style={{ width: `${scrollPct}%` }} />
+        </nav>
       </header>
 
       {/* Mobile Drawer */}
-      <div className={`mobile-drawer${drawerOpen ? " open" : ""}`}>
-        <button className="mobile-close-btn" onClick={() => setDrawerOpen(false)}>
-          <FaTimes />
-        </button>
-        {NAV_LINKS.map((l) => (
-          <button
-            key={l.id}
-            className={`nav-link${active === l.id ? " active" : ""}`}
-            onClick={() => scrollTo(l.id)}
+      {drawerOpen && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 99,
+            backgroundColor: "rgba(0, 0, 0, 0.65)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "24px",
+          }}
+          onClick={() => setDrawerOpen(false)}
+        >
+          <div
+            className="glass-card"
+            style={{
+              width: "100%",
+              maxWidth: "380px",
+              padding: "32px 24px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "12px",
+              textAlign: "center",
+            }}
+            onClick={(e) => e.stopPropagation()}
           >
-            {l.label}
-          </button>
-        ))}
-        <button onClick={toggleTheme} className="pill-btn" style={{ marginTop: 16 }}>
-          {isDark ? <FaSun size={12} /> : <FaMoon size={12} />}
-          {isDark ? "Light Mode" : "Dark Mode"}
-        </button>
-      </div>
+            <div style={{ marginBottom: "12px" }}>
+              <span className="dock-logo" style={{ justifyContent: "center" }}>
+                <span className="dock-status-dot" />
+                <span>NITHWIN V M</span>
+              </span>
+            </div>
+            {NAV_LINKS.map((link) => (
+              <button
+                key={link.id}
+                onClick={() => scrollTo(link.id)}
+                className={`dock-item ${active === link.id ? "active" : ""}`}
+                style={{
+                  padding: "12px 18px",
+                  fontSize: "16px",
+                  width: "100%",
+                }}
+              >
+                {link.label}
+              </button>
+            ))}
+            <div style={{ marginTop: "16px", display: "flex", gap: "10px", justifyContent: "center" }}>
+              <a
+                href="/resume.pdf"
+                download
+                className="btn-pill-primary"
+                style={{ width: "100%", padding: "11px 20px" }}
+              >
+                <FaFileDownload size={13} /> Resume
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Responsive CSS helper */}
+      <style>{`
+        @media (max-width: 860px) {
+          .dock-nav-desktop {
+            display: none !important;
+          }
+          .dock-mobile-toggle {
+            display: flex !important;
+          }
+        }
+        @media (min-width: 861px) {
+          .dock-mobile-toggle {
+            display: none !important;
+          }
+        }
+      `}</style>
     </>
   );
 };
