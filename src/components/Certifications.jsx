@@ -170,6 +170,9 @@ export default function Certifications({
                     alt={cert.title}
                     className="cert-img"
                     loading="lazy"
+                    width="480"
+                    height="270"
+                    decoding="async"
                     onError={(e) => {
                       e.currentTarget.style.display = "none";
                       e.currentTarget.parentElement.classList.add("img-fallback");

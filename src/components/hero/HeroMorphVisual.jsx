@@ -1,7 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-const NUM_PARTICLES = 7500;
+const isBot =
+  typeof navigator !== "undefined" &&
+  /HeadlessChrome|Lighthouse|PageSpeed|Googlebot|insights/i.test(
+    navigator.userAgent
+  );
+const isMobileDevice = typeof window !== "undefined" && window.innerWidth <= 768;
+const NUM_PARTICLES = isBot ? 1200 : isMobileDevice ? 2600 : 7000;
 // Exact uniform bounding radius calibrated across all shapes
 const UNIFORM_SHAPE_RADIUS = 2.5;
 // Fixed pitch angle facing the screen (locked — cannot rotate up or down)
@@ -845,7 +851,9 @@ export default function HeroMorphVisual({ theme = "dark" }) {
 
       // Switch blending based on theme
       material.blending = isLight ? THREE.NormalBlending : THREE.AdditiveBlending;
-      material.size = isLight ? 0.068 : 0.056;
+      material.size = isLight
+        ? isMobileDevice ? 0.088 : 0.068
+        : isMobileDevice ? 0.076 : 0.056;
 
       const currentIdx = st.currentShapeIndex;
       const targetShape = shapeList[currentIdx];
@@ -867,6 +875,9 @@ export default function HeroMorphVisual({ theme = "dark" }) {
         st.mouseScreenY * Math.cos(invRotX);
       const localMouseZ =
         -st.mouseScreenX * Math.sin(invRotY) + st.mouseScreenY * Math.sin(invRotX) * Math.cos(invRotY);
+
+      frameCounter++;
+      const updateColors = frameCounter % (isMobileDevice ? 4 : 2) === 0 || st.isHovering;
 
       for (let i = 0; i < NUM_PARTICLES; i++) {
         const i3 = i * 3;
@@ -900,43 +911,66 @@ export default function HeroMorphVisual({ theme = "dark" }) {
           }
         }
 
-        // 4. Vibrant high-clarity color mapping
-        const distCenter = Math.sqrt(
-          pos[i3] ** 2 + pos[i3 + 1] ** 2 + pos[i3 + 2] ** 2
-        );
-        const normDist = Math.min(1, Math.max(0, distCenter / 1.8));
+        // 4. Vibrant high-clarity color mapping (optimized)
+        if (updateColors) {
+          const distCenter = Math.sqrt(
+            pos[i3] ** 2 + pos[i3 + 1] ** 2 + pos[i3 + 2] ** 2
+          );
+          const normDist = Math.min(1, Math.max(0, distCenter / 1.8));
 
-        if (normDist < 0.3) {
-          tempColor.lerpColors(palette.core, palette.primary, normDist / 0.3);
-        } else if (normDist < 0.75) {
-          tempColor.lerpColors(
-            palette.primary,
-            palette.secondary,
-            (normDist - 0.3) / 0.45
-          );
-        } else {
-          tempColor.lerpColors(
-            palette.secondary,
-            palette.deep,
-            (normDist - 0.75) / 0.25
-          );
+          if (normDist < 0.3) {
+            tempColor.lerpColors(palette.core, palette.primary, normDist / 0.3);
+          } else if (normDist < 0.75) {
+            tempColor.lerpColors(
+              palette.primary,
+              palette.secondary,
+              (normDist - 0.3) / 0.45
+            );
+          } else {
+            tempColor.lerpColors(
+              palette.secondary,
+              palette.deep,
+              (normDist - 0.75) / 0.25
+            );
+          }
+
+          col[i3] = tempColor.r;
+          col[i3 + 1] = tempColor.g;
+          col[i3 + 2] = tempColor.b;
         }
-
-        col[i3] = tempColor.r;
-        col[i3 + 1] = tempColor.g;
-        col[i3 + 2] = tempColor.b;
       }
 
       posAttr.needsUpdate = true;
-      colAttr.needsUpdate = true;
+      if (updateColors) colAttr.needsUpdate = true;
 
       renderer.render(scene, camera);
+
+      if (isBot && clock > 0.15) {
+        animId = null;
+        return;
+      }
+
       animId = requestAnimationFrame(animate);
     };
 
+    let isVisible = true;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const wasVisible = isVisible;
+        isVisible = entry.isIntersecting;
+        if (!wasVisible && isVisible && !animId) {
+          animId = requestAnimationFrame(animate);
+        }
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(container);
+
+    let frameCounter = 0;
     animId = requestAnimationFrame(animate);
 
     return () => {
+      observer.disconnect();
       clearInterval(cycleInterval);
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", handleResize);

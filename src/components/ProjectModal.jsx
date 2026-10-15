@@ -44,6 +44,10 @@ export default function ProjectModal({ project, onClose }) {
               src={project.imageUrl}
               alt={project.title}
               className="case-modal-img"
+              loading="lazy"
+              width="800"
+              height="450"
+              decoding="async"
             />
           </div>
         )}

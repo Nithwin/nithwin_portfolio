@@ -266,6 +266,9 @@ export default function Projects({
                       alt={p.title}
                       className="work-img"
                       loading="lazy"
+                      width="600"
+                      height="340"
+                      decoding="async"
                       onError={(e) => {
                         e.currentTarget.style.display = "none";
                         const fallback =

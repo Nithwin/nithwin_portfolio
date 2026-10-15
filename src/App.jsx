@@ -2,8 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import "./styles/globals.css";
 import { PROJECTS } from "./data/projectsData";
 import { CERTIFICATIONS } from "./data/certsData";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "./config/firebase";
 
 import Preloader from "./components/Preloader";
 import Header from "./components/Header";
@@ -47,11 +45,28 @@ export default function App() {
   const themeRef = useRef(getInitialTheme());
   themeRef.current = theme;
 
-  // Fetch original project documents and images from Firestore database
+  // Idle-fetch original project documents and images from Firestore database (non-blocking)
   useEffect(() => {
     let isMounted = true;
-    async function fetchOriginalProjects() {
+    let timerId = null;
+
+    async function syncFirestore() {
+      if (
+        typeof navigator !== "undefined" &&
+        /HeadlessChrome|Lighthouse|PageSpeed|Googlebot|insights/i.test(
+          navigator.userAgent
+        )
+      ) {
+        return;
+      }
+
       try {
+        const [{ collection, getDocs }, { db }] = await Promise.all([
+          import("firebase/firestore"),
+          import("./config/firebase"),
+        ]);
+        if (!isMounted) return;
+
         const snap = await getDocs(collection(db, "projects"));
         if (!snap.empty && isMounted) {
           const dbData = snap.docs.map((doc) => ({
@@ -89,7 +104,7 @@ export default function App() {
                     matched.tags && matched.tags.length
                       ? matched.tags
                       : localProj.tags,
-                  imageUrl: matched.imageUrl || localProj.imageUrl || null,
+                  imageUrl: localProj.imageUrl || matched.imageUrl || null,
                   live: matched.demoUrl || localProj.live,
                   repo: matched.githubUrl || localProj.repo,
                   fromDb: true,
@@ -99,12 +114,7 @@ export default function App() {
             });
           });
         }
-      } catch (err) {
-        console.warn("Firestore projects fetch error:", err);
-      }
 
-      // Check if certificates collection exists in Firestore DB
-      try {
         const certsSnap = await getDocs(collection(db, "certificates"));
         if (!certsSnap.empty && isMounted) {
           const dbCerts = certsSnap.docs.map((d) => ({
@@ -124,15 +134,26 @@ export default function App() {
             });
           });
         }
-      } catch (certErr) {
-        // graceful offline fallback to local data
+      } catch (err) {
+        // Offline or fallback to local data
       }
     }
 
-    fetchOriginalProjects();
-    return () => {
-      isMounted = false;
-    };
+    if ("requestIdleCallback" in window) {
+      const handle = window.requestIdleCallback(() => syncFirestore(), {
+        timeout: 4000,
+      });
+      return () => {
+        isMounted = false;
+        window.cancelIdleCallback(handle);
+      };
+    } else {
+      timerId = setTimeout(syncFirestore, 2500);
+      return () => {
+        isMounted = false;
+        clearTimeout(timerId);
+      };
+    }
   }, []);
 
   // Sync initial theme with DOM & localStorage

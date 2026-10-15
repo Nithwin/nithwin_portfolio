@@ -4,7 +4,7 @@ export const PROJECTS = [
     cat: "GenAI · Go 1.26",
     desc: "Open-source terminal coding assistant in Go with Gemini 2.5 Pro (1M token context), repository-aware AST patching, and Lip Gloss TUI.",
     tags: ["Go", "AI", "CLI", "Docker", "GitHub Actions"],
-    imageUrl: "https://raw.githubusercontent.com/Nithwin/windmist/main/images/Gemini_Generated_Image_4fucu04fucu04fuc.png",
+    imageUrl: "/assets/projects/windmist.webp",
     code: `// internal/agent/executor.go — Atomic Single-Pass Disk Write
 func (e *PatchExecutor) CommitTransaction(ctx context.Context, tx *FileASTDiff) error {
     if err := e.verifySHA256Lock(tx.TargetPath, tx.ExpectedHash); err != nil {
@@ -21,7 +21,7 @@ func (e *PatchExecutor) CommitTransaction(ctx context.Context, tx *FileASTDiff) 
     cat: "IEEE Xplore 2026 · Computer Vision",
     desc: "Custom YOLOv8 architecture integrating Coordinate Attention (CA) and CBAM for real-time ID detection across 800+ test cards (0.58 EER).",
     tags: ["Python", "YOLOv8", "Computer Vision", "Flask", "OpenCV"],
-    imageUrl: "https://i.ibb.co/jkvzdyV9/Screenshot-From-2026-05-04-22-42-15.png",
+    imageUrl: "/assets/projects/sicd.webp",
     code: `# models/ca_yolov8.py — Coordinate Attention Block
 class CoordinateAttention(nn.Module):
     def forward(self, x):
@@ -38,7 +38,7 @@ class CoordinateAttention(nn.Module):
     cat: "Full-Stack · Production Web App",
     desc: "A comprehensive booking platform for tourist buses across 126+ cities in India featuring verified operator fleets and interactive seat allocation.",
     tags: ["Web App", "React", "Travel", "Booking"],
-    imageUrl: "https://i.ibb.co/5ghkHcn8/Screenshot-From-2026-07-19-15-29-24.png",
+    imageUrl: "/assets/projects/ammubus.webp",
     code: `// services/bookingEngine.js — Real-Time Seat Allocation & Route Search
 export async function bookRouteSeat(operatorId, routeId, seatNumber) {
   const session = await db.startTransaction();
